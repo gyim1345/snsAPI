@@ -70,6 +70,23 @@ const userStore = {
     return this.users.find(userInfo => userInfo.name === userName).userURL;
   },
 
+ checkIdIsRegistered (Id) {
+    return this.userList.find(item => item.name === Id) === undefined
+  },
+
+ checkPassword (Id,Password) {
+    return this.getUserPassword(Id) !== Password
+  },
+
+performLogin (Id, Password) {
+       if (this.checkIdIsRegistered(Id))  return ({statusMessage : 'checkId', loginStatus: false}); 
+       if (this.checkPassword(Id, Password))  return ({statusMessage : 'checkPassword', loginStatus: false});
+        return ({statusMessage: 'LoggedIn', loginStatus: true})
+},
+
+
+
+
   createComment(id, titlee) {
     this.users = [
       ...this.users,

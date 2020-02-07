@@ -5,7 +5,8 @@ const postStore = require('./postingStore');
 const commentStore = require('./commentStore');
 const userStore = require('./userStore');
 const countStore = require('./countStore');
-
+const edit = require('./edit');
+// const login = require('./login')
 
 const port = 3000;
 
@@ -41,27 +42,49 @@ app.post('/user', (req, res) => {
 })
 
 
-
 app.patch('/posts', (req, res) => {
   const { title, user } = req.body;
-  console.log(title,user)
+  // console.log(title,user)
   const posts = postStore.createPost(title, user);
-  console.log('asd', posts)
+  // console.log('asd', posts)
   res.send( posts );
 });
 
 
-app.patch('/posts/:id', (req, res) => {
-  const id = req.params.id;
-  const posts = togglePost(id);
-  res.send({ posts });
-});
+app.post('/comments/:id', (req, res) => {
+  const { id } = req.body;
+  const comments = commentStore.getCommentFromPostId(id)
+  res.send( comments );
+})
 
-app.delete('/posts/:id', (req, res) => {
-  const id = req.params.id;
-  const posts = removePost(id);
-  res.send({ posts });
+app.post('/login', (req, res) => {
+  const { Id, Password } = req.body;
+  console.log(Id, Password);
+  const loginMessageAndStatus = userStore.performLogin(Id, Password)
+  console.log(loginMessageAndStatus)
+  res.send( loginMessageAndStatus );
+})
+
+
+app.patch('/postsedit', (req, res) => {
+  const { input, posting, user, indexOfCommentOnThisPosting } = req.body;
+  console.log(input, posting, user, 'qweqwe',indexOfCommentOnThisPosting,'qweqd')
+  // console.log(title,user)
+  const posts = edit.editThis(input, posting, user, indexOfCommentOnThisPosting);
+  console.log('asd', posts)
+  res.send( posts );
 });
+// app.patch('/posts/:id', (req, res) => {
+//   const id = req.params.id;
+//   const posts = togglePost(id);
+//   res.send({ posts });
+// });
+
+// app.delete('/posts/:id', (req, res) => {
+//   const id = req.params.id;
+//   const posts = removePost(id);
+//   res.send({ posts });
+// });
 
 app.listen(3000, () => {
   console.log(`Listening on port ${port}...`);

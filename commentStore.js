@@ -108,7 +108,7 @@ const commentStore = {
   },
 
   getCommentFromPostId(postId) {
-    return this.comments.filter(comment => comment.postLID === postId);
+      return this.comments.filter(comment => comment.postLId === Number(postId));
   },
 
   getComment(id) {
