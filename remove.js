@@ -24,30 +24,22 @@ const remove = {
         return postingStorage.removePost(posting.id);
       },
 
-    removeThis (id) {
-        postingStore.removePost(id);
-        // console.log(postingStore.postList)
-        postingStore.postList = postingStore.postList.filter(posts => posts.id !== id)
-        const post = postingStore.postList;
-        const status = true;
-        const posts = { post, status}
-        return posts
+    removeThis (posting, user, indexOfCommentOnThisPosting) {
 
-        
-        // if (this.checkOwnerShipOfPost(posting, user, indexOfCommentOnThisPosting) !== true)
-        //   return {Message: "You don't have permission"}
+        if (this.checkOwnerShipOfPost(posting, user, indexOfCommentOnThisPosting) !== true)
+          return {Message: "You don't have permission"}
 
-        // if (indexOfCommentOnThisPosting === undefined)
-        //   return postingStore.postList = postingStore.postList.filter(posts => posts.id !== id)
+        if (indexOfCommentOnThisPosting === undefined){
+            postingStore.removePost(posting.id);
+            return posts = true;
+        }
         
 
-        // if (indexOfCommentOnThisPosting !== undefined){
-        //   const theComment = posting[indexOfCommentOnThisPosting];          
-          
-        //   commentStore.commentList = commentStore.commentList.filter(comment => comment !== theComment);
-        //   console.log(commentStore.commentList)
-        //   return posting.filter(comment => comment !== theComment);
-        // }
+        if (indexOfCommentOnThisPosting !== undefined){
+          const theComment = posting[indexOfCommentOnThisPosting];     
+          commentStore.removeComment(theComment);     
+          return posting.filter(comment => comment.id !== theComment.id);
+        }
 
         return "what the fuck"
     }

@@ -71,26 +71,21 @@ app.patch('/postsedit', (req, res) => {
   res.send( posts );
 });
 
-app.delete('/posts/:id', (req, res) => {
-  console.log(req.params)
-  console.log(req.body)
-  const { id } = req.params;  
-  // console.log(id);
-  const posts = remove.removeThis(id);
-  console.log('ㅁㄴㅇㅁㅁㅁ', posts)
-  res.send( posts );
-});
-
-// app.delete('/postsRemove', (req, res) => {
-//   console.log(req)
-//   const { posting, user, indexOfCommentOnThisPosting } = req.body;
-//   console.log(posting, user, indexOfCommentOnThisPosting)
-//   const posts = remove.removeThis(posting, user, indexOfCommentOnThisPosting);
+// app.delete('/posts/:id', (req, res) => {
+//   console.log(req.params)
+//   console.log(req.body)
+//   const { id } = req.params;  
+//   // console.log(id);
+//   const posts = remove.removeThis(id);
 //   console.log('ㅁㄴㅇㅁㅁㅁ', posts)
-//   console.log(posrtStore.postList)
-//   console.log(commentStore.commentList)
 //   res.send( posts );
 // });
+
+app.patch('/postsRemove', (req, res) => {
+  const { posting, user, indexOfCommentOnThisPosting } = req.body;
+  const posts = remove.removeThis(posting, user, indexOfCommentOnThisPosting);
+  res.send( posts );
+});
 
 // app.patch('/posts/:id', (req, res) => {
 //   const id = req.params.id;

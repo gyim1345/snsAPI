@@ -119,12 +119,16 @@ const commentStore = {
     return this.comments.find(x => x === comment).reply;
   },
 
-  removeComment(postingId, commentId) {
-  const removeElement = this.comments.find(
-      comment => comment.id === commentId && comment.postLId === postingId
-      );
-    this.comments = this.comments.filter(comment => comment !== removeElement);
-  },
+  // removeComment(postingId, commentId) {
+  // const removeElement = this.comments.find(
+  //     comment => comment.id === commentId && comment.postLId === postingId
+  //     );
+  //   this.comments = this.comments.filter(comment => comment !== removeElement);
+  // },
+
+  removeComment(theComment) {
+    return this.comments = this.comments.filter(comment =>comment.id !== theComment.id)
+    },
 
   createComment(id, titlee, commentWrittenBy, commentId) {
     this.comments = [
