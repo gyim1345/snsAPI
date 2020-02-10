@@ -95,7 +95,7 @@ const postStore = {
   },
 
   createPost(recievedTitle, name) {
-    console.log(recievedTitle)
+    // console.log(recievedTitle)
     this.posts = [
       ...this.posts,
       {
@@ -110,7 +110,9 @@ const postStore = {
   },
 
   removePost(id) {
-    this.posts = this.posts.filter(el => el.id !== id);
+    // console.log('asdasd', id, Number(id))
+    this.posts = this.posts.filter(el => el.id !== Number(id));
+    // console.log('aaaaaaaaaaaa sd', this.posts.filter(el => el.id === Number(id)))
   }
 };
 

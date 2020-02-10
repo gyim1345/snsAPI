@@ -6,6 +6,7 @@ const commentStore = require('./commentStore');
 const userStore = require('./userStore');
 const countStore = require('./countStore');
 const edit = require('./edit');
+const remove = require('./remove');
 // const login = require('./login')
 
 const port = 3000;
@@ -59,21 +60,38 @@ app.post('/comments/:id', (req, res) => {
 
 app.post('/login', (req, res) => {
   const { Id, Password } = req.body;
-  console.log(Id, Password);
   const loginMessageAndStatus = userStore.performLogin(Id, Password)
-  console.log(loginMessageAndStatus)
   res.send( loginMessageAndStatus );
 })
 
 
 app.patch('/postsedit', (req, res) => {
   const { input, posting, user, indexOfCommentOnThisPosting } = req.body;
-  console.log(input, posting, user, 'qweqwe',indexOfCommentOnThisPosting,'qweqd')
-  // console.log(title,user)
   const posts = edit.editThis(input, posting, user, indexOfCommentOnThisPosting);
-  console.log('asd', posts)
   res.send( posts );
 });
+
+app.delete('/posts/:id', (req, res) => {
+  console.log(req.params)
+  console.log(req.body)
+  const { id } = req.params;  
+  // console.log(id);
+  const posts = remove.removeThis(id);
+  console.log('ㅁㄴㅇㅁㅁㅁ', posts)
+  res.send( posts );
+});
+
+// app.delete('/postsRemove', (req, res) => {
+//   console.log(req)
+//   const { posting, user, indexOfCommentOnThisPosting } = req.body;
+//   console.log(posting, user, indexOfCommentOnThisPosting)
+//   const posts = remove.removeThis(posting, user, indexOfCommentOnThisPosting);
+//   console.log('ㅁㄴㅇㅁㅁㅁ', posts)
+//   console.log(posrtStore.postList)
+//   console.log(commentStore.commentList)
+//   res.send( posts );
+// });
+
 // app.patch('/posts/:id', (req, res) => {
 //   const id = req.params.id;
 //   const posts = togglePost(id);

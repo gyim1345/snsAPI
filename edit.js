@@ -3,11 +3,11 @@ const postingStore = require('./postingStore');
 
 
 const edit = {
- checkOwnershipOfPost(_, posting, currentUser) {
+ checkOwnershipOfPost(posting, currentUser) {
     return posting.userName !== currentUser;
   },
   
-   clickedIsPostAndIsMine(_, posting, currentUser) {
+   clickedIsPostAndIsMine(posting, currentUser) {
     return  posting.userName === currentUser;
   },
   
@@ -22,7 +22,7 @@ const edit = {
     },
   
     editComment(input,posting, indexOfCommentOnThisPosting) {
-        console.log('this id ', posting)
+        // console.log('this id ', posting)
             posting[indexOfCommentOnThisPosting].title = input;     
          return posting;
      },
@@ -32,9 +32,8 @@ const edit = {
   },
   //input, posting, user
    editThis(input, posting, currentUser, indexOfCommentOnThisPosting) {
-       console.log(input, posting, currentUser)
        this.checkOwnershipOfPost(posting, currentUser)
-         ? alert("you dont have permission") 
+         ? posting = { Message:"you don't have permission", owned: false} // 바꿀것.
          : this.checkIfPostOrComment(indexOfCommentOnThisPosting)
            ? posting = this.editPost(input, posting)
            : posting = this.editComment(input, posting, indexOfCommentOnThisPosting)
