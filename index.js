@@ -57,9 +57,9 @@ app.get('/comments/:id', (req, res) => {
 })
 
 app.post('/comments/:id', (req, res) => {
-  const { postId, inputa, currentUser } = req.body;
-  console.log(postId, inputa, currentUser)
-  commentStore.createComment(postId, inputa, currentUser)
+  const { postId, inputa, currentUser, isUnder } = req.body;
+  console.log(postId, inputa, currentUser, isUnder)
+  commentStore.createComment(postId, inputa, currentUser, (isUnder!==undefined)? isUnder.id : undefined)
   comments = commentStore.getCommentFromPostId(postId)
   res.send( comments );
 })
