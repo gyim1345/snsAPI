@@ -33,7 +33,6 @@ const remove = {
             postingStore.removePost(posting.id);
             return posts = true;
         }
-        
 
         if (indexOfCommentOnThisPosting !== undefined){
           const theComment = posting[indexOfCommentOnThisPosting];     

@@ -7,7 +7,7 @@ const userStore = require('./userStore');
 const countStore = require('./countStore');
 const edit = require('./edit');
 const remove = require('./remove');
-// const login = require('./login')
+const register = require('./register');
 
 const port = 3000;
 
@@ -45,15 +45,13 @@ app.post('/user', (req, res) => {
 
 app.patch('/posts', (req, res) => {
   const { title, user } = req.body;
-  // console.log(title,user)
   const posts = postStore.createPost(title, user);
-  // console.log('asd', posts)
   res.send( posts );
 });
 
 
-app.post('/comments/:id', (req, res) => {
-  const { id } = req.body;
+app.get('/comments/:id', (req, res) => {
+  const { id } = req.params;
   const comments = commentStore.getCommentFromPostId(id)
   res.send( comments );
 })
@@ -64,12 +62,34 @@ app.post('/login', (req, res) => {
   res.send( loginMessageAndStatus );
 })
 
+app.post('/register', (req, res) => {
+  const { id, password } = req.body;
+  const registration = register.Registration  (id, password)
+  res.send( registration );
+})
+
 
 app.patch('/postsedit', (req, res) => {
   const { input, posting, user, indexOfCommentOnThisPosting } = req.body;
+  console.log('rrr',  input, posting)
   const posts = edit.editThis(input, posting, user, indexOfCommentOnThisPosting);
   res.send( posts );
 });
+
+
+app.patch('/postsRemove', (req, res) => {
+  const { posting, user, indexOfCommentOnThisPosting } = req.body;
+  const posts = remove.removeThis(posting, user, indexOfCommentOnThisPosting);
+  res.send( posts );
+});
+
+app.post('/userInfo', (req,res) => {
+  const user = req.body.user;
+  const postNumber = postStore.getUserPosts(user).length
+  const {image, follower, followerNumber} = userStore.getUserInfo(user)
+  const post = { image, user, postNumber, followerNumber}
+  res.send( post )  
+})
 
 // app.delete('/posts/:id', (req, res) => {
 //   console.log(req.params)
@@ -80,12 +100,6 @@ app.patch('/postsedit', (req, res) => {
 //   console.log('ㅁㄴㅇㅁㅁㅁ', posts)
 //   res.send( posts );
 // });
-
-app.patch('/postsRemove', (req, res) => {
-  const { posting, user, indexOfCommentOnThisPosting } = req.body;
-  const posts = remove.removeThis(posting, user, indexOfCommentOnThisPosting);
-  res.send( posts );
-});
 
 // app.patch('/posts/:id', (req, res) => {
 //   const id = req.params.id;

@@ -90,10 +90,15 @@ const postStore = {
     return this.posts.filter(post => post.userName === name);
   },
 
+  getUserPosts(user) {
+    return this.posts.filter(post => post.userName === user)
+  },
+
   getPost(id) {
     return this.posts.find(post => post.id === Number(id));
   },
 
+    
   createPost(recievedTitle, name) {
     // console.log(recievedTitle)
     this.posts = [

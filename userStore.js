@@ -1,3 +1,4 @@
+
 const baseurl = "http://localhost:8080";
 const userStore = {
   users: [
@@ -84,7 +85,12 @@ performLogin (Id, Password) {
         return ({statusMessage: 'LoggedIn', loginStatus: true})
 },
 
-
+getUserInfo(user) {
+  const image = this.getUserImage(user)
+  const follower = this.getFollowerFromUser(user)
+  const followerNumber = this.getFollowerNumberOfUser(user)
+  return {image, follower, followerNumber}
+},
 
 
   createComment(id, titlee) {
