@@ -56,6 +56,14 @@ app.get('/comments/:id', (req, res) => {
   res.send( comments );
 })
 
+app.post('/comments/:id', (req, res) => {
+  const { postId, inputa, currentUser } = req.body;
+  console.log(postId, inputa, currentUser)
+  commentStore.createComment(postId, inputa, currentUser)
+  comments = commentStore.getCommentFromPostId(postId)
+  res.send( comments );
+})
+
 app.post('/login', (req, res) => {
   const { Id, Password } = req.body;
   const loginMessageAndStatus = userStore.performLogin(Id, Password)
