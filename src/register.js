@@ -12,7 +12,7 @@ const register = {
 
   Registration(id, password) {
     if (this.checkRegistered(id))
-      return { Message: "check Id" }
+      return { Message: "Already Registered" }
     this.createUserOnRegister(id, password)
     return { Message: "Registered" }
     //   checkRegistered(id, password) ? (

@@ -79,6 +79,20 @@ const postStore = {
     return this.posts.length;
   },
 
+  changeLike(posting,currentUser, postingAll) {
+
+    if(!this.getPost(posting.id).like.includes(currentUser)){
+      postingAll[posting.id-1].like=[...this.getPost(posting.id).like, currentUser]
+      this.getPost(posting.id).like=[...this.getPost(posting.id).like, currentUser];
+      return postingAll
+    }
+
+    postingAll[posting.id-1].like = this.getPost(posting.id).like.filter(x => x !== currentUser)
+    this.getPost(posting.id).like = this.getPost(posting.id).like.filter(x => x !== currentUser)
+    return postingAll
+  },
+  
+
   getuserTimeLinePosts(user) {
     let postings = this.getuserPosts(user);
     const follower = userStore.getFollowerFromUser(user);
@@ -100,7 +114,6 @@ const postStore = {
 
     
   createPost(recievedTitle, name) {
-    // console.log(recievedTitle)
     this.posts = [
       ...this.posts,
       {
@@ -115,9 +128,7 @@ const postStore = {
   },
 
   removePost(id) {
-    // console.log('asdasd', id, Number(id))
     this.posts = this.posts.filter(el => el.id !== Number(id));
-    // console.log('aaaaaaaaaaaa sd', this.posts.filter(el => el.id === Number(id)))
   }
 };
 
