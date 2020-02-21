@@ -31,7 +31,7 @@ const remove = {
 
         if (indexOfCommentOnThisPosting === undefined){
             postingStore.removePost(posting.id);
-            return posts = true;
+            return true;
         }
 
         if (indexOfCommentOnThisPosting !== undefined){

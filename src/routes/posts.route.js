@@ -35,12 +35,7 @@ router.get('/', (req, res) => {
   });
 //   // 여기서 /posts/TimeLine 하면 안됨..... 왜 안되는지는 모르겠다.
   
-  router.post('/user', (req, res) => {
-    const { user } = req.body;
-    const posts = postStore.getuserPosts(user);
-    res.send({ posts });
-  })
-  
+
   
   router.patch('/', (req, res) => {
     const { title, user } = req.body;
@@ -72,19 +67,13 @@ router.get('/', (req, res) => {
     const posts = remove.removeThis(posting, user, indexOfCommentOnThisPosting);
     res.send( posts );
   });
-  
-  router.post('/userInfo', (req,res) => {
-    const user = req.body.user;
-    const postNumber = postStore.getUserPosts(user).length
-    const {image, follower, followerNumber} = userStore.getUserInfo(user)
-    const post = { image, user, postNumber, followerNumber}
-    res.send( post )  
-  })
+
   
   router.patch('/Like', (req,res) =>{
     const { posting, currentUser, postingAll } = req.body
+    console.log(posting, currentUser, postingAll)
     const post = postStore.changeLike(posting, currentUser, postingAll);
-    // console.log(postStore.postList)
+    console.log(post)
     res.send( post )
   })
   

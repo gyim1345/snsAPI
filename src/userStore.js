@@ -1,3 +1,4 @@
+import statusStore from "./statusStore"
 
 const baseurl = "http://localhost:8080";
 const userStore = {
@@ -82,8 +83,13 @@ const userStore = {
 performLogin (Id, Password) {
        if (this.checkIdIsRegistered(Id))  return ({statusMessage : 'checkId', loginStatus: false}); 
        if (this.checkPassword(Id, Password))  return ({statusMessage : 'checkPassword', loginStatus: false});
-        return ({statusMessage: 'LoggedIn', loginStatus: true})
+        statusStore.currentUser = Id;
+        statusStore.userOfActivePage = Id;
+        console.log(statusStore.userOfActivePage, 'qfqwfqwfqwf')
+       return ({statusMessage: 'LoggedIn', loginStatus: true})
 },
+
+
 
 getUserInfo(user) {
   const image = this.getUserImage(user)
@@ -118,4 +124,4 @@ getUserInfo(user) {
   }
 };
 
-module.exports =  userStore;
+module.exports = userStore;

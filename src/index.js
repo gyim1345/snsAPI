@@ -13,7 +13,7 @@ const edit = require('./edit');
 const remove = require('./remove');
 // const register = require('./register');
 const Like = require('./Like');
-
+const statusStore = require('./statusStore')
 require('dotenv').config();
 
 
@@ -33,11 +33,32 @@ console.log('asfa')
 
 // app.use('/v1', v1Route)
 app.use('/static/images', express.static('static/images'));
-// // 처음은 브라우저에서의 입력값. static은 내 서버api에 있는 디렉토리
+// 처음은 브라우저에서의 입력값. static은 내 서버api에 있는 디렉토리
 // app.get('/posts', (req, res) => {
 //   const posts = postStore.postList;
 //   res.send( posts );
 // });
+
+
+app.post('/', (req, res) => {
+  const { currentUser, userOfActivePage } = req.body;
+  
+  const response = statusStore.getStatus();
+  const activeUser = statusStore.getCurrentPageUser();
+
+  console.log('response', response, activeUser)
+  res.send({ response, activeUser });
+});
+
+app.post('/:user', (req, res) => {
+  const { currentUser, userOfActivePage } = req.body;
+  
+  const response = statusStore.getStatus();
+  const activeUser = statusStore.getCurrentPageUser();
+
+  console.log('activeUser', activeUser)
+  res.send({ response, activeUser });
+});
 
 // app.get('/posts/:id', (req, res) => {
 //   const posts = postStore.getPost(req.params.id)
@@ -45,7 +66,7 @@ app.use('/static/images', express.static('static/images'));
 //   res.send({ posts });
 // });
 
-// app.post('/posts/TimeLine', (req, res) => {
+// app.post('/TimeLine', (req, res) => {
 //   const { user } = req.body;
 //  // const posts = getuserTimeLinePosts(user)
 //   const posts = postStore.getuserTimeLinePosts(user);
@@ -147,15 +168,19 @@ app.use('/static/images', express.static('static/images'));
 //   res.send({ posts });
 // });
 
-// if (process.env.NODE_ENV !== 'test') {
-//   app.listen(port, () => {
-//     console.log(`Listening on port ${port}...`);
-//   });
-// }
+if (process.env.NODE_ENV !== 'test') {
+  app.listen(port, () => {
+    console.log(`Listening on port ${port}...`);
+  });
+}
 
-// app.get('/*', (req, res) => {                       
-//   res.sendFile(path.resolve(__dirname, '/workspace/Project/sns', 'index.html'));                               
-// });
+app.get('/*', function(req, res) {
+  res.sendFile(path.join(__dirname, '/'), function(err) {
+    if (err) {
+      res.status(500).send(err)
+    }
+  })
+})
 // app.listen(3000, () => {
 //   console.log(`Listening on port ${port}...`);
 // });

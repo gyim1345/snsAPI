@@ -1,7 +1,6 @@
 const countStore = require('./countStore');
 const userStore = require('./userStore');
 
-
 const baseurl = "http://localhost:3000";
 const DEFAULT_IMAGE = `${baseurl}/static/images/defaultnumber.png`;
 const postStore = {
@@ -80,14 +79,18 @@ const postStore = {
   },
 
   changeLike(posting,currentUser, postingAll) {
-
+    console.log(!this.getPost(posting.id).like.includes(currentUser))
+    console.log(posting,currentUser, postingAll)
+//index 를 구해서 넣어야함
+// 그러면 postingAll에서의 인덱스를 posting 이랑 비교해서 찾아야함.
+    const index = postingAll.findIndex( e=> JSON.stringify(e) === JSON.stringify(posting))
     if(!this.getPost(posting.id).like.includes(currentUser)){
-      postingAll[posting.id-1].like=[...this.getPost(posting.id).like, currentUser]
+      postingAll[index].like=[...this.getPost(posting.id).like, currentUser]
       this.getPost(posting.id).like=[...this.getPost(posting.id).like, currentUser];
       return postingAll
     }
 
-    postingAll[posting.id-1].like = this.getPost(posting.id).like.filter(x => x !== currentUser)
+    postingAll[index].like = this.getPost(posting.id).like.filter(x => x !== currentUser)
     this.getPost(posting.id).like = this.getPost(posting.id).like.filter(x => x !== currentUser)
     return postingAll
   },
