@@ -42,6 +42,16 @@ const edit = {
        : posting = this.editComment(input, posting, indexOfCommentOnThisPosting)
        return posting;
   }
-
+    // if(this.checkIfPostOrComment(indexOfCommentOnThisPosting)) {
+    //   if(this.checkOwnershipOfPost(posting, currentUser))
+    //     return posting = { Message:"you don't have permission", owned: false}
+    //   else return posting = this.editPost(input, posting)
+    // }
+    // else { 
+    //   if(this.checkOwnershipOfComment(posting, currentUser, indexOfCommentOnThisPosting))
+    //   return  posting = { Message:"you don't have permission", owned: false}
+    //   else return posting = this.editComment(input, posting, indexOfCommentOnThisPosting)
+    // }
+  
 }
   module.exports =  edit;

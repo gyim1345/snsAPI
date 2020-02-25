@@ -15,13 +15,6 @@ const register = {
       return { Message: "Already Registered" }
     this.createUserOnRegister(id, password)
     return { Message: "Registered" }
-    //   checkRegistered(id, password) ? (
-    //     createUserOnRegister(id, password),
-    //     alert("Registered! Please login!") 
-    //   )
-    //   : alert("already registered");
-    // };
-
   }
 }
 

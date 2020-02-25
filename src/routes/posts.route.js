@@ -47,7 +47,6 @@ router.get('/', (req, res) => {
 
   
   router.post('/register', (req, res) => {
-    console.log(req.body)
     const { id, password } = req.body;
     const registration = register.Registration(id, password)
     res.send( registration );
@@ -56,8 +55,9 @@ router.get('/', (req, res) => {
   
   router.patch('/edit', (req, res) => {
     const { input, posting, user, indexOfCommentOnThisPosting } = req.body;
-    console.log('rrr',  input, posting)
+    console.log(input, posting, user, indexOfCommentOnThisPosting )
     const posts = edit.editThis(input, posting, user, indexOfCommentOnThisPosting);
+    console.log(posts)
     res.send( posts );
   });
   
@@ -71,9 +71,7 @@ router.get('/', (req, res) => {
   
   router.patch('/Like', (req,res) =>{
     const { posting, currentUser, postingAll } = req.body
-    console.log(posting, currentUser, postingAll)
     const post = postStore.changeLike(posting, currentUser, postingAll);
-    console.log(post)
     res.send( post )
   })
   

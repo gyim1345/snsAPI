@@ -85,7 +85,6 @@ performLogin (Id, Password) {
        if (this.checkPassword(Id, Password))  return ({statusMessage : 'checkPassword', loginStatus: false});
         statusStore.currentUser = Id;
         statusStore.userOfActivePage = Id;
-        console.log(statusStore.userOfActivePage, 'qfqwfqwfqwf')
        return ({statusMessage: 'LoggedIn', loginStatus: true})
 },
 

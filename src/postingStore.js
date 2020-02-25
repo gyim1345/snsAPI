@@ -78,23 +78,19 @@ const postStore = {
     return this.posts.length;
   },
 
-  changeLike(posting,currentUser, postingAll) {
-    console.log(!this.getPost(posting.id).like.includes(currentUser))
-    console.log(posting,currentUser, postingAll)
-//index 를 구해서 넣어야함
-// 그러면 postingAll에서의 인덱스를 posting 이랑 비교해서 찾아야함.
-    const index = postingAll.findIndex( e=> JSON.stringify(e) === JSON.stringify(posting))
-    if(!this.getPost(posting.id).like.includes(currentUser)){
-      postingAll[index].like=[...this.getPost(posting.id).like, currentUser]
-      this.getPost(posting.id).like=[...this.getPost(posting.id).like, currentUser];
-      return postingAll
+  changeLike({ id }, currentUser, postingAll) {
+    let post = this.getPost(id);
+    if (!post.like.includes(currentUser)) {
+      post.like = [...post.like, currentUser];
+    } else {
+      post.like = post.like.filter( user => user !== currentUser);
     }
 
-    postingAll[index].like = this.getPost(posting.id).like.filter(x => x !== currentUser)
-    this.getPost(posting.id).like = this.getPost(posting.id).like.filter(x => x !== currentUser)
-    return postingAll
+    const index = postingAll.findIndex(it => id === it.id)
+    postingAll[index] = post;
+    return postingAll;
   },
-  
+
 
   getuserTimeLinePosts(user) {
     let postings = this.getuserPosts(user);
@@ -115,19 +111,19 @@ const postStore = {
     return this.posts.find(post => post.id === Number(id));
   },
 
-    
+
   createPost(recievedTitle, name) {
     this.posts = [
       ...this.posts,
       {
         id: countStore.usePostingCount(),
-        title:  recievedTitle,
+        title: recievedTitle,
         imageUrl: DEFAULT_IMAGE,
         userName: name,
         like: []
       }
     ];
-    return this.posts[this.posts.length-1];
+    return this.posts[this.posts.length - 1];
   },
 
   removePost(id) {

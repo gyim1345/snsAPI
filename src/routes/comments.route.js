@@ -11,8 +11,9 @@ router.get('/:id', (req, res) => {
   })
   
   router.post('/:id', (req, res) => {
-    const { postId, inputa, currentUser, isUnder } = req.body;
-    commentStore.createComment(postId, inputa, currentUser, (isUnder!==undefined)? isUnder.id : undefined)
+    console.log(req.body)
+    const { postId, inputa, currentUser, isUnder, commentId } = req.body;
+    commentStore.createComment(postId, inputa, currentUser, (isUnder!==undefined)? isUnder.id : commentId)
     const comments = commentStore.getCommentFromPostId(postId)
     res.send( comments );
   })

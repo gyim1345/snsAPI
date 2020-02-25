@@ -12,11 +12,9 @@ const Like = require('../Like');
 
 
 const router = express.Router();
-console.log('zzzzz')
 
 router.post('/', async (req, res) => {
   const { Id, Password } = req.body;
-  console.log(';asd')
   const loginMessageAndStatus = await userStore.performLogin(Id, Password)
   res.send( loginMessageAndStatus );
 })

@@ -15,11 +15,9 @@ router.post('/', (req, res) => {
     
   router.post('/Info', (req,res) => {
     const user = req.body.user;
-    console.log('this', user)
     const postNumber = postStore.getUserPosts(user).length
     const {image, follower, followerNumber} = userStore.getUserInfo(user)
     const post = { image, user, postNumber, followerNumber}
-    console.log(post,'asf')
     res.send( post )  
   })
 

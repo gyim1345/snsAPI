@@ -15,7 +15,6 @@ router.post('/:user', (req, res) => {
     const { currentUser, userOfActivePage } = req.body;
     
     const response = statusStore.getStatus();
-    console.log('response', response)
     res.send({ response });
   });
 
