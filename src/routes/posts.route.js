@@ -17,6 +17,7 @@ console.log('zzzzz')
 
 
 router.get('/', (req, res) => {
+        console.log('respond')
         const posts = postStore.postList;
         res.send( posts );
       });
@@ -55,9 +56,9 @@ router.get('/', (req, res) => {
   
   router.patch('/edit', (req, res) => {
     const { input, posting, user, indexOfCommentOnThisPosting } = req.body;
-    console.log(input, posting, user, indexOfCommentOnThisPosting )
+    // console.log(input, posting, user, indexOfCommentOnThisPosting )
     const posts = edit.editThis(input, posting, user, indexOfCommentOnThisPosting);
-    console.log(posts)
+    // console.log(posts)
     res.send( posts );
   });
   
