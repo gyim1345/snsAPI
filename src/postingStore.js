@@ -121,16 +121,16 @@ const postStore = {
   },
 
 
-  createPost(recievedTitle, name) {
+  createPost(recievedTitle, name, url, inputTag) {
     this.posts = [
       ...this.posts,
       {
         id: countStore.usePostingCount(),
         title: recievedTitle,
-        imageUrl: DEFAULT_IMAGE,
+        imageUrl: url || DEFAULT_IMAGE,
         userName: name,
         like: [],
-        tag: []
+        tag: [inputTag || '']
       }
     ];
     return this.posts[this.posts.length - 1];

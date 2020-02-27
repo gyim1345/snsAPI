@@ -14,6 +14,8 @@ const remove = require('./remove');
 // const register = require('./register');
 const Like = require('./Like');
 const statusStore = require('./statusStore')
+const fileUpload = require('express-fileupload');
+
 require('dotenv').config();
 
 
@@ -26,6 +28,7 @@ const app = express();
 app.use(express.json());
 app.use(cors());
 app.use(v1Route);
+app.use(fileUpload());
 
 console.log('asfa')
 
@@ -38,7 +41,25 @@ app.use('/static/images', express.static('static/images'));
 //   const posts = postStore.postList;
 //   res.send( posts );
 // });
+app.post('/upload', (req, res) => {
+  console.log(req)
+  if (req.files === null) {
+    return res.status(400).json({ msg: 'No file uploaded' });
+  }
 
+  const file = req.files.file;
+
+  file.mv(`${__dirname}/static/images/${file.name}`, err => {
+    if (err) {
+      console.error(err);
+      return res.status(500).send(err);
+    }
+console.log(req.body.input, req.body.inputTag, file.name, req.body.user)
+    const posts = postStore.createPost(req.body.input, req.body.user,`http://localhost:3000/static/images/${file.name}`, req.body.inputTag );
+console.log(posts)
+    res.json({ fileName: file.name, filePath: `/static/images/${file.name}`, posts });
+  });
+});
 
 app.post('/', (req, res) => {
   const { currentUser, userOfActivePage } = req.body;
