@@ -1,6 +1,7 @@
 import express from 'express';
 import postStore from '../postingStore';
 import userStore from '../userStore';
+import session from 'express-session';
 // const postStore = require('../postingStore');
 const commentStore = require('../commentStore');
 // const userStore = require('../userStore');
@@ -11,10 +12,33 @@ const remove = require('../remove');
 const Like = require('../Like');
 
 
+
+
 const router = express.Router();
 
+// const session = require('express-session');
+
+
+// router.use(session({
+//   secret: '@#@$MYSIGN#@$#$',
+//   resave: false,
+//   saveUninitialized: true,
+//   store: new FileStore(fileStoreOptions)
+//  }));
+
+
+
+
 router.post('/', async (req, res) => {
+  // console.log('asd', req.session)
   const { Id, Password } = req.body;
+  req.session.user = {
+    "name" : Id,
+    "pwd" : Password
+  }
+  // console.log('sesszzx', session)
+  // session.save()
+  console.log('tlqk', req.session)
   const loginMessageAndStatus = await userStore.performLogin(Id, Password)
   res.send( loginMessageAndStatus );
 })
