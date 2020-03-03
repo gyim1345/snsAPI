@@ -27,7 +27,20 @@ const router = express.Router();
 //  }));
 
 
+// router.post('/', async (req, res) => {
+//   const { userId, userPasswd } = req.body;
+//   const userInfo = await isUserInUserStore(userId, userPasswd);
+//   const session = req.session;
 
+//   session.userInfo = userInfo;
+//   res.send(session.userInfo);
+// });
+
+// router.delete('/', (req, res) => {
+//   req.session.destroy();
+//   res.clearCookie('connect.sid');
+//   res.send('Session Destroyed');
+// });
 
 router.post('/', async (req, res) => {
   // console.log('asd', req.session)
@@ -39,9 +52,19 @@ router.post('/', async (req, res) => {
   // console.log('sesszzx', session)
   // session.save()
   console.log('tlqk', req.session)
+  const session = req.session;
+  console.log(session , "asdasdsession", session.loginCookie)
   const loginMessageAndStatus = await userStore.performLogin(Id, Password)
   res.send( loginMessageAndStatus );
 })
+
+router.delete('/', async (req, res) =>{
+  console.log(req.session);
+  req.session.destroy();
+  res.clearCookie('connect.sid');
+  res.send('Session Destroyed');
+})
+
 
 // router.route('/login')
 //   .get(

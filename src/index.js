@@ -48,12 +48,9 @@ const options = {
 };
 
 // create the proxy (without context)
-const exampleProxy = createProxyMiddleware(options);
+// const exampleProxy = createProxyMiddleware(options);
 
 // mount `exampleProxy` in web server
-
-
-
 
 
 
@@ -68,50 +65,56 @@ app.use(fileUpload());
 app.use(bodyParser.urlencoded({extended: false}));
 app.use(session({
   secret : 'Rs89I67YEA55cLMgi0t6oyr8568e6KtD',
-  resave: true,
-  saveUninitialized: false,
+  resave: false,
+saveUninitialized: true,
+cookie: {
+  name: 'loginCookie',
+  httpOnly: false,
+  secure: false,
+  // resave: true,
+  // saveUninitialized: false,
   // store:new FileStore()
-}));
-app.use(v1Route);
-app.use('/api', exampleProxy);
+}}));
+// app.use('/api', exampleProxy);
 
 // app.post('/login', async (req, res) => {
-//   // console.log('asd', req.session)
-// console.log('lasifghnqwaoinfgnaegpwnego;awneg')
-//   const { Id, Password } = req.body;
+  //   // console.log('asd', req.session)
+  // console.log('lasifghnqwaoinfgnaegpwnego;awneg')
+  //   const { Id, Password } = req.body;
   
-//   req.session.user = {
-//     "name" : Id,
-//     "pwd" : Password
-//   }
-//   console.log('sesszzx', session)
-  
-//   console.log('tlqk', req.session)
-//   const loginMessageAndStatus = await userStore.performLogin(Id, Password)
-//   res.send( loginMessageAndStatus );
-// })
-
-app.use('/static/images', express.static('static/images'));
-
-app.post('/upload', async (req, res) => {
-  if (req.files === null) {
-    return res.status(400).json({ msg: 'No file uploaded' });
-  }
-
-  const file = req.files.file;
-  const { input, user, inputTag } = req.body;
-  try {
-    await promisify(file.mv)(`${__dirname}/static/images/${file.name}`)
-
-    const posts = postStore.createPost(
-      input, 
-      user, `http://localhost:3000/static/images/${file.name}`, inputTag);
-    res.json({ fileName: file.name, filePath: `/static/images/${file.name}`, posts });
-  } catch (err) {
-    return res.status(500).send(err);
-  }
-  
-});
+  //   req.session.user = {
+    //     "name" : Id,
+    //     "pwd" : Password
+    //   }
+    //   console.log('sesszzx', session)
+    
+    //   console.log('tlqk', req.session)
+    //   const loginMessageAndStatus = await userStore.performLogin(Id, Password)
+    //   res.send( loginMessageAndStatus );
+    // })
+    
+    app.use('/static/images', express.static('static/images'));
+    
+    app.post('/upload', async (req, res) => {
+      if (req.files === null) {
+        return res.status(400).json({ msg: 'No file uploaded' });
+      }
+      
+      const file = req.files.file;
+      const { input, user, inputTag } = req.body;
+      try {
+        await promisify(file.mv)(`${__dirname}/static/images/${file.name}`)
+        
+        const posts = postStore.createPost(
+          input, 
+          user, `http://localhost:3000/static/images/${file.name}`, inputTag);
+          res.json({ fileName: file.name, filePath: `/static/images/${file.name}`, posts });
+        } catch (err) {
+          return res.status(500).send(err);
+        }
+        
+      });
+      app.use(v1Route);
 
 
 

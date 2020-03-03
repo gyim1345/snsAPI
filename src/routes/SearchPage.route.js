@@ -4,7 +4,7 @@ import postStore from '../postingStore';
 
 
 router.get('/', (req, res) => {
-  console.log(req.session)
+  console.log('SearchPage', req.session)
     const posts = postStore.postList;
     res.send( posts );
   });
