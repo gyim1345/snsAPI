@@ -96,7 +96,6 @@ cookie: {
     app.use('/static/images', express.static('static/images'));
     
       
-      app.use(v1Route);
 
 
 
@@ -119,15 +118,7 @@ cookie: {
   //   });
     
 
-app.post('/', (req, res) => {
-  const { currentUser, userOfActivePage } = req.body;
-
-  const response = statusStore.getStatus();
-  const activeUser = statusStore.getCurrentPageUser();
-  console.log(req.session)
-  console.log('response', response, activeUser)
-  res.send({ response, activeUser });
-});
+  app.use(v1Route);
 
 app.post('/:user', (req, res) => {
   const { currentUser, userOfActivePage } = req.body;
@@ -138,6 +129,7 @@ app.post('/:user', (req, res) => {
   console.log('activeUser', activeUser)
   res.send({ response, activeUser });
 });
+
 
 
 if (process.env.NODE_ENV !== 'test') {

@@ -1,6 +1,6 @@
 const statusStore = {
-    currentUser: 'gibong',
-    userOfActivePage: 'gibong',
+    currentUser: 'none',
+    userOfActivePage: 'none',
 
 getStatus() {
     return this.currentUser;
