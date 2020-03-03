@@ -1,15 +1,15 @@
 import express from 'express';
-import postStore from '../postingStore';
+// import postStore from '../postingStore';
 import userStore from '../userStore';
-import session from 'express-session';
+// import session from 'express-session';
 // const postStore = require('../postingStore');
-const commentStore = require('../commentStore');
 // const userStore = require('../userStore');
-const countStore = require('../countStore');
-const edit = require('../edit');
-const remove = require('../remove');
+// const commentStore = require('../commentStore');
+// const countStore = require('../countStore');
+// const edit = require('../edit');
+// const remove = require('../remove');
+// const Like = require('../Like');
 // const register = require('./register');
-const Like = require('../Like');
 
 
 
@@ -45,24 +45,17 @@ const router = express.Router();
 router.post('/', async (req, res) => {
   // console.log('asd', req.session)
   const { Id, Password } = req.body;
-  req.session.user = {
-    "name" : Id,
-    "pwd" : Password
-  }
-  // console.log('sesszzx', session)
-  // session.save()
-  console.log('tlqk', req.session)
-  const session = req.session;
-  console.log(session , "asdasdsession", session.loginCookie)
   const loginMessageAndStatus = await userStore.performLogin(Id, Password)
+    req.session.user = {
+      "Id" : Id //name id 로 바꾸기
+    }
   res.send( loginMessageAndStatus );
 })
 
 router.delete('/', async (req, res) =>{
-  console.log(req.session);
   req.session.destroy();
   res.clearCookie('connect.sid');
-  res.send('Session Destroyed');
+  res.send('');
 })
 
 

@@ -28,12 +28,13 @@ router.get('/', (req, res) => {
             res.send({ posts });
           });
   
-  router.post('/TimeLine', (req, res) => {
-    const { user } = req.body;
-   // const posts = getuserTimeLinePosts(user)
-    const posts = postStore.getuserTimeLinePosts(user);
-    res.send({ posts });
-  });
+  // router.post('/TimeLine', (req, res) => {
+  //   const { user } = req.body;
+  //  // const posts = getuserTimeLinePosts(user)
+  //  console.log('timelinepost')
+  //   const posts = postStore.getuserTimeLinePosts(user);
+  //   res.send({ posts });
+  // });
 //   // 여기서 /posts/TimeLine 하면 안됨..... 왜 안되는지는 모르겠다.
   
 
@@ -55,26 +56,26 @@ router.get('/', (req, res) => {
   
   
   router.patch('/edit', (req, res) => {
-    const { input, posting, user, indexOfCommentOnThisPosting } = req.body;
+    const { input, posting, indexOfCommentOnThisPosting } = req.body;
     // console.log(input, posting, user, indexOfCommentOnThisPosting )
-    const posts = edit.editThis(input, posting, user, indexOfCommentOnThisPosting);
+    const posts = edit.editThis(input, posting, req.session.user.Id, indexOfCommentOnThisPosting);
     // console.log(posts)
     res.send( posts );
   });
   
   
   router.patch('/Remove', (req, res) => {
-    const { posting, user, indexOfCommentOnThisPosting } = req.body;
-    const posts = remove.removeThis(posting, user, indexOfCommentOnThisPosting);
+    const { posting, indexOfCommentOnThisPosting } = req.body;
+    const posts = remove.removeThis(posting, req.session.user.Id, indexOfCommentOnThisPosting);
     res.send( posts );
   });
 
   
   router.patch('/Like', (req,res) =>{
-    const { posting, currentUser, postingAll } = req.body
-    const post = postStore.changeLike(posting, currentUser, postingAll);
+    const { posting, postingAll } = req.body
+    const post = postStore.changeLike(posting, req.session.user.Id, postingAll);
     res.send( post )
-  })
+  });
   
 
   export default router;

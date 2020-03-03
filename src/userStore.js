@@ -1,5 +1,3 @@
-import statusStore from "./statusStore"
-
 const baseurl = "http://localhost:3000";
 const userStore = {
   users: [
@@ -81,11 +79,15 @@ const userStore = {
   },
 
 performLogin (Id, Password) {
-       if (this.checkIdIsRegistered(Id))  return ({statusMessage : 'checkId', loginStatus: false}); 
-       if (this.checkPassword(Id, Password))  return ({statusMessage : 'checkPassword', loginStatus: false});
-        statusStore.currentUser = Id;
-        statusStore.userOfActivePage = Id;
-       return ({statusMessage: 'LoggedIn', loginStatus: true})
+       if (this.checkIdIsRegistered(Id)) { 
+         return {statusMessage : 'checkId', loginStatus: false}; 
+       }
+
+       if (this.checkPassword(Id, Password)) { 
+         return {statusMessage : 'checkPassword', loginStatus: false};
+       }
+
+       return {statusMessage: 'LoggedIn', loginStatus: true}
 },
 
 
