@@ -1,6 +1,6 @@
 import statusStore from "./statusStore"
 
-const baseurl = "http://localhost:8080";
+const baseurl = "http://localhost:3000";
 const userStore = {
   users: [
     {
