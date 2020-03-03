@@ -95,27 +95,8 @@ cookie: {
     
     app.use('/static/images', express.static('static/images'));
     
-    app.post('/upload', async (req, res) => {
-      if (req.files === null) {
-        return res.status(400).json({ msg: 'No file uploaded' });
-      }
       
-      const file = req.files.file;
-      const { input, user, inputTag } = req.body;
-      try {
-        await promisify(file.mv)(`${__dirname}/static/images/${file.name}`)
-        
-        const posts = postStore.createPost(
-          input, 
-          user, `http://localhost:3000/static/images/${file.name}`, inputTag);
-          res.json({ fileName: file.name, filePath: `/static/images/${file.name}`, posts });
-        } catch (err) {
-          return res.status(500).send(err);
-        }
-        
-      });
       app.use(v1Route);
-
 
 
 
@@ -157,6 +138,8 @@ app.post('/:user', (req, res) => {
   console.log('activeUser', activeUser)
   res.send({ response, activeUser });
 });
+
+
 if (process.env.NODE_ENV !== 'test') {
   app.listen(port, () => {
     console.log(`Listening on port ${port}...`);
