@@ -6,6 +6,20 @@ const session = require('express-session');
 const fileUpload = require('express-fileupload');
 const bodyParser = require('body-parser');
 
+const mongoose = require('mongoose');
+
+const db = mongoose.connection;
+db.on('error', console.error);
+db.once('open', function(){    
+    console.log("Connected to mongod server");
+});
+
+mongoose.connect('mongodb://localhost:27017/', { useUnifiedTopology: true, useNewUrlParser: true });
+// const Cat = mongoose.model('Cat', { name: String });
+
+// const kitty = new Cat({ name: 'Zildjian' });
+// kitty.save().then(() => console.log('meow'));
+
 require('dotenv').config();
 
 

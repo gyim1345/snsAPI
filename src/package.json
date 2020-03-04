@@ -21,6 +21,7 @@
     "express-fileupload": "^1.1.6",
     "express-http-proxy": "^1.6.0",
     "express-session": "^1.17.0",
+    "mongoose": "^5.9.3",
     "morgan": "^1.9.1",
     "nodemon": "^1.19.4",
     "redis": "^3.0.2",
