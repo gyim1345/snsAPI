@@ -1,51 +1,42 @@
 import express from 'express';
-// import postStore from '../postingStore';
 import userStore from '../userStore';
-// import session from 'express-session';
-// const postStore = require('../postingStore');
-// const userStore = require('../userStore');
-// const commentStore = require('../commentStore');
-// const countStore = require('../countStore');
-// const edit = require('../edit');
-// const remove = require('../remove');
-// const Like = require('../Like');
-// const register = require('./register');
-
-
-
+// var posts = require("../model/post"); // 스키마 불러오기
 
 const router = express.Router();
 
-// const session = require('express-session');
-
-
-// router.use(session({
-//   secret: '@#@$MYSIGN#@$#$',
-//   resave: false,
-//   saveUninitialized: true,
-//   store: new FileStore(fileStoreOptions)
-//  }));
-
-
-// router.post('/', async (req, res) => {
-//   const { userId, userPasswd } = req.body;
-//   const userInfo = await isUserInUserStore(userId, userPasswd);
-//   const session = req.session;
-
-//   session.userInfo = userInfo;
-//   res.send(session.userInfo);
-// });
-
-// router.delete('/', (req, res) => {
-//   req.session.destroy();
-//   res.clearCookie('connect.sid');
-//   res.send('Session Destroyed');
-// });
-
 router.post('/', async (req, res) => {
+
+  // var postModel = new posts();
+  // postModel.title = 'title';
+  // postModel.content = 'contetna';
+  // postModel
+  //   .save()
+  //   .then(newPost => {
+  //     console.log("Create 완료");
+  //     res.status(200).json({
+  //       message: "Create success",
+  //       data: {
+  //         post: newPost
+  //       }
+  //     });
+  //   })
+  //   .catch(err => {
+  //     res.status(500).json({
+  //       message: err
+  //     });
+  //   });
+
+
+
+
   // console.log('asd', req.session)
   const { Id, Password } = req.body;
   const loginMessageAndStatus = await userStore.performLogin(Id, Password)
+  const { statusMessage, loginStatus } = loginMessageAndStatus
+  if (loginStatus === false) {
+    return res.status(401).send('Login Failed');
+    }
+    
     req.session.user = {
       "Id" : Id //name id 로 바꾸기
     }
@@ -55,7 +46,7 @@ router.post('/', async (req, res) => {
 router.delete('/', async (req, res) =>{
   req.session.destroy();
   res.clearCookie('connect.sid');
-  res.send('');
+  res.send('Session deleted');
 })
 
 
