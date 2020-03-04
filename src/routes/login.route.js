@@ -1,35 +1,9 @@
 import express from 'express';
 import userStore from '../userStore';
-// var posts = require("../model/post"); // 스키마 불러오기
 
 const router = express.Router();
 
 router.post('/', async (req, res) => {
-
-  // var postModel = new posts();
-  // postModel.title = 'title';
-  // postModel.content = 'contetna';
-  // postModel
-  //   .save()
-  //   .then(newPost => {
-  //     console.log("Create 완료");
-  //     res.status(200).json({
-  //       message: "Create success",
-  //       data: {
-  //         post: newPost
-  //       }
-  //     });
-  //   })
-  //   .catch(err => {
-  //     res.status(500).json({
-  //       message: err
-  //     });
-  //   });
-
-
-
-
-  // console.log('asd', req.session)
   const { Id, Password } = req.body;
   const loginMessageAndStatus = await userStore.performLogin(Id, Password)
   const { statusMessage, loginStatus } = loginMessageAndStatus
@@ -48,95 +22,5 @@ router.delete('/', async (req, res) =>{
   res.clearCookie('connect.sid');
   res.send('Session deleted');
 })
-
-
-// router.route('/login')
-//   .get(
-//     tokenTest,
-//   );
-// router.get('/posts', (req, res) => {
-    //     const posts = postStore.postList;
-    //     res.send( posts );
-    //   });
-    
-    //   router.get('/posts/:id', (req, res) => {
-        //     const posts = postStore.getPost(req.params.id)
-        //     // console.log(posts)
-        //     res.send({ posts });
-        //   });
-  
-//   router.post('/TimeLine', (req, res) => {
-//     const { user } = req.body;
-//    // const posts = getuserTimeLinePosts(user)
-//     const posts = postStore.getuserTimeLinePosts(user);
-//     res.send({ posts });
-//   });
-//   // 여기서 /posts/TimeLine 하면 안됨..... 왜 안되는지는 모르겠다.
-  
-//   router.post('/user', (req, res) => {
-//     const { user } = req.body;
-//     const posts = postStore.getuserPosts(user);
-//     res.send({ posts });
-//   })
-  
-  
-//   router.patch('/posts', (req, res) => {
-//     const { title, user } = req.body;
-//     const posts = postStore.createPost(title, user);
-//     res.send( posts );
-//   });
-  
-  
-//   router.get('/comments/:id', (req, res) => {
-//     const { id } = req.params;
-//     const comments = commentStore.getCommentFromPostId(id)
-//     res.send( comments );
-//   })
-  
-//   router.post('/comments/:id', (req, res) => {
-//     const { postId, inputa, currentUser, isUnder } = req.body;
-//     commentStore.createComment(postId, inputa, currentUser, (isUnder!==undefined)? isUnder.id : undefined)
-//     comments = commentStore.getCommentFromPostId(postId)
-//     res.send( comments );
-//   })
-
-  
-  // router.post('/register', (req, res) => {
-  //   console.log(req.body)
-  //   const { id, password } = req.body;
-  //   const registration = register.Registration(id, password)
-  //   res.send( registration );
-  // })
-  
-  
-//   router.patch('/postsedit', (req, res) => {
-//     const { input, posting, user, indexOfCommentOnThisPosting } = req.body;
-//     console.log('rrr',  input, posting)
-//     const posts = edit.editThis(input, posting, user, indexOfCommentOnThisPosting);
-//     res.send( posts );
-//   });
-  
-  
-//   router.patch('/postsRemove', (req, res) => {
-//     const { posting, user, indexOfCommentOnThisPosting } = req.body;
-//     const posts = remove.removeThis(posting, user, indexOfCommentOnThisPosting);
-//     res.send( posts );
-//   });
-  
-//   router.post('/userInfo', (req,res) => {
-//     const user = req.body.user;
-//     const postNumber = postStore.getUserPosts(user).length
-//     const {image, follower, followerNumber} = userStore.getUserInfo(user)
-//     const post = { image, user, postNumber, followerNumber}
-//     res.send( post )  
-//   })
-  
-//   router.patch('/postLike', (req,res) =>{
-//     const { posting, currentUser, postingAll } = req.body
-//     const post = postStore.changeLike(posting, currentUser, postingAll);
-//     // console.log(postStore.postList)
-//     res.send( post )
-//   })
-  
 
   export default router;
