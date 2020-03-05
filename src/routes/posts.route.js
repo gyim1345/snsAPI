@@ -1,14 +1,16 @@
 import express from 'express';
-import postStore from '../postingStore';
-import userStore from '../userStore';
+import postStore from '../repository/postingStore';
+import edit from '../services/edit'
+import remove from '../services/remove'
+// import userStore from '../repository/userStore';
 // const postStore = require('../postingStore');
-const commentStore = require('../commentStore');
+// const commentStore = require('../commentStore');
 // const userStore = require('../userStore');
-const countStore = require('../countStore');
-const edit = require('../edit');
-const remove = require('../remove');
+// const countStore = require('../countStore');
+// const edit = require('../edit');
+// const remove = require('../remove');
+// const Like = require('../Like');
 // const register = require('./register');
-const Like = require('../Like');
 
 
 const router = express.Router();

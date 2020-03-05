@@ -1,5 +1,5 @@
 import express from 'express';
-import userStore from '../userStore';
+import userStore from '../repository/userStore';
 
 const router = express.Router();
 

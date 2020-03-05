@@ -1,5 +1,5 @@
-const commentStore = require('./commentStore');
-const postingStore = require('./postingStore');
+const commentStore = require('../repository/commentStore');
+const postingStore = require('../repository/postingStore');
 
 const remove = {
     checkOwnershipOfComment() {

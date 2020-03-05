@@ -1,4 +1,4 @@
-const userStore = require('./userStore')
+const userStore = require('../repository/userStore')
 
 const register = {
 

@@ -1,6 +1,6 @@
 import express from 'express';
-import postStore from '../postingStore';
-import userStore from '../userStore';
+import postStore from '../repository/postingStore';
+import userStore from '../repository/userStore';
 
 const router = express.Router();
 

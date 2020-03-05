@@ -1,6 +1,6 @@
 import express from 'express';
+import postStore from '../repository/postingStore';
 const router = express.Router();
-import postStore from '../postingStore';
 
 
 router.get('/', (req, res) => {

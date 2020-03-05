@@ -1,5 +1,5 @@
 import express from 'express';
-import postStore from '../postingStore';
+import postStore from '../repository/postingStore';
 import postSchemaModel from '../model/post';
 import { promisify } from 'util';
 
@@ -19,12 +19,14 @@ router.post('/', async (req, res) => {
     await promisify(file.mv)(`/workspace/Project/snsAPI/src/static/images/${file.name}`)
 //     let postModel = new postSchemaModel();
 //     postModel.id = 1231;
-//     postModel.title = 'title';
-//     postModel.imageUrl = 'contetna';
-//     postModel.userName = 'usernameasd';
-//     postModel.like =['suck', 'balls'];
+//     postModel.title = 'titl1241414e';
+//     postModel.imageUrl = 'conte12414214tna';
+//     postModel.userName = 'usernam142141414easd';
+//     postModel.like =['suc2412412k', 'bal124141ls'];
 //     postModel.tag=[];
 //     postModel.save();
+//     console.log('saved asdasd')
+//     console.log(postSchemaModel.find())
 // console.log('asdasdsad')
 // console.log('asdaspromisify')
 

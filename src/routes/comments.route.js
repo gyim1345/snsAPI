@@ -1,7 +1,6 @@
 import express from 'express';
+import commentStore from '../repository/commentStore'
 const router = express.Router();
-
-const commentStore = require('../commentStore');
 
   
 router.get('/:id', (req, res) => {

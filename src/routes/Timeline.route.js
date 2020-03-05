@@ -1,6 +1,5 @@
 import express from 'express';
-import postStore from '../postingStore';
-import session from 'express-session'
+import postStore from '../repository/postingStore';
 
 const router = express.Router();
 
