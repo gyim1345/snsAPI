@@ -1,0 +1,95 @@
+        {
+            "id": 1,
+            "postLId": 1,
+            "title": "comment with postLId 1",
+            "userName": "gibong",
+            "like": ["gibong", "guy", "noone"],
+            "isUnder": null
+        },
+  {
+    "id": 2,
+    "postLId": 2,
+    "title": "comment with postLId 2",
+    "userName": "gibong",
+    "like": ["gibong", "guy", "noone"],
+    "isUnder": null
+  },
+  {
+    "id": 3,
+    "postLId": 3,
+    "title": "comment with postLId 3 A",
+    "userName": "gibong",
+    "like": ["gibong", "guy", "noone"],
+    "isUnder": null
+  },
+  {
+    "id": 4,
+    "postLId": 3,
+    "title": "comment with postLId 3 B",
+    "userName": "gibong",
+    "like": ["gibong", "guy", "noone"],
+    "isUnder": null
+  },
+  {
+    "id": 5,
+    "postLId": 3,
+    "title": "comment with postLId 3 C",
+    "userName": "gibong",
+    "like": ["gibong", "guy", "noone"],
+    "isUnder": null
+  },
+  {
+    "id": 6,
+    "postLId": 3,
+    "title": "comment with postLId 3 D",
+    "userName": "gibong",
+    "like": ["gibong", "guy", "noone"],
+    "isUnder": null
+  },
+  {
+    "id": 7,
+    "postLId": 3,
+    "title": "comment with postLId 3 E",
+    "userName": "gibong",
+    "like": ["gibong", "guy", "noone"],
+    "isUnder": null
+  },
+  {
+    "id": 8,
+    "postLId": 3,
+    "title": "comment with postLId 3 F",
+    "userName": "gibong",
+    "like": ["gibong", "guy", "noone"],
+    "isUnder": null
+  },
+  { "id": 9,
+    "postLId": 4,
+    "title": "comment with postLId 4",
+    "userName": "guy",
+    "like": ["gibong", "guy", "noone"],
+    "isUnder": null
+  },
+  {
+    "id": 10,
+    "postLId": 5,
+    "title": "comment with postLId 5",
+    "userName": "noone",
+    "like": ["gibong", "guy", "noone"],
+    "isUnder": null
+  },
+  {
+    "id": 11,
+    "postLId": 1,
+    "title": "comment with postLId 1",
+    "userName": "gibong",
+    "like": ["gibong", "guy", "noone"],
+    "isUnder": null
+  },
+  {
+    "id": 12,
+    "postLId": 1,
+    "title": "under comment",
+    "userName": "gibong",
+    "like": ["gibong", "guy", "noone"],
+    "isUnder": 1
+  },

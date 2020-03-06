@@ -5,18 +5,21 @@ import userStore from '../repository/userStore';
 const router = express.Router();
 
 
-router.post('/', (req, res) => {
+router.post('/', async (req, res) => {
     const { user } = req.body;
-    const posts = postStore.getuserPosts(user);
+    const posts = await postStore.getuserPosts(user);
     res.send({ posts });
   })
   
 
     
-  router.post('/Info', (req,res) => {
+  router.post('/Info', async (req,res) => {
     const user = req.body.user;
-    const postNumber = postStore.getUserPosts(user).length
-    const {image, follower, followerNumber} = userStore.getUserInfo(user)
+    // console.log(user)
+    let postNumber = await postStore.getUserPostsLength(user)
+    postNumber=postNumber.length
+    const {image, follower, followerNumber} = await userStore.getUserInfo(user)
+    // console.log (image, follower, followerNumber )
     const post = { image, user, postNumber, followerNumber}
     res.send( post )  
   })

@@ -3,17 +3,18 @@ import commentStore from '../repository/commentStore'
 const router = express.Router();
 
   
-router.get('/:id', (req, res) => {
+router.get('/:id', async (req, res) => {
     const { id } = req.params;
-    const comments = commentStore.getCommentFromPostId(id)
+    const comments = await commentStore.getCommentFromPostId(id)
+    // console.log(comments)
     res.send( comments );
   })
   
-  router.post('/:id', (req, res) => {
-    console.log(req.body)
+  router.post('/:id', async (req, res) => {
+    // console.log(req.body)
     const { postId, inputa, currentUser, isUnder, commentId } = req.body;
-    commentStore.createComment(postId, inputa, currentUser, (isUnder!==undefined)? isUnder.id : commentId)
-    const comments = commentStore.getCommentFromPostId(postId)
+    await commentStore.createComment(postId, inputa, currentUser, (isUnder!==undefined)? isUnder.id : commentId)
+    const comments = await commentStore.getCommentFromPostId(postId)
     res.send( comments );
   })
 

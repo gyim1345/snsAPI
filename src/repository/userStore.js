@@ -1,128 +1,101 @@
 const baseurl = "http://localhost:3000";
+import userSchemaModel from '../model/user';
+
 const userStore = {
-  users: [
-    {
-      name: "gibong",
-      userId: 1,
-      userFollow: ["", "guy"],
-      userURL: `${baseurl}/static/images/user1.png`,
-      password: "gb123"
-    },
-    {
-      name: "guy",
-      userId: 2,
-      userFollow: ["", "gibong"],
-      userURL: `${baseurl}/static/images/user2.png`,
-      password: "guy123"
-    },
-    {
-      name: "noone",
-      userId: 3,
-      userFollow: [""],
-      userURL: `${baseurl}/static/images/user3.png`,
-      password: "noonepwd"
-    },
-    {
-      name: "",
-      userId: 0,
-      userFollow: [""],
-      userURL: ``,
-      password: ""
+
+  async userList() {
+    return await userSchemaModel.find();
+  },
+
+  async usersLength() {
+    return await userSchemaModel.find().length;
+  },
+
+  async getUserName(userName) {
+    return await userSchemaModel.find({ name: userName });
+  },
+
+  async getFollowerFromUser(userName) {
+    if (userName !== undefined) {
+      const [ userInfo ]  = await userSchemaModel.find({ name: userName })
+      // console.log(userInfo.userFollow)
+      return userInfo.userFollow;
     }
-  ],
-
-  get userList() {
-    return this.users;
-  },
-
-  get usersLength() {
-    return this.users.length;
-  },
-
-  getUserName(userName) {
-    return this.users.find(userInfo => userInfo.name === userName).name;
-  },
-
-  getFollowerFromUser(userName) {
-    if (userName !== undefined)
-      return this.users.find(userInfo => userInfo.name === userName).userFollow;
     return "empty";
   },
 
-  getFollowerNumberOfUser(userName) {
-    return (
-      this.users.find(userInfo => userInfo.name === userName).userFollow
-        .length - 1
-    );
+  async getFollowerNumberOfUser(userName) {
+    const [ userInfo ]  = await userSchemaModel.find({ name: userName })
+    return userInfo.userFollow.length -1;
   },
 
-  getUserPassword(userName) {
-    return this.users.find(userInfo => userInfo.name === userName).password;
+  async getUserPassword(userName) {
+    return await userSchemaModel.find({ name: userName }).password;
   },
 
-  addFollower(userName, targetUserName) {
-    return this.users
-      .find(userInfo => userInfo.name === userName)
-      .userFollow.push(targetUserName);
+  async addFollower(userName, targetUserName) {
+    return await userSchemaModel.find({ name: userName }, (err, userModel) => {
+      userModel.userFollower.push(targetUserName);
+      userModel.save();
+    })
   },
 
-  getUserImage(userName) {
-    return this.users.find(userInfo => userInfo.name === userName).userURL;
+  async getUserImage(userName) {
+    const [userInfo] = await userSchemaModel.find({ name: userName });
+    return userInfo.userURL;
   },
 
- checkIdIsRegistered (Id) {
-    return this.userList.find(item => item.name === Id) === undefined
+  async checkIdIsRegistered(Id) {
+    return await userSchemaModel.find({ name: Id }) === undefined
   },
 
- checkPassword (Id,Password) {
-    return this.getUserPassword(Id) !== Password
+  async checkPassword(Id, Password) {
+    return await userSchemaModel.find({ name: Id, password: Password }) === undefined
   },
 
-performLogin (Id, Password) {
-       if (this.checkIdIsRegistered(Id)) { 
-         return {statusMessage : 'checkId', loginStatus: false}; 
-       }
+  async performLogin(Id, Password) {
+    if (await this.checkIdIsRegistered(Id)) {
+      return { statusMessage: 'checkId', loginStatus: false };
+    }
 
-       if (this.checkPassword(Id, Password)) { 
-         return {statusMessage : 'checkPassword', loginStatus: false};
-       }
+    if (await this.checkPassword(Id, Password)) {
+      return { statusMessage: 'checkPassword', loginStatus: false };
+    }
 
-       return {statusMessage: 'LoggedIn', loginStatus: true}
-},
-
-
-
-getUserInfo(user) {
-  const image = this.getUserImage(user)
-  const follower = this.getFollowerFromUser(user)
-  const followerNumber = this.getFollowerNumberOfUser(user)
-  return {image, follower, followerNumber}
-},
-
-
-  createComment(id, titlee) {
-    this.users = [
-      ...this.users,
-      {
-        id: Date.Now(),
-        postLId: id,
-        title: titlee
-      }
-    ];
+    return { statusMessage: 'LoggedIn', loginStatus: true }
   },
 
-  createUser(id, pwd) {
-    this.users = [
-      ...this.users,
-      {
-        name: id,
-        userId: this.usersLength,
-        userFollow: [""],
-        userURL: `${baseurl}/static/images/profilepicture.png`,
-        password: pwd
-      }
-    ];
+
+
+  async getUserInfo(user) {
+    const image = await this.getUserImage(user)
+    const follower = await this.getFollowerFromUser(user)
+    const followerNumber = await this.getFollowerNumberOfUser(user)
+    return { image, follower, followerNumber }
+  },
+
+  //  async createUser(id, pwd) {
+  //     this.users = [
+  //       ...this.users,
+  //       {
+  //         name: id,
+  //         userId: this.usersLength,
+  //         userFollow: [""],
+  //         userURL: `${baseurl}/static/images/profilepicture.png`,
+  //         password: pwd
+  //       }
+  //     ];
+  //   }
+
+  async createUser(id, pwd) {
+    let userModel = new userSchemaModel();
+    userModel.name = id;
+    userSchemaModel.userId = this.usersLength();
+    userSchemaModel.userFollow = [""];
+    userSchemaModel.userURL = `${baseurl}/static/images/profilepicture.png`;
+    userSchemaModel.password = pwd
   }
+
 };
 
 module.exports = userStore;

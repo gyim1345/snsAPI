@@ -10,22 +10,22 @@ import remove from '../services/remove'
 // const edit = require('../edit');
 // const remove = require('../remove');
 // const Like = require('../Like');
-// const register = require('./register');
-
+// const register = require('../services');
+import register from '../services/register'
 
 const router = express.Router();
-console.log('zzzzz')
+// console.log('zzzzz')
 
 
 
-router.get('/', (req, res) => {
-        console.log('respond')
-        const posts = postStore.postList;
+router.get('/', async (req, res) => {
+        // console.log('respond')
+        const posts = await postStore.postList;
         res.send( posts );
       });
     
-  router.get('/:id', (req, res) => {
-            const posts = postStore.getPost(req.params.id)
+  router.get('/:id', async (req, res) => {
+            const posts = await postStore.getPost(req.params.id)
             // console.log(posts)
             res.send({ posts });
           });
@@ -41,41 +41,41 @@ router.get('/', (req, res) => {
   
 
   
-  router.patch('/', (req, res) => {
+  router.patch('/', async (req, res) => {
     const { title, user } = req.body;
-    const posts = postStore.createPost(title, user);
+    const posts = await postStore.createPost(title, user);
     res.send( posts );
   });
   
 
 
   
-  router.post('/register', (req, res) => {
+  router.post('/register', async (req, res) => {
     const { id, password } = req.body;
-    const registration = register.Registration(id, password)
+    const registration = await register.Registration(id, password)
     res.send( registration );
   })
   
   
-  router.patch('/edit', (req, res) => {
+  router.patch('/edit', async (req, res) => {
     const { input, posting, indexOfCommentOnThisPosting } = req.body;
-    // console.log(input, posting, user, indexOfCommentOnThisPosting )
-    const posts = edit.editThis(input, posting, req.session.user.Id, indexOfCommentOnThisPosting);
+    // console.log("input:", input, posting, indexOfCommentOnThisPosting, req.session.user.Id )
+    const posts = await edit.editThis(input, posting, req.session.user.Id, indexOfCommentOnThisPosting);
     // console.log(posts)
     res.send( posts );
   });
   
   
-  router.patch('/Remove', (req, res) => {
+  router.patch('/Remove', async (req, res) => {
     const { posting, indexOfCommentOnThisPosting } = req.body;
-    const posts = remove.removeThis(posting, req.session.user.Id, indexOfCommentOnThisPosting);
+    const posts = await remove.removeThis(posting, req.session.user.Id, indexOfCommentOnThisPosting);
     res.send( posts );
   });
 
   
-  router.patch('/Like', (req,res) =>{
+  router.patch('/Like', async (req,res) =>{
     const { posting, postingAll } = req.body
-    const post = postStore.changeLike(posting, req.session.user.Id, postingAll);
+    const post = await postStore.changeLike(posting, req.session.user.Id, postingAll);
     res.send( post )
   });
   

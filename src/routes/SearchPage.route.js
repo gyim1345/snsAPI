@@ -3,17 +3,19 @@ import postStore from '../repository/postingStore';
 const router = express.Router();
 
 
-router.get('/', (req, res) => {
-  console.log('SearchPage', req.session)
-    const posts = postStore.postList;
+router.get('/', async (req, res) => {
+  console.log('SearchPage')
+  console.log('hello')
+    const posts = await postStore.postList();
+    console.log(posts)
     res.send( posts );
   });
 
-router.get('/tag', (req, res) => {
+router.get('/tag', async (req, res) => {
   const { input } = req.query;
-  console.log(input);
-  const posts = postStore.postForTag(input);
-  console.log(posts)
+  // console.log(input);
+  const posts = await postStore.postForTag(input);
+  // console.log(posts)
   res.send( posts );
 })
   export default router;

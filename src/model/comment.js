@@ -1,15 +1,15 @@
 let mongoose = require("mongoose");
 let Schema = mongoose.Schema;
 
-let postSchema = new Schema(
+let commentSchema = new Schema(
   {
     id: Number,
+    postLId: Number,
     title: String,
-    imageUrl: String,
     userName: String,
     like: [String], 
-    tag: [String]
+    isUnder: Number
   },
 );
 
-module.exports = mongoose.model("post", postSchema);
+module.exports = mongoose.model("comment", commentSchema);

@@ -37,7 +37,7 @@ const remove = {
         if (indexOfCommentOnThisPosting !== undefined){
           const theComment = posting[indexOfCommentOnThisPosting];     
           commentStore.removeComment(theComment);     
-          return posting.filter(comment => comment.id !== theComment.id);
+          return posting.filter(comment => comment.id !== theComment.id && comment.isUnder !== theComment.id);
         }
 
         return "what the fuck"
