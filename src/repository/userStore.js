@@ -46,23 +46,31 @@ const userStore = {
   },
 
   async checkIdIsRegistered(Id) {
-    return await userSchemaModel.find({ name: Id }) === undefined
+    return (await userSchemaModel.find({ name: Id })) === undefined
   },
 
   async checkPassword(Id, Password) {
-    return await userSchemaModel.find({ name: Id, password: Password }) === undefined
+    console.log((await userSchemaModel.findOne({ name: Id})).password, Password)
+    return  (await userSchemaModel.findOne({ name: Id})).password === Password;
   },
 
   async performLogin(Id, Password) {
-    if (await this.checkIdIsRegistered(Id)) {
-      return { statusMessage: 'checkId', loginStatus: false };
-    }
+    // console.log(Id,Password);
+    // if (!this.checkIdIsRegistered(Id)) {
+    //   return { statusMessage: 'checkId', loginStatus: false };
+    // }
+    // console.log(Id,Password);
+    // console.log(await this.checkPassword(Id, Password))
+    // if (await !this.checkPassword(Id, Password)) {
+    //   return { statusMessage: 'checkPassword', loginStatus: false };
+    // }
+    // console.log(Id,Password);
+    if( !(await this.checkIdIsRegistered(Id))&&!(await this.checkPassword(Id,Password))){
+      return { statusMessage: 'check', loginStatus: false };
+    } else return { statusMessage: 'LoggedIn', loginStatus: true }
 
-    if (await this.checkPassword(Id, Password)) {
-      return { statusMessage: 'checkPassword', loginStatus: false };
-    }
 
-    return { statusMessage: 'LoggedIn', loginStatus: true }
+    // return { statusMessage: 'LoggedIn', loginStatus: true }
   },
 
 
