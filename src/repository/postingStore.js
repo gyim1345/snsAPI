@@ -19,7 +19,8 @@ const postStore = {
     return await postSchemaModel.find({ tag })
   },
 
-  async changeLike({ id }, currentUser, postingAll) {
+  async changeLike({ id }, currentUser) {
+    let tempPost = {};
     const post = await postSchemaModel.findOne({ id: id }, (err, postModel) => { 
       
       if (!postModel.like.includes(currentUser)) {
@@ -27,12 +28,11 @@ const postStore = {
       } else {
         postModel.like = postModel.like.filter( user => user !== currentUser);
       }
-      // tempPost = postModel;
+      tempPost = postModel;
       postModel.save({});
   })
-    const index = postingAll.findIndex(it => id === it.id)
-    postingAll[index] = post;
-    return postingAll;
+
+    return tempPost;
   },
 
 
@@ -60,21 +60,35 @@ const postStore = {
     return await postSchemaModel.find({ id:Number(id) })
   },
 
-
-  createPost(recievedTitle, name, url, inputTag) {
-    this.posts = [
-      ...this.posts,
-      {
-        id: countStore.usePostingCount(),
-        title: recievedTitle,
-        imageUrl: url || DEFAULT_IMAGE,
-        userName: name,
-        like: [],
-        tag: [inputTag || '']
-      }
-    ];
-    return this.posts[this.posts.length - 1];
-  },
+  
+  async createPost(recievedTitle, name, url, inputTag) {
+    const postModel = new postSchemaModel();
+    postModel.id = Date.now();
+    postModel.title = recievedTitle;
+    postModel.imageUrl = url;
+    postModel.userName = name;
+    postModel.like = [];
+    postModel.tag = [inputTag];
+    await postModel.save();
+    console.log(postModel);
+    return postModel
+   },
+    
+    
+    
+  //   this.posts = [
+  //     ...this.posts,
+  //     {
+  //       id: countStore.usePostingCount(),
+  //       title: recievedTitle,
+  //       imageUrl: url || DEFAULT_IMAGE,
+  //       userName: name,
+  //       like: [],
+  //       tag: [inputTag || '']
+  //     }
+  //   ];
+  //   return this.posts[this.posts.length - 1];
+  // },
 
   async removePost(id) {
     await postSchemaModel.remove({ id:Number(id) })
