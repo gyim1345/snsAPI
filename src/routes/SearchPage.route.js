@@ -4,18 +4,24 @@ const router = express.Router();
 
 
 router.get('/', async (req, res) => {
-  console.log('SearchPage')
-  console.log('hello')
+  try {
     const posts = await postStore.postList();
-    console.log(posts)
-    res.send( posts );
-  });
+    res.send(posts);
+  } catch (err) {
+    return res.status(500).send(err);
+  }
+});
 
 router.get('/tag', async (req, res) => {
+  if (req.query === null) {
+    return res.status(400).json({ message: 'No query found' })
+  }
   const { input } = req.query;
-  // console.log(input);
-  const posts = await postStore.postForTag(input);
-  // console.log(posts)
-  res.send( posts );
+  try {
+    const posts = await postStore.postForTag(input);
+    res.send(posts);
+  } catch (err) {
+    return res.status(500).send(err);
+  }
 })
-  export default router;
+export default router;

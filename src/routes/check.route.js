@@ -2,7 +2,9 @@ import express from 'express';
 const router = express.Router();
 
 router.post('/', (req, res) => {
-  
+  if (req.session.user === undefined) {
+    return res.status(500).json({ message: 'unable to find session'})
+  }
   const response = '';
   const activeUser = '';
   if(req.session.user !== undefined){
@@ -12,6 +14,9 @@ router.post('/', (req, res) => {
 });
 
 router.get('/', (req, res) => {
+  if (req.session.user === undefined) {
+    return res.status(500).json({ message: 'unable to find session'})
+  }
   if (req.session.user !== undefined) {
     const user = req.session.user.Id;
     const response = { loggedIn: true, userName: user }
