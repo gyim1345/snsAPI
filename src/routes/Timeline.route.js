@@ -5,20 +5,19 @@ const router = express.Router();
 
 router.post('/:user', async (req, res) => {
   const user = req.session.user.Id;
-  try {
-    const posts = await postStore.getuserTimeLinePosts(user);
-    res.send({ posts });
-  } catch (err) { 
-    return res.status(500).send(err);
+  const userPosts = await postStore.getuserPosts(user);
+  const friendPosts = await postStore.getuserTimeLinePosts(user);
+  const posts = [...userPosts, ...friendPosts];
+  res.send({ posts });
+}
+);
+
+router.post('/', (req, res) => {
+  if (req.session.user.Id === null) {
+    return res.status(500).json({ message: 'No session Id Found' })
   }
-  });
+  const response = req.session.user.Id
+  res.send({ response });
+});
 
-  router.post('/', (req, res) => {
-    if(req.session.user.Id === null) {
-      return res.status(500).json({ message: 'No session Id Found' })
-    }
-    const response = req.session.user.Id
-    res.send({ response });
-  });
-
-  export default router
+export default router

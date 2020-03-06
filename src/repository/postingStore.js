@@ -37,11 +37,13 @@ const postStore = {
 
 
   async getuserTimeLinePosts(user) {
-    let postings = await this.getuserPosts(user);
     const follower = await userStore.getFollowerFromUser(user);
+   let result = [];
+   for( let i = 0; i< follower.length; i++ ) {
+     result = await this.getuserPosts(follower[i]).then();
+   }
 
-    // follower.forEach(person => postings = [...postings, ...await this.getuserPosts(person)])
-    return postings;
+    return result;
   },
 
   async getuserPosts(name) {
