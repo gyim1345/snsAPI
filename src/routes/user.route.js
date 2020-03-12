@@ -36,4 +36,10 @@ router.post('/Info', async (req, res) => {
   }
 });
 
+router.post('/image', async (req,res) => {
+  const { user } = req.body;
+  const image = await userStore.getUserImage(user);  
+  return res.send(image);
+})
+
 export default router

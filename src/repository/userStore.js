@@ -11,6 +11,10 @@ const userStore = {
     return await userSchemaModel.find().length;
   },
 
+  async getUserImage(user) {
+    return (await userSchemaModel.find(user)).userURL
+  },
+
   async getUserName(userName) {
     return await userSchemaModel.find({ name: userName });
   },
@@ -24,6 +28,19 @@ const userStore = {
     return "empty";
   },
 
+//   async getRandomUser(user) {
+//     const users = await userSchemaModel.find()
+//     return users.filter(it => !it.userFollow.includes(user)&& it.name !== user && it.name !== '');
+// },
+
+async getRandomUser(user) {
+      const users = await userSchemaModel.find()
+      const [ currentUserInfo ] = users.filter(it => it.name === user);
+      const randomUser = users.filter(it => !currentUserInfo.userFollow.includes(it.name) && it.name !== user)
+      return randomUser
+  },  
+  
+
   async getFollowerNumberOfUser(userName) {
     const [ userInfo ]  = await userSchemaModel.find({ name: userName })
     return userInfo.userFollow.length -1;
@@ -33,9 +50,12 @@ const userStore = {
     return await userSchemaModel.find({ name: userName }).password;
   },
 
-  async addFollower(userName, targetUserName) {
-    return await userSchemaModel.find({ name: userName }, (err, userModel) => {
-      userModel.userFollower.push(targetUserName);
+  async addFollower(follower, currentUser) {
+    console.log(follower, currentUser);
+    return await userSchemaModel.findOne({ name: currentUser }, (err, userModel) => {
+      console.log(userModel);
+      console.log(follower);
+      userModel.userFollow.push(follower);
       userModel.save();
     })
   },
@@ -82,18 +102,7 @@ const userStore = {
     return { image, follower, followerNumber }
   },
 
-  //  async createUser(id, pwd) {
-  //     this.users = [
-  //       ...this.users,
-  //       {
-  //         name: id,
-  //         userId: this.usersLength,
-  //         userFollow: [""],
-  //         userURL: `${baseurl}/static/images/profilepicture.png`,
-  //         password: pwd
-  //       }
-  //     ];
-  //   }
+  
 
   async createUser(id, pwd) {
     let userModel = new userSchemaModel();
