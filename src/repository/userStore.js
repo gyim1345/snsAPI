@@ -105,12 +105,16 @@ async getRandomUser(user) {
   
 
   async createUser(id, pwd) {
+    console.log('asdasdasdasda', id,pwd)
     let userModel = new userSchemaModel();
     userModel.name = id;
-    userSchemaModel.userId = this.usersLength();
-    userSchemaModel.userFollow = [""];
-    userSchemaModel.userURL = `${baseurl}/static/images/profilepicture.png`;
-    userSchemaModel.password = pwd
+    userModel.userId = `user${Date.now()}`;
+    userModel.userFollow = ["Bongstagram"];
+    userModel.userURL = `${baseurl}/static/images/profilepicture.png`;
+    userModel.password = pwd;
+    await userModel.save();
+    console.log(userModel);
+    return userModel;
   }
 
 };

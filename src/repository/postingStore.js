@@ -40,7 +40,7 @@ const postStore = {
     const follower = await userStore.getFollowerFromUser(user);
    let result = [];
    for( let i = 0; i< follower.length; i++ ) {
-     result = await this.getuserPosts(follower[i]).then();
+     result = [...result , ...(await this.getuserPosts(follower[i]).then())];
    }
 
     return result;

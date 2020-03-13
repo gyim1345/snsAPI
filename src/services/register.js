@@ -11,9 +11,13 @@ const register = {
   },
 
   async Registration(id, password) {
-    if (await this.checkRegistered(id))
-      return { Message: "Already Registered" }
-    await this.createUserOnRegister(id, password)
+    console.log('registered3')
+    if (!userStore.checkIdIsRegistered(id)){
+      if(!userStore.checkPassword(id, password)){
+      return { Message: "Check" }
+      }
+    }
+    userStore.createUser(id, password)
     return { Message: "Registered" }
   }
 }

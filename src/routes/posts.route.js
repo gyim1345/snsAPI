@@ -41,12 +41,16 @@ router.patch('/', async (req, res) => {
 });
 
 router.post('/register', async (req, res) => {
-  if (req.body === null) {
-    return res.status(400).json({ message: 'no body found' })
-  }
+  // if (req.body === null) {
+  //   return res.status(400).json({ message: 'no body found' })
+  // }
+  console.log('registered1')
   const { id, password } = req.body;
+  console.log(id, password);
   try {
     const registration = await register.Registration(id, password)
+    console.log('registere2d')
+
     res.send(registration);
   } catch (err) {
     return res.status(500).send(err);
