@@ -74,6 +74,28 @@ async getRandomUser(user) {
     return  (await userSchemaModel.findOne({ name: Id})).password === Password;
   },
 
+  async addPostIdToScrap(Id, currentUser) {
+    let message;
+    await userSchemaModel.findOne({ name: currentUser }, (err, userModel) => {
+      console.log(userModel, Id, currentUser);
+      if(!userModel.scrap.includes(Id)){
+      userModel.scrap.push(Id);
+      userModel.save();
+      message = "scrapped"
+      
+      }
+      else {
+      message = "already scrapped"
+      }
+    })
+    return message;
+  },
+
+  async getUserScrapIds(user) {
+    const userInfo = await userSchemaModel.findOne({ name: user });
+    return userInfo.scrap;
+  },
+
   async performLogin(Id, Password) {
     // console.log(Id,Password);
     // if (!this.checkIdIsRegistered(Id)) {
@@ -112,6 +134,7 @@ async getRandomUser(user) {
     userModel.userFollow = ["Bongstagram"];
     userModel.userURL = `${baseurl}/static/images/profilepicture.png`;
     userModel.password = pwd;
+    userModel.scrap = [];
     await userModel.save();
     console.log(userModel);
     return userModel;

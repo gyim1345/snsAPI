@@ -1,8 +1,10 @@
 import express from 'express';
 import postStore from '../repository/postingStore';
-import edit from '../services/edit'
-import remove from '../services/remove'
-import register from '../services/register'
+import edit from '../services/edit';
+import remove from '../services/remove';
+import register from '../services/register';
+import userStore from '../repository/userStore';
+import scrap from '../services/scrap';
 
 const router = express.Router();
 
@@ -55,7 +57,7 @@ router.post('/register', async (req, res) => {
   } catch (err) {
     return res.status(500).send(err);
   }
-})
+});
 
 
 router.patch('/edit', async (req, res) => {
@@ -99,5 +101,16 @@ router.patch('/Like', async (req, res) => {
   }
 });
 
+router.patch('/scrap', async (req, res) => {
+  const { postId } =req.body
+  const message = await userStore.addPostIdToScrap(postId,req.session.user.Id);
+  res.send(message);
+});
+
+router.post('/scrappedPosts', async (req, res) => {
+  const { user } =req.body
+  const posts = await scrap.getScrappedPostings(user);
+  res.send(posts);
+})
 
 export default router;

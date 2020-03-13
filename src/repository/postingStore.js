@@ -47,21 +47,24 @@ const postStore = {
   },
 
   async getuserPosts(name) {
-    return await postSchemaModel.find({ userName:name })
+    return await postSchemaModel.find({ userName:name });
   },
 
   async getUserPostsLength(user) {
-    return await postSchemaModel.find({ userName:user })
+    return await postSchemaModel.find({ userName:user });
   },
 
   async getUserPosts(user) {
-    return await postSchemaModel.find({ userName:user })
+    return await postSchemaModel.find({ userName:user });
   },
 
   async getPost(id) {
-    return await postSchemaModel.find({ id:Number(id) })
+    return await postSchemaModel.find({ id:Number(id) });
   },
 
+  async getPostsFromArrayId(array) {
+    return await postSchemaModel.find({ id: { $in: array }});
+  },
   
   async createPost(recievedTitle, name, url, inputTag) {
     const postModel = new postSchemaModel();
