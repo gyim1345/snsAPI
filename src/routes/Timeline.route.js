@@ -30,9 +30,7 @@ router.patch('/AddFriend', async (req, res) => {
   console.log(req);
   console.log(req.body.name);
   console.log(req.session.user.Id);
-  console.log('asdasdasdasdasdasdasdasdasdas')
   const response = await userStore.addFollower(req.body.name, req.session.user.Id)
-  console.log('asdasdasdasdasdasdasdasdasdas2222222222')
   console.log(response)
   res.send({ response });
 });

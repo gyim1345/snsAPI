@@ -65,6 +65,10 @@ const postStore = {
   async getPostsFromArrayId(array) {
     return await postSchemaModel.find({ id: { $in: array }});
   },
+
+  async getUserTaggedPosts( user ) { 
+    return await postSchemaModel.find({ tag: user });
+  },
   
   async createPost(recievedTitle, name, url, inputTag) {
     const postModel = new postSchemaModel();

@@ -5,6 +5,7 @@ import remove from '../services/remove';
 import register from '../services/register';
 import userStore from '../repository/userStore';
 import scrap from '../services/scrap';
+import tag from '../services/tag';
 
 const router = express.Router();
 
@@ -107,10 +108,19 @@ router.patch('/scrap', async (req, res) => {
   res.send(message);
 });
 
-router.post('/scrappedPosts', async (req, res) => {
-  const { user } =req.body
-  const posts = await scrap.getScrappedPostings(user);
+
+router.post('/taggedPosts', async (req, res) => {
+  const { user } = req.body
+  const posts = await tag.getTaggedPosts(user);
   res.send(posts);
 })
+
+router.get('/scrappedPosts', async (req, res) => {
+  console.log(req)
+  const posts = await scrap.getScrappedPostings(req.query.user);
+  res.send(posts);
+})
+
+
 
 export default router;

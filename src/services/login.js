@@ -1,25 +1,24 @@
-// const userStore = require('./userStore');
+const postingStore = require('../repository/postingStore');
+const userStore = require('../repository/userStore')
 
-// const checkIdIsRegistered = (data) => {
-//     return userStore.userList.find(item => item.name === data.Id) === undefined
-//   }
+const login = {
+  
+    async loginValidation(Id, Password) {
+        console.log(Id !== /([A-Za-z0-9])\w+/g)
+        if(Id !== /([A-Za-z0-9])\w+/g ){
+            return 'Check Input';
+            }
+        const [getDuplicateId] = await userStore.getUserName(Id);
+        console.log(getDuplicateId);
+        if (getDuplicateId === undefined) {
+        return 'Check Duplication';
+    }
+        
+        console.log('hohohooh')
 
-// const checkPassword = (data) => {
-//     return userStore.getUserPassword(data.Id) !== data.Password
-// }
+        return 'asdasd'
+    }
 
-// performLogin (Id, Password) {
-    
-//        if (checkIdIsRegistered(Id))  return {statusMessage : 'checkId', loginStatus: false}; 
-//        if (checkPassword(Password))  return {statusMessage : 'checkPassword', loginStatus: false};
-//         return {statusMessage: 'LoggedIn', loginStatus: true}
-//       }
+};
 
-// const onSubmit = data => {
-//     console.log(userStore.userList.find(item => item.name === data.Id) === undefined)
-//       checkIdIsRegistered(data)
-//         ? alert("check id") 
-//         : checkPassword(data)
-//           ? alert("check password") 
-//           : performLogIn(data);
-//   };
+module.exports = login;

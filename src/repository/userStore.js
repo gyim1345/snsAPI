@@ -118,13 +118,34 @@ async getRandomUser(user) {
 
 
   async getUserInfo(user) {
-    const image = await this.getUserImage(user)
-    const follower = await this.getFollowerFromUser(user)
-    const followerNumber = await this.getFollowerNumberOfUser(user)
-    return { image, follower, followerNumber }
+    const userInfo = await userSchemaModel.findOne({ name: user });
+    console.log('asdadasdasdasd', userInfo);
+    const image = await userInfo.userURL;
+    const follower = await userInfo.userFollow;
+    const followerNumber = await follower.length;
+    const userNickName = await userInfo.nickName;
+    const userIntroductory = await userInfo.introductory;
+    console.log(image, follower, followerNumber, userNickName, userIntroductory, "asasdasdasdas")
+    return { image, follower, followerNumber, userNickName, userIntroductory }
   },
 
-  
+  async editUserNickName(user,input) {
+    let userInfo = await userSchemaModel.findOne({ name: user });
+    userInfo.nickName = input
+    await userInfo.save();
+    console.log(userInfo, 'nickname')
+    return input;
+  },
+
+  async editUserIntroductory(user, input) {
+    console.log('asddddddddddddd', user, input);
+    let userInfo = await userSchemaModel.findOne({ name: user });
+    userInfo.introductory = input
+    await userInfo.save();
+    console.log(userInfo)
+    return input;
+  },
+
 
   async createUser(id, pwd) {
     console.log('asdasdasdasda', id,pwd)

@@ -8,7 +8,9 @@ let userSchema = new Schema(
     userFollow: [String],
     userURL: String,
     password: String,
-    scrap: [Number] 
+    scrap: [Number],
+    nickName: String,
+    introductory: String
   },
 );
 
