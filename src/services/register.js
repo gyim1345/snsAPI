@@ -11,19 +11,18 @@ const register = {
   },
 
   async Registration(id, password) {
-    console.log('registered3')
-    console.log(id);
+
     let regExp = /[a-zA-Z0-9]$/
     if(!regExp.test(id)){
-        return { Message: "Check Input" }
+      console.log('321')
+        return { Message: "Check Input", status: false }
         }
-    if (!userStore.checkIdIsRegistered(id)){
-      if(!userStore.checkPassword(id, password)){
-      return { Message: "Check Input" }
+    if (!(await userStore.checkIdIsRegistered(id))){
+      return { Message: "Check Input" , status: false}
       }
-    }
     userStore.createUser(id, password)
-    return { Message: "Registered" }
+    return { Message: "Registered", status: true }
+    
   }
 }
 

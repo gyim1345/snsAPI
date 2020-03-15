@@ -52,8 +52,9 @@ router.post('/register', async (req, res) => {
   console.log(id, password);
   try {
     const registration = await register.Registration(id, password)
-    console.log(registration)
-
+    if (!registration.status) {
+      return res.status(400).send(registration.Message);
+    }
     res.send(registration);
   } catch (err) {
     return res.status(500).send(err);

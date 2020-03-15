@@ -66,7 +66,8 @@ async getRandomUser(user) {
   },
 
   async checkIdIsRegistered(Id) {
-    return (await userSchemaModel.findOne({ name: Id })) === undefined
+    console.log((await userSchemaModel.findOne({ name: Id })))
+    return (await userSchemaModel.findOne({ name: Id })) === null
   },
 
   async checkPassword(Id, Password) {
@@ -96,27 +97,14 @@ async getRandomUser(user) {
     return userInfo.scrap;
   },
 
-  async performLogin(Id, Password) {
-    
-    if( !(await this.checkIdIsRegistered(Id))&&!(await this.checkPassword(Id,Password))){
-      return { statusMessage: 'check', loginStatus: false };
-    } else return { statusMessage: 'LoggedIn', loginStatus: true }
-
-
-    // return { statusMessage: 'LoggedIn', loginStatus: true }
-  },
-
-
-
+ 
   async getUserInfo(user) {
     const userInfo = await userSchemaModel.findOne({ name: user });
-    console.log('asdadasdasdasd', userInfo);
     const image = await userInfo.userURL;
     const follower = await userInfo.userFollow;
     const followerNumber = await follower.length;
     const userNickName = await userInfo.nickName;
     const userIntroductory = await userInfo.introductory;
-    console.log(image, follower, followerNumber, userNickName, userIntroductory, "asasdasdasdas")
     return { image, follower, followerNumber, userNickName, userIntroductory }
   },
 
