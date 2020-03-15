@@ -52,7 +52,7 @@ router.post('/register', async (req, res) => {
   console.log(id, password);
   try {
     const registration = await register.Registration(id, password)
-    console.log('registere2d')
+    console.log(registration)
 
     res.send(registration);
   } catch (err) {

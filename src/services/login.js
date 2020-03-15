@@ -4,19 +4,20 @@ const userStore = require('../repository/userStore')
 const login = {
   
     async loginValidation(Id, Password) {
-        console.log(Id !== /([A-Za-z0-9])\w+/g)
-        if(Id !== /([A-Za-z0-9])\w+/g ){
-            return 'Check Input';
+        let regExp = /[a-zA-Z0-9]/
+        if(!regExp.test(Id.toString())){
+            return { statusMessage: 'Check Input1', loginStatus: false }
             }
-        const [getDuplicateId] = await userStore.getUserName(Id);
-        console.log(getDuplicateId);
-        if (getDuplicateId === undefined) {
-        return 'Check Duplication';
-    }
-        
-        console.log('hohohooh')
-
-        return 'asdasd'
+        if(await userStore.checkIdIsRegistered(Id)) {
+            console.log('asdasd', userStore.checkIdIsRegistered(Id))
+            return { statusMessage: 'Check Input1', loginStatus: false }
+        }
+        if(!await userStore.checkPassword(Id,Password)) {
+            return { statusMessage: 'Check Input1', loginStatus: false }
+        }
+   
+        userStore.createUser(id, password)
+        return { statusMessage: 'LoggedIn', loginStatus: true }
     }
 
 };

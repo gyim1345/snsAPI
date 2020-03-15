@@ -6,19 +6,16 @@ const router = express.Router();
 
 router.post('/', async (req, res) => {
   const { Id, Password } = req.body;
-  // const loginstatusss = await login.loginValidation(Id, Password);
-  const loginMessageAndStatus = await userStore.performLogin(Id, Password)
+  console.log(Id)
+  const loginMessageAndStatus = await login.loginValidation(Id,Password);
   const { loginStatus } = loginMessageAndStatus;
   if (!loginStatus) {
-    res.status(401).send({message: 'Login Failed'});
+    res.status(401).send({statusMessage: 'Login Failed'});
     return;
   }
 
   req.session.user = { Id };
   res.send(loginMessageAndStatus);
-  // console.log(loginstatusss);
-  
-  // res.send('hhohoho')
 })
 
 router.delete('/', async (req, res) => {

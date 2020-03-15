@@ -66,11 +66,11 @@ async getRandomUser(user) {
   },
 
   async checkIdIsRegistered(Id) {
-    return (await userSchemaModel.find({ name: Id })) === undefined
+    return (await userSchemaModel.findOne({ name: Id })) === undefined
   },
 
   async checkPassword(Id, Password) {
-    console.log((await userSchemaModel.findOne({ name: Id})).password, Password)
+    // console.log((await userSchemaModel.findOne({ name: Id})).password, Password)
     return  (await userSchemaModel.findOne({ name: Id})).password === Password;
   },
 
@@ -97,16 +97,7 @@ async getRandomUser(user) {
   },
 
   async performLogin(Id, Password) {
-    // console.log(Id,Password);
-    // if (!this.checkIdIsRegistered(Id)) {
-    //   return { statusMessage: 'checkId', loginStatus: false };
-    // }
-    // console.log(Id,Password);
-    // console.log(await this.checkPassword(Id, Password))
-    // if (await !this.checkPassword(Id, Password)) {
-    //   return { statusMessage: 'checkPassword', loginStatus: false };
-    // }
-    // console.log(Id,Password);
+    
     if( !(await this.checkIdIsRegistered(Id))&&!(await this.checkPassword(Id,Password))){
       return { statusMessage: 'check', loginStatus: false };
     } else return { statusMessage: 'LoggedIn', loginStatus: true }
@@ -156,6 +147,8 @@ async getRandomUser(user) {
     userModel.userURL = `${baseurl}/static/images/profilepicture.png`;
     userModel.password = pwd;
     userModel.scrap = [];
+    userModel.nickName = '';
+    userModel.introductory = '';
     await userModel.save();
     console.log(userModel);
     return userModel;
