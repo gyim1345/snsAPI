@@ -16,7 +16,6 @@ const login = {
             return { statusMessage: 'Check Input1', loginStatus: false }
         }
    
-        userStore.createUser(id, password)
         return { statusMessage: 'LoggedIn', loginStatus: true }
     }
 

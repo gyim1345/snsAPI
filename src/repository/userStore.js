@@ -125,6 +125,14 @@ async getRandomUser(user) {
     return input;
   },
 
+  async editUserImage(user,imageUrl) {
+    console.log('editing user image');
+    console.log(user, imageUrl);
+    let userInfo = await userSchemaModel.findOne({ name: user.user });
+    userInfo.userURL = user.imageUrl;
+    await userInfo.save();
+    return userInfo;
+  },
 
   async createUser(id, pwd) {
     console.log('asdasdasdasda', id,pwd)
