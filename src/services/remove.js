@@ -15,8 +15,6 @@ const remove = {
     //   },
       
     checkOwnerShipOfPost(posting, user, indexOfCommentOnThisPosting) {
-      console.log(posting,user,indexOfCommentOnThisPosting)
-
         return indexOfCommentOnThisPosting === undefined
         ? user === posting.userName
         : user === posting[indexOfCommentOnThisPosting].userName
@@ -27,7 +25,6 @@ const remove = {
     //   },
 
     async removeThis (posting, user, indexOfCommentOnThisPosting) {
-      console.log(posting,user,indexOfCommentOnThisPosting)
         if (await this.checkOwnerShipOfPost(posting, user, indexOfCommentOnThisPosting) !== true)
           return {Message: "You don't have permission"}
 
