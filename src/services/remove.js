@@ -2,31 +2,33 @@ const commentStore = require('../repository/commentStore');
 const postingStore = require('../repository/postingStore');
 
 const remove = {
-    checkOwnershipOfComment() {
-        return currentUser === commentOwner;
-      },
+    // checkOwnershipOfComment() {
+    //     return currentUser === commentOwner;
+    //   },
     
-    removeCommentFromStore() {
-        return commentStorage.removeComment(postingId, thisComment.id);
-      },
+    // removeCommentFromStore() {
+    //     return commentStorage.removeComment(postingId, thisComment.id);
+    //   },
       
-    checkIsComment() {
-        return isComment === false;
-      },
+    // checkIsComment() {
+    //     return isComment === false;
+    //   },
       
     checkOwnerShipOfPost(posting, user, indexOfCommentOnThisPosting) {
+      console.log(posting,user,indexOfCommentOnThisPosting)
+
         return indexOfCommentOnThisPosting === undefined
         ? user === posting.userName
         : user === posting[indexOfCommentOnThisPosting].userName
       },
     
-    RemovePostingFromPostStore() {
-        return postingStorage.removePost(posting.id);
-      },
+    // RemovePostingFromPostStore() {
+    //     return postingStorage.removePost(posting.id);
+    //   },
 
-    removeThis (posting, user, indexOfCommentOnThisPosting) {
-
-        if (this.checkOwnerShipOfPost(posting, user, indexOfCommentOnThisPosting) !== true)
+    async removeThis (posting, user, indexOfCommentOnThisPosting) {
+      console.log(posting,user,indexOfCommentOnThisPosting)
+        if (await this.checkOwnerShipOfPost(posting, user, indexOfCommentOnThisPosting) !== true)
           return {Message: "You don't have permission"}
 
         if (indexOfCommentOnThisPosting === undefined){
