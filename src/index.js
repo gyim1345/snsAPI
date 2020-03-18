@@ -8,23 +8,18 @@ const bodyParser = require('body-parser');
 
 const mongoose = require('mongoose');
 
+(process.env.NODE_ENV === 'test') 
+  ? require('dotenv').config({ path: '/workspace/Project/snsAPI/src/.env.test' })
+  : require('dotenv').config();
+
+const port = process.env.PORT;
 const db = mongoose.connection;
 db.on('error', console.error);
 db.once('open', function(){    
     console.log("Connected to mongod server");
-});
+  });
 
-mongoose.connect('mongodb://localhost:27017/', { useUnifiedTopology: true, useNewUrlParser: true });
-// const Cat = mongoose.model('Cat', { name: String });
-
-// const kitty = new Cat({ name: 'Zildjian' });
-// kitty.save().then(() => console.log('meow'));
-
-require('dotenv').config();
-
-
-
-const port = 3000;
+mongoose.connect(process.env.dbUrl, { useUnifiedTopology: true, useNewUrlParser: true });
 
 const app = express();
 app.use(express.json());
@@ -49,12 +44,11 @@ cookie: {
 }));
   
   app.use('/static/images', express.static('static/images'));
-    
   app.use(v1Route);
 
 if (process.env.NODE_ENV !== 'test') {
   app.listen(port, () => {
-    console.log(`Listening on port ${port}...`);
+    console.log(`Listening on port ${process.env.PORT}...`);
   });
 }
 

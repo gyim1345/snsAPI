@@ -4,13 +4,20 @@
   "main": "index.js",
   "scripts": {
     "start": "nodemon index.js --exec babel-node @babel/preset-env",
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "test": "jest"
+  },
+  "jest": {
+    "testEnvironment": "node",
+    "coveragePathIgnorePatterns": [
+      "/node_modules/"
+    ]
   },
   "keywords": [],
   "author": "",
   "license": "ISC",
   "dependencies": {
     "@babel/polyfill": "^7.8.3",
+    "@babel/runtime": "^7.8.7",
     "body-parser": "^1.19.0",
     "connect-redis": "^4.0.4",
     "cookie-parser": "^1.4.4",
@@ -25,20 +32,25 @@
     "morgan": "^1.9.1",
     "nodemon": "^1.19.4",
     "redis": "^3.0.2",
+    "regenerator-runtime": "^0.13.5",
     "session-file-store": "^1.4.0"
   },
   "devDependencies": {
     "@babel/cli": "^7.8.4",
     "@babel/core": "^7.8.4",
     "@babel/node": "^7.8.4",
+    "@babel/plugin-transform-runtime": "^7.8.3",
     "@babel/preset-env": "^7.8.4",
+    "babel-plugin-transform-runtime": "^6.23.0",
     "eslint": "^6.8.0",
     "eslint-config-prettier": "^6.10.0",
     "eslint-plugin-prettier": "^3.1.2",
     "eslint-plugin-react": "^7.18.3",
     "http-proxy-middleware": "^1.0.1",
     "jest": "^24.9.0",
-    "prettier": "^1.19.1"
+    "prettier": "^1.19.1",
+    "supertest": "^4.0.2",
+    "transform-runtime": "0.0.0"
   },
   "description": ""
 }
