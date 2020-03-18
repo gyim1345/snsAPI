@@ -111,9 +111,20 @@ router.patch('/scrap', async (req, res) => {
 
 
 router.post('/taggedPosts', async (req, res) => {
+  if (req.body === null) {
+    return res.status(400).json({ message: 'no body found' })
+  }
+  try {
   const { user } = req.body
   const posts = await tag.getTaggedPosts(user);
+  console.log(posts[0])
+  if (posts[0] === undefined) {
+    return res.status(404).json({ message: 'no post found' })
+  }
   res.send(posts);
+} catch (err) {
+  return res.status(500).send(err);
+}
 })
 
 router.get('/scrappedPosts', async (req, res) => {
