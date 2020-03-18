@@ -3,7 +3,7 @@ const userStore = require('../repository/userStore')
 const register = {
 
   async Registration(id, password) {
-    let regExp = /[a-zA-Z0-9]$/
+    let regExp = /[a-zA-Z0-9@]$/
     if (!regExp.test(id)) {
       return { Message: "Check Input", status: false }
     }
