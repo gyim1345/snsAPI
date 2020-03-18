@@ -13,7 +13,7 @@ const mongoose = require('mongoose');
   : require('dotenv').config();
 
 const port = process.env.PORT;
-const db = mongoose.connection;
+export const db = mongoose.connection;
 db.on('error', console.error);
 db.once('open', function(){    
     console.log("Connected to mongod server");
@@ -50,6 +50,9 @@ if (process.env.NODE_ENV !== 'test') {
   app.listen(port, () => {
     console.log(`Listening on port ${process.env.PORT}...`);
   });
+}
+else {
+  mongoose.disconnect();
 }
 
 export default app
