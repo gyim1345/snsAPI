@@ -7,17 +7,9 @@ const userStore = {
     return await userSchemaModel.find();
   },
 
-  async usersLength() {
-    return await userSchemaModel.find().length;
-  },
-
-  async getUserImage(user) {
-    return (await userSchemaModel.find(user)).userURL
-  },
-
-  async getUserName(userName) {
-    return await userSchemaModel.find({ name: userName });
-  },
+  // async getUserImage(user) {
+  //   return (await userSchemaModel.findOne({name:user})).userURL
+  // },
 
   async getFollowerFromUser(userName) {
     if (userName !== undefined) {
@@ -34,39 +26,26 @@ const userStore = {
 // },
 
 async getRandomUser(user) {
-      const users = await userSchemaModel.find()
-      const [ currentUserInfo ] = users.filter(it => it.name === user);
-      const randomUser = users.filter(it => !currentUserInfo.userFollow.includes(it.name) && it.name !== user)
-      return randomUser
-  },  
-  
+  const users = await userSchemaModel.find()
+  const [ currentUserInfo ] = users.filter(it => it.name === user);
+  const randomUser = users.filter(it => !currentUserInfo.userFollow.includes(it.name) && it.name !== user)
+  return randomUser
+},  
 
-  async getFollowerNumberOfUser(userName) {
-    const [ userInfo ]  = await userSchemaModel.find({ name: userName })
-    return userInfo.userFollow.length -1;
-  },
+async getUserImage(userName) {
+  const [userInfo] = await userSchemaModel.find({ name: userName });
+  return userInfo.userURL;
+},
 
-  async getUserPassword(userName) {
-    return await userSchemaModel.find({ name: userName }).password;
-  },
+  // async getFollowerNumberOfUser(userName) {
+  //   const [ userInfo ]  = await userSchemaModel.find({ name: userName })
+  //   return userInfo.userFollow.length -1;
+  // },
 
-  async addFollower(follower, currentUser) {
-    console.log(follower, currentUser);
-    return await userSchemaModel.findOne({ name: currentUser }, (err, userModel) => {
-      console.log(userModel);
-      console.log(follower);
-      userModel.userFollow.push(follower);
-      userModel.save();
-    })
-  },
-
-  async getUserImage(userName) {
-    const [userInfo] = await userSchemaModel.find({ name: userName });
-    return userInfo.userURL;
-  },
-
+  // async getUserPassword(userName) {
+  //   return await userSchemaModel.find({ name: userName }).password;
+  // },
   async checkIdIsRegistered(Id) {
-    console.log((await userSchemaModel.findOne({ name: Id })))
     return (await userSchemaModel.findOne({ name: Id })) === null
   },
 
@@ -75,21 +54,34 @@ async getRandomUser(user) {
     return  (await userSchemaModel.findOne({ name: Id})).password === Password;
   },
 
+  async addFollower(follower, currentUser) {
+    const userInfo = await userSchemaModel.findOne({ name: currentUser })
+    userInfo.userFollow.push(follower);
+    await userInfo.save();
+    return userInfo;
+
+    // return await userSchemaModel.findOne({ name: currentUser }, (err, userModel) => {
+    //   console.log(follower);
+    //   userModel.userFollow.push(follower);
+    //   console.log(userModel);
+    //   userModel.save();
+
+    //   return userModel;
+    // })
+  },
+
+
+
   async addPostIdToScrap(Id, currentUser) {
-    let message;
-    await userSchemaModel.findOne({ name: currentUser }, (err, userModel) => {
-      console.log(userModel, Id, currentUser);
-      if(!userModel.scrap.includes(Id)){
-      userModel.scrap.push(Id);
-      userModel.save();
-      message = "scrapped"
-      
+    const userInfo = await userSchemaModel.findOne({ name: currentUser })
+    if(!userInfo.scrap.includes(Id)){
+      userInfo.scrap.push(Id);
+      await userInfo.save();
+      return {message: "scrapped"}
       }
       else {
-      message = "already scrapped"
+      return {message: "already scrapped"}
       }
-    })
-    return message;
   },
 
   async getUserScrapIds(user) {
@@ -112,22 +104,17 @@ async getRandomUser(user) {
     let userInfo = await userSchemaModel.findOne({ name: user });
     userInfo.nickName = input
     await userInfo.save();
-    console.log(userInfo, 'nickname')
     return input;
   },
 
   async editUserIntroductory(user, input) {
-    console.log('asddddddddddddd', user, input);
     let userInfo = await userSchemaModel.findOne({ name: user });
     userInfo.introductory = input
     await userInfo.save();
-    console.log(userInfo)
     return input;
   },
 
   async editUserImage(user,imageUrl) {
-    console.log('editing user image');
-    console.log(user, imageUrl);
     let userInfo = await userSchemaModel.findOne({ name: user.user });
     userInfo.userURL = user.imageUrl;
     await userInfo.save();
@@ -135,7 +122,6 @@ async getRandomUser(user) {
   },
 
   async createUser(id, pwd) {
-    console.log('asdasdasdasda', id,pwd)
     let userModel = new userSchemaModel();
     userModel.name = id;
     userModel.userId = `user${Date.now()}`;
@@ -146,7 +132,6 @@ async getRandomUser(user) {
     userModel.nickName = '';
     userModel.introductory = '';
     await userModel.save();
-    console.log(userModel);
     return userModel;
   }
 

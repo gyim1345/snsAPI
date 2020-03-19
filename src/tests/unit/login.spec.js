@@ -16,8 +16,8 @@ describe('login', () => {
         })
 
         describe('input id is within a-zA-Z0-9@ range', () => {
-            beforeEach(()=>{
-                id ='@'
+            beforeEach(() => {
+                id = '@'
             })
 
             it('input id does not exist in database', async () => {

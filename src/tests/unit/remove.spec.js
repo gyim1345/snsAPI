@@ -30,7 +30,6 @@ describe('remove service', () => {
         describe('with inputs of posting, user of userName sameUser, and undefined indexOfCommentOnThisPosting when you have no ownership', () => {
             it('is owner of post or comment', async () => {
                 posting.userName = 'name2@a.com'
-                console.log(posting.userName, user)
                 const ownership = remove.checkOwnerShipOfPost(posting, user, indexOfCommentOnThisPosting);
                 expect(ownership).toBe(false);
             });

@@ -1,4 +1,3 @@
-const countStore = require('./countStore');
 const userStore = require('./userStore');
 import postSchemaModel from '../model/post';
 
@@ -70,6 +69,13 @@ const postStore = {
     return await postSchemaModel.find({ tag: user });
   },
   
+  async editPostTitle(input, posting) {
+    return await postSchemaModel.findOne({ id: posting.id }, (err, postModel) => {
+      postModel.title = input;
+      postModel.save();
+    })
+  },
+
   async createPost(recievedTitle, name, url, inputTag) {
     const postModel = new postSchemaModel();
     postModel.id = Date.now();
@@ -83,22 +89,6 @@ const postStore = {
     return postModel
    },
     
-    
-    
-  //   this.posts = [
-  //     ...this.posts,
-  //     {
-  //       id: countStore.usePostingCount(),
-  //       title: recievedTitle,
-  //       imageUrl: url || DEFAULT_IMAGE,
-  //       userName: name,
-  //       like: [],
-  //       tag: [inputTag || '']
-  //     }
-  //   ];
-  //   return this.posts[this.posts.length - 1];
-  // },
-
   async removePost(id) {
     await postSchemaModel.remove({ id:Number(id) })
   }

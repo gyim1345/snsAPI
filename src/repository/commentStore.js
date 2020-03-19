@@ -1,4 +1,3 @@
-const countStore = require('./countStore');
 import commentSchemaModel from '../model/comment';
  
 const commentStore = {
@@ -23,6 +22,12 @@ const commentStore = {
     await commentSchemaModel.remove({ isUnder: theComment.id })
     return await commentSchemaModel.remove( {id: theComment.id})
     },
+  
+  async editCommentTitle(commentId, input) {
+    let comment = await commentSchemaModel.findOne({ id: commentId });
+    comment.title = input;
+    await comment.save();
+  },
 
   async createComment(id, titlee, commentWrittenBy, commentId) {
    let commentModel = new commentSchemaModel(); 

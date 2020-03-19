@@ -13,6 +13,7 @@ describe('Register', () => {
         it('check id is not within a-zA-Z0-9@ range', async()=> {
             id='#'
             const response = await register.Registration(id, password)
+            // expect(response).toEqual(expect.objectContaining({ Message: "Check Input", status: false }))
             expect(response.Message).toBe('Check Input');
             expect(response.status).toBe(false);
         })

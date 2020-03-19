@@ -51,8 +51,8 @@ if (process.env.NODE_ENV !== 'test') {
     console.log(`Listening on port ${process.env.PORT}...`);
   });
 }
-else {
-  mongoose.disconnect();
-}
+// else {
+//    mongoose.disconnect();
+// }
 
 export default app
