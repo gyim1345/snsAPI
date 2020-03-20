@@ -11,13 +11,37 @@ const postStore = {
   },
 
   async postsLength() {
-    return await postSchemaModel.count()
+    return await postSchemaModel.countDocuments()
   },
 
   async postForTag(tag) {
     return await postSchemaModel.find({ tag })
   },
-
+  
+  async getuserPosts(name) {
+    return await postSchemaModel.find({ userName:name });
+  },
+  
+  async getUserPostsLength(user) {
+    return (await postSchemaModel.findOne({ userName:user })).length;
+  },
+  
+  async getUserPosts(user) {
+    return await postSchemaModel.find({ userName:user });
+  },
+  
+  async getPost(id) {
+    return await postSchemaModel.find({ id:Number(id) });
+  },
+  
+  async getPostsFromArrayId(array) {
+    return await postSchemaModel.find({ id: { $in: array }});
+  },
+  
+  async getUserTaggedPosts( user ) { 
+    return await postSchemaModel.find({ tag: user });
+  },
+  
   async changeLike({ id }, currentUser) {
     let tempPost = {};
     const post = await postSchemaModel.findOne({ id: id }, (err, postModel) => { 
@@ -45,30 +69,6 @@ const postStore = {
     return result;
   },
 
-  async getuserPosts(name) {
-    return await postSchemaModel.find({ userName:name });
-  },
-
-  async getUserPostsLength(user) {
-    return await postSchemaModel.find({ userName:user });
-  },
-
-  async getUserPosts(user) {
-    return await postSchemaModel.find({ userName:user });
-  },
-
-  async getPost(id) {
-    return await postSchemaModel.find({ id:Number(id) });
-  },
-
-  async getPostsFromArrayId(array) {
-    return await postSchemaModel.find({ id: { $in: array }});
-  },
-
-  async getUserTaggedPosts( user ) { 
-    return await postSchemaModel.find({ tag: user });
-  },
-  
   async editPostTitle(input, posting) {
     return await postSchemaModel.findOne({ id: posting.id }, (err, postModel) => {
       postModel.title = input;

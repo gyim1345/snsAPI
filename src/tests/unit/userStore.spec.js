@@ -123,7 +123,7 @@ describe('userStore', () => {
             expect(validatePassword).toBe(true);
         })
 
-        it('returns true if input password matches database password of the following id', async () => {
+        it('returns false if input password matches database password of the following id', async () => {
             id = 'gibong'
             password = 'pwd1'
             const validatePassword = await userStore.checkPassword(id, password)
