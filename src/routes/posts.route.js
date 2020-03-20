@@ -47,15 +47,19 @@ router.post('/register', async (req, res) => {
   if (req.body === null) {
     return res.status(400).json({ message: 'no body found' })
   }
-  console.log('registered1')
+  
   const { id, password } = req.body;
-  console.log(id, password);
+  console.log(id, password)
   try {
-    const registration = await register.Registration(id, password)
-    if (!registration.status) {
-      return res.status(400).send(registration.Message);
+    const validability = await register.userIdValidation(id)
+    const availability = await register.userIdAvailability(id)
+    if(validability && availability) {
+      const registration = await register.registration(id,password) 
+      res.send(registration);
     }
-    res.send(registration);
+   else {
+      return res.status(400).send('Check Input');
+    }
   } catch (err) {
     return res.status(500).send(err);
   }
