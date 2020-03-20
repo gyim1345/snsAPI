@@ -1,15 +1,38 @@
 // import { checkOwnerShipOfPost, removeThis } from '../../services/remove'
 import remove from '../../services/remove'
 import postingStore from '../../repository/postingStore'
+import commentStore from '../../repository/commentStore'
 
 describe('remove service', () => {
-    let user;
-    let posting;
-    let indexOfCommentOnThisPosting;
+    let userName;
+    let posts;
+    let indexOfComment;
+    let post;
+    describe('checkIsPost', () => {
+
+        describe('when it is a post', () => {
+            it('returns true', () => {
+                const post = remove.checkIsPost(indexOfComment)
+                expect(post).toBe(true)
+            })
+        })
+
+        describe('when it is a comment', () => {
+            it('returns false', () => {
+                indexOfComment = 1;
+                const post = remove.checkIsPost(indexOfComment)
+                expect(post).toBe(false)
+            })
+        })
+
+
+    });
+
+
     describe('checkOwnerShipOfPost', () => {
         beforeEach(() => {
-            user = 'name@a.com';
-            posting = {
+            userName = 'name@a.com';
+            post = {
                 id: 0,
                 title: 'whatever',
                 imageUrl: 'whatever',
@@ -19,26 +42,39 @@ describe('remove service', () => {
             };
         })
 
-        describe('with inputs of posting, user, and undefined indexOfCommentOnThisPosting', () => {
+        describe('when it is a post', () => {
+            // beforeEach(() => {
+            // remove.checkIsPost = jest.fn().mockResolvedValue(true);
+            // })
 
-            it('is owner of post or comment ', async () => {
-                const ownership = remove.checkOwnerShipOfPost(posting, user, indexOfCommentOnThisPosting);
-                expect(ownership).toBe(true);
+            describe('with ownership', () => {
+                it('returns true', async () => {
+                    remove.checkIsPost = jest.fn().mockReturnValue(true);
+
+                    const ownership = await remove.checkOwnerShipOfPost(post, userName, indexOfComment);
+                    expect(ownership).toBe(true);
+                });
             });
-        });
 
-        describe('with inputs of posting, user of userName sameUser, and undefined indexOfCommentOnThisPosting when you have no ownership', () => {
-            it('is owner of post or comment', async () => {
-                posting.userName = 'name2@a.com'
-                const ownership = remove.checkOwnerShipOfPost(posting, user, indexOfCommentOnThisPosting);
-                expect(ownership).toBe(false);
+            describe('without ownership', () => {
+                it('returns false', async () => {
+                    remove.checkIsPost = jest.fn().mockReturnValue(true);
+
+                    post.userName = 'name2@a.com'
+                    const ownership = await remove.checkOwnerShipOfPost(post, userName, indexOfComment);
+                    expect(ownership).toBe(false);
+                });
             });
-        });
+        })
 
-        describe('with inputs of postings, user, and indexOfCommentOnThisPosting', () => {
-            it('is owner of post or comment', async () => {
-                posting =
-                    [{
+        describe('when it is a comment', () => {
+            beforeEach(() => {
+                remove.checkIsPost = jest.fn().mockResolvedValue(false);
+            })
+
+            describe('with ownership', () => {
+                beforeEach(() => {
+                    posts = [{
                         id: 0,
                         title: 'whatever',
                         imageUrl: 'whatever',
@@ -55,88 +91,112 @@ describe('remove service', () => {
                         tag: ['whatever']
                     }
                     ]
-                indexOfCommentOnThisPosting = 0;
-                const ownership = remove.checkOwnerShipOfPost(posting, user, indexOfCommentOnThisPosting);
-                expect(ownership).toBe(true);
+                    indexOfComment = 0;
+                })
+                it('returns true', async () => {
+                    const ownership = await remove.checkOwnerShipOfPost(posts, userName, indexOfComment);
+                    expect(ownership).toBe(true);
+                });
+            });
+
+            describe('without ownership', () => {
+                beforeEach(() => {
+                    userName = 'name@asd.com'
+                    posts =
+                        [{
+                            id: 0,
+                            title: 'whatever',
+                            imageUrl: 'whatever',
+                            userName: 'name2@a.com',
+                            like: ['whatever'],
+                            tag: ['whatever']
+                        },
+                        {
+                            id: 0,
+                            title: 'whatever',
+                            imageUrl: 'whatever',
+                            userName: 'name2@a.com',
+                            like: ['whatever'],
+                            tag: ['whatever']
+                        }
+                        ]
+                    indexOfComment = 0;
+
+                })
+                it('returns false', async () => {
+                    const ownership = await remove.checkOwnerShipOfPost(posts, userName, indexOfComment);
+                    expect(ownership).toBe(false);
+                });
             });
         });
-
-        describe('with inputs of postings, user, and indexOfCommentOnThisPosting when you have no ownership', () => {
-            it('is owner of post or comment', async () => {
-                posting =
-                    [{
-                        id: 0,
-                        title: 'whatever',
-                        imageUrl: 'whatever',
-                        userName: 'name2@a.com',
-                        like: ['whatever'],
-                        tag: ['whatever']
-                    },
-                    {
-                        id: 0,
-                        title: 'whatever',
-                        imageUrl: 'whatever',
-                        userName: 'name2@a.com',
-                        like: ['whatever'],
-                        tag: ['whatever']
-                    }
-                    ]
-                indexOfCommentOnThisPosting = 0;
-                const ownership = remove.checkOwnerShipOfPost(posting, user, indexOfCommentOnThisPosting);
-                expect(ownership).toBe(false);
-            });
-        });
-
     });
 
     describe('removeThis', () => {
 
-        describe('has ownership of post or commnet', () => {
+        describe('when it has ownership', () => {
+            describe('when it is a post', () => {
+                beforeEach(() => {
+                    userName = 'name@a.com';
+                    post = {
+                        id: 0,
+                        title: 'whatever',
+                        imageUrl: 'whatever',
+                        userName: 'name@a.com',
+                        like: ['whatever'],
+                        tag: ['whatever']
+                    };
+                    indexOfComment = undefined
+                    remove.checkOwnerShipOfPost = jest.fn().mockResolvedValue(true);
+                    postingStore.removePost = jest.fn().mockResolvedValue();
+                })
+
+                it('returns true and is removed', async () => {
+                    const response = await remove.removeThis(post, userName, indexOfComment)
+                    expect(response).toBe(true);
+                })
+            })
+
+            describe('when it not a post meaning it is a comment', () => {
+                beforeEach(() => {
+                    indexOfComment = 0;
+                    posts =
+                        [{
+                            id: 0,
+                            title: 'whatever',
+                            imageUrl: 'whatever',
+                            userName: 'name2@a.com',
+                            like: ['whatever'],
+                            tag: ['whatever']
+                        },
+                        {
+                            id: 1,
+                            title: 'whatever',
+                            imageUrl: 'whatever',
+                            userName: 'name2@a.com',
+                            like: ['whatever'],
+                            tag: ['whatever']
+                        }
+                        ]
+                    commentStore.removeComment = jest.fn().mockResolvedValue();
+                })
+                it('return posts with removed post', async () => {
+                    const response = await remove.removeThis(posts, userName, indexOfComment)
+                    expect(response).toEqual(
+                        expect.not.objectContaining(posts[0]),
+                    );
+                })
+            })
+        })
+
+
+        describe('without ownership', () => {
 
             beforeEach(() => {
-                user = 'name@a.com';
-                posting = {
-                    id: 0,
-                    title: 'whatever',
-                    imageUrl: 'whatever',
-                    userName: 'name@a.com',
-                    like: ['whatever'],
-                    tag: ['whatever']
-                };
-                indexOfCommentOnThisPosting = undefined
-                remove.checkOwnerShipOfPost = jest.fn().mockResolvedValue(true);
-                postingStore.removePost = jest.fn().mockResolvedValue();
+                remove.checkOwnerShipOfPost = jest.fn().mockResolvedValue(false)
             })
-
-            it('is post and is removed', async () => {
-                const response = await remove.removeThis(posting, user, indexOfCommentOnThisPosting)
-                expect(response).toBe(true);
-            })
-            
-            it('is comment and is removed', async () => {
-                indexOfCommentOnThisPosting = 0;
-                posting =
-                [{
-                    id: 0,
-                    title: 'whatever',
-                    imageUrl: 'whatever',
-                    userName: 'name2@a.com',
-                    like: ['whatever'],
-                    tag: ['whatever']
-                },
-                {
-                    id: 1,
-                    title: 'whatever',
-                    imageUrl: 'whatever',
-                    userName: 'name2@a.com',
-                    like: ['whatever'],
-                    tag: ['whatever']
-                }
-                ]
-                const response = await remove.removeThis(posting, user, indexOfCommentOnThisPosting)
-                expect(response).toEqual(
-                    expect.not.objectContaining(posting[0]),
-                  );
+            it('returns Message: you dont have permission', async () => {
+                const { Message } = await remove.removeThis(post, userName, indexOfComment);
+                expect(Message).toBe("You don't have permission")
             })
         })
     })
