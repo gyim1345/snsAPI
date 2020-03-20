@@ -65,7 +65,7 @@ describe('postingStore', () => {
     describe('postsLength', () => {
         it('return length of all posts in db', async () => {
             const postList = await postingStore.postsLength();
-            expect(postList).toBeDefined();
+            expect(postList).toBe(1);
         })
     });
 

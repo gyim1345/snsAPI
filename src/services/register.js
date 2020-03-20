@@ -4,12 +4,10 @@ const userStore = require('../repository/userStore')
 
   async userIdValidation(id) {
     let regExp = /\b^[A-Za-z0-9.-]+@[A-Za-z0-9.-]+\.[A-Za-z]{2,4}$\b/
-    console.log('asdasd', regExp.test(id))
     return regExp.test(id);
   },
 
   async userIdAvailability(id) {
-    console.log('asdasdasdasd', await userStore.checkIdIsRegistered(id))
     return await userStore.checkIdIsRegistered(id)
   },
 
