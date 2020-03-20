@@ -7,7 +7,7 @@ describe('userStore', () => {
     let postModel;
     let userModel;
     let userInfo;
-    let posting;
+    let posts;
     beforeEach(async () => {
         db.dropDatabase();
         postModel = new postSchemaModel();
@@ -16,20 +16,20 @@ describe('userStore', () => {
         postModel.imageUrl = 'htttp';
         postModel.userName = 'naeeeeeeme';
         postModel.like = ['eeeeeee'];
-        postModel.tag = ['gibong'];
+        postModel.tag = ['gibong@gmail.com'];
         await postModel.save();
 
-        posting = {
+        posts = {
             id: 3,
             title: 'eeeeeee',
             imageUrl: 'htttp',
             userName: 'naeeeeeeme',
             like: ['eeeeeee'],
-            tag: ['gibong']
+            tag: ['gibong@gmail.com']
         }
 
         userModel = new userSchemaModel();
-        userModel.name = 'gibong';
+        userModel.name = 'gibong@gmail.com';
         userModel.userId = 33;
         userModel.userFollow = ['eeee'];
         userModel.userURL = 'http';
@@ -40,7 +40,7 @@ describe('userStore', () => {
         await userModel.save();
 
         userInfo = {
-            name: 'gibong',
+            name: 'gibong@gmail.com',
             userId: 33,
             userFollow: ['eeee'],
             userURL: 'http',
@@ -64,12 +64,12 @@ describe('userStore', () => {
     })
 
     describe('getUserImage', () => {
-        let user;
+        let userName;
 
         it('returns userImage url', async () => {
-            user = 'gibong'
-            const userImage = await userStore.getUserImage(user);
-            expect(userImage).toBe(userInfo.userURL);
+            userName = 'gibong@gmail.com'
+            const userImageURL = await userStore.getUserImage(userName);
+            expect(userImageURL).toBe(userInfo.userURL);
         })
     })
 
@@ -77,7 +77,7 @@ describe('userStore', () => {
 
         describe('when user exists', () => {
             it('returns followers of user', async () => {
-                let userName = 'gibong'
+                let userName = 'gibong@gmail.com'
                 const userFollow = await userStore.getFollowerFromUser(userName);
                 expect(userFollow[0]).toBe(userInfo.userFollow[0]);
             })
@@ -93,11 +93,11 @@ describe('userStore', () => {
     })
 
     describe('getRandomUser', () => {
-        let user;
+        let userName;
         it('returns users excluding self', async () => {
-            user = 'gibong';
-            const users = await userStore.getRandomUser(user);
-            expect(users).toEqual(expect.not.objectContaining(posting))
+            userName = 'gibong@gmail.com';
+            const users = await userStore.getRandomUser(userName);
+            expect(users).toEqual(expect.not.objectContaining(posts))
         })
     })
 
@@ -105,7 +105,7 @@ describe('userStore', () => {
         let id;
         describe('when the specific id is registered', () => {
             it('returns false', async () => {
-                id = 'gibong';
+                id = 'gibong@gmail.com';
                 const registered = await userStore.checkIdIsRegistered(id);
                 expect(registered).toBe(false)
             })
@@ -123,7 +123,7 @@ describe('userStore', () => {
         let password;
         describe('input password matches database password of the id', () => {
         it('returns true', async () => {
-            id = 'gibong'
+            id = 'gibong@gmail.com'
             password = 'pwd'
             const validatePassword = await userStore.checkPassword(id, password)
             expect(validatePassword).toBe(true);
@@ -131,7 +131,7 @@ describe('userStore', () => {
     })
     describe('input password does not match the database password of the id', () => {
         it('returns false', async () => {
-            id = 'gibong'
+            id = 'gibong@gmail.com'
             password = 'pwd1'
             const validatePassword = await userStore.checkPassword(id, password)
             expect(validatePassword).toBe(false);
@@ -140,31 +140,31 @@ describe('userStore', () => {
     })
     describe('addFollower', () => {
         let follower;
-        let currentUser;
+        let userName;
         it('return userinfo with follower added to its userFollow property', async () => {
             follower = 'i am follower'
-            currentUser = 'gibong'
-            const userInfoWithAddedFollower = await userStore.addFollower(follower, currentUser)
+            userName = 'gibong@gmail.com'
+            const userInfoWithAddedFollower = await userStore.addFollower(follower, userName)
             expect(userInfoWithAddedFollower.userFollow).toEqual(expect.arrayContaining([follower]))
         })
     })
 
     describe('addPostIdToScrap', () => {
         let Id;
-        let currentUser;
+        let userName;
         describe('when it is not scrapped', () => {
         it('returns a message saying scrapped', async () => {// question addPostIdToScrap 가 하는 행동 "after adding scrap id of Id to user property of scrap"  이것도 넣어야하나??
             Id = 10;
-            currentUser = 'gibong'
-            const { message } = await userStore.addPostIdToScrap(Id, currentUser);
+            userName = 'gibong@gmail.com'
+            const { message } = await userStore.addPostIdToScrap(Id, userName);
             expect(message).toBe("scrapped");
         })
     })
     describe('when it is already scrapped', () => {
         it('returns a message saying already scrapped', async () => {
             Id = 3;
-            currentUser = 'gibong'
-            const { message } = await userStore.addPostIdToScrap(Id, currentUser);
+            userName = 'gibong@gmail.com'
+            const { message } = await userStore.addPostIdToScrap(Id, userName);
             expect(message).toBe("already scrapped");
         })
     })
@@ -174,7 +174,7 @@ describe('userStore', () => {
         let user;
 
         it('returns scrapped ids for the given user', async () => {
-            user = 'gibong';
+            user = 'gibong@gmail.com';
             const scrapIds = await userStore.getUserScrapIds(user);
             expect(scrapIds).toEqual(expect.arrayContaining(userInfo.scrap))
         })
@@ -184,7 +184,7 @@ describe('userStore', () => {
         let user;
 
         it('returns multiple infos of the user', async () => {
-            user = 'gibong';
+            user = 'gibong@gmail.com';
             const { image, follower, followerNumber, userNickName, userIntroductory } = await userStore.getUserInfo(user);
             expect(image).toBe(userInfo.userURL);
             expect(follower).toEqual(expect.arrayContaining(userInfo.userFollow));
@@ -198,7 +198,7 @@ describe('userStore', () => {
         let user;
         let input;
         it('returns modified nick name of the specific user', async () => {
-            user = 'gibong';
+            user = 'gibong@gmail.com';
             input = 'bongbongg'
             const userNickName = await userStore.editUserNickName(user, input);
             expect(userNickName).toBe(input);
@@ -209,7 +209,7 @@ describe('userStore', () => {
         let user;
         let input;
         it('returns modified introductory of the specific user', async () => {
-            user = 'gibong';
+            user = 'gibong@gmail.com';
             input = 'introducing bongbong'
             const userIntroductory = await userStore.editUserIntroductory(user, input);
             expect(userIntroductory).toBe(input);
@@ -218,15 +218,15 @@ describe('userStore', () => {
 
     describe('editUserImage', () => {
         let user;
-        let input;
+        let imageURL;
         it('returns modified image of the specific user', async () => {
-            input = 'http2'
+            imageURL = 'http2'
             user = {
-                user: 'gibong',
-                imageUrl: input
+                user: 'gibong@gmail.com',
+                imageUrl: imageURL
             };
-            const userInfo = await userStore.editUserImage(user, input);
-            expect(userInfo.userURL).toBe(input);
+            const userInfo = await userStore.editUserImage(user, imageURL);
+            expect(userInfo.userURL).toBe(imageURL);
         })
     })
 
@@ -235,12 +235,12 @@ describe('userStore', () => {
         let pwd;
         let createdUser;
         it('returns created user using input id and pwd based on userSchemaModel', async () => {
-            id = 'gibong';
+            id = 'gibong@gmail.com';
             pwd = 'whatever';
             createdUser = {
                 userFollow: ['Bongstagram'],
                 scrap: [],
-                name: 'gibong',
+                name: 'gibong@gmail.com',
                 userURL: 'http://localhost:3000/static/images/profilepicture.png',
                 password: 'whatever',
                 nickName: '',

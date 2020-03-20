@@ -7,10 +7,6 @@ const userStore = {
     return await userSchemaModel.find();
   },
 
-  // async getUserImage(user) {
-  //   return (await userSchemaModel.findOne({name:user})).userURL
-  // },
-
   async getFollowerFromUser(userName) {
     if (userName !== undefined) {
       const [ userInfo ]  = await userSchemaModel.find({ name: userName })
@@ -20,15 +16,10 @@ const userStore = {
     return "empty";
   },
 
-//   async getRandomUser(user) {
-//     const users = await userSchemaModel.find()
-//     return users.filter(it => !it.userFollow.includes(user)&& it.name !== user && it.name !== '');
-// },
-
-async getRandomUser(user) {
+async getRandomUser(userName) {
   const users = await userSchemaModel.find()
-  const [ currentUserInfo ] = users.filter(it => it.name === user);
-  const randomUser = users.filter(it => !currentUserInfo.userFollow.includes(it.name) && it.name !== user)
+  const [ currentUserInfo ] = users.filter(it => it.name === userName);
+  const randomUser = users.filter(it => !currentUserInfo.userFollow.includes(it.name) && it.name !== userName)
   return randomUser
 },  
 
@@ -45,8 +36,8 @@ async getUserImage(userName) {
   // async getUserPassword(userName) {
   //   return await userSchemaModel.find({ name: userName }).password;
   // },
-  async checkIdIsRegistered(Id) {
-    return (await userSchemaModel.findOne({ name: Id })) === null
+  async checkIdIsRegistered(userName) {
+    return (await userSchemaModel.findOne({ name: userName })) === null
   },
 
   async checkPassword(Id, Password) {
@@ -72,10 +63,10 @@ async getUserImage(userName) {
 
 
 
-  async addPostIdToScrap(Id, currentUser) {
-    const userInfo = await userSchemaModel.findOne({ name: currentUser })
-    if(!userInfo.scrap.includes(Id)){
-      userInfo.scrap.push(Id);
+  async addPostIdToScrap(scrapId, userName) {
+    const userInfo = await userSchemaModel.findOne({ name: userName })
+    if(!userInfo.scrap.includes(scrapId)){
+      userInfo.scrap.push(scrapId);
       await userInfo.save();
       return {message: "scrapped"}
       }
@@ -84,14 +75,14 @@ async getUserImage(userName) {
       }
   },
 
-  async getUserScrapIds(user) {
-    const userInfo = await userSchemaModel.findOne({ name: user });
+  async getUserScrapIds(userName) {
+    const userInfo = await userSchemaModel.findOne({ name: userName });
     return userInfo.scrap;
   },
 
  
-  async getUserInfo(user) {
-    const userInfo = await userSchemaModel.findOne({ name: user });
+  async getUserInfo(userName) {
+    const userInfo = await userSchemaModel.findOne({ name: userName });
     const image = await userInfo.userURL;
     const follower = await userInfo.userFollow;
     const followerNumber = await follower.length;
@@ -100,18 +91,18 @@ async getUserImage(userName) {
     return { image, follower, followerNumber, userNickName, userIntroductory }
   },
 
-  async editUserNickName(user,input) {
-    let userInfo = await userSchemaModel.findOne({ name: user });
-    userInfo.nickName = input
+  async editUserNickName(userName, nickName) {
+    let userInfo = await userSchemaModel.findOne({ name: userName });
+    userInfo.nickName = nickName
     await userInfo.save();
-    return input;
+    return nickName;
   },
 
-  async editUserIntroductory(user, input) {
-    let userInfo = await userSchemaModel.findOne({ name: user });
-    userInfo.introductory = input
+  async editUserIntroductory(userName, Introductory) {
+    let userInfo = await userSchemaModel.findOne({ name: userName });
+    userInfo.introductory = Introductory
     await userInfo.save();
-    return input;
+    return Introductory;
   },
 
   async editUserImage(user,imageUrl) {
