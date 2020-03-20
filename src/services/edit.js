@@ -2,40 +2,39 @@ const commentStore = require('../repository/commentStore');
 const postingStore = require('../repository/postingStore');
 
 const edit = {
-  checkOwnershipOfPost(posting, currentUser) {
-    return posting.userName !== currentUser;
+  checkOwnershipOfPost(posting, username) {
+    return posting.userName !== username;
   },
 
-  async editPost(input, posting) {
-    let post = await postingStore.editPostTitle(input,posting)
-    post.title = input
-    console.log(post)
-    return [post];
+  async editPost(title, post) {
+    let editedPost = await postingStore.editPostTitle(title,post)
+    editedPost.title = title
+    return [editedPost];
   },
 
-  async editComment(input, posting, indexOfCommentOnThisPosting) {
-    const commentId = posting[indexOfCommentOnThisPosting].id
-    await commentStore.editCommentTitle(commentId,input)
-    posting[indexOfCommentOnThisPosting].title = input
-    return posting;
+  async editComment(title, posts, indexOfComment) {
+    const commentId = posts[indexOfComment].id
+    await commentStore.editCommentTitle(commentId,title)
+    posts[indexOfComment].title = title
+    return posts;
   },
 
   
-  checkIfPostOrComment(indexOfCommentOnThisPosting) {
-    return indexOfCommentOnThisPosting === undefined
+  checkIfPostOrComment(indexOfComment) {
+    return indexOfComment === undefined
   },
 
-  async editThis(input, posting, currentUser, indexOfCommentOnThisPosting) {
+  async editThis(title, post, userName, indexOfComment) {
     
-    if (await this.checkOwnershipOfPost(posting[indexOfCommentOnThisPosting] || posting, currentUser)) {
+    if (await this.checkOwnershipOfPost(post[indexOfComment] || post, userName)) {
       return { Message: "you don't have permission", owned: false };
     }
-    if (await this.checkIfPostOrComment(indexOfCommentOnThisPosting)) {
-      posting = await this.editPost(input, posting);
-      return posting;
+    if (await this.checkIfPostOrComment(indexOfComment)) {
+      post = await this.editPost(title, post);
+      return post;
     } else {
-      posting = await this.editComment(input, posting, indexOfCommentOnThisPosting);
-      return posting;
+      post = await this.editComment(title, post, indexOfComment);
+      return post;
     }
   }
 }

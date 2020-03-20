@@ -3,196 +3,209 @@ import postingStore from '../../repository/postingStore';
 import commentStore from '../../repository/commentStore';
 
 describe('edit', () => {
-    let currentUser;
-    let posting;
-    
+    let userName;
+    let post;
+    // TODO: userName 을 userName으로 바꿀것
     describe('checkOwnershipOfPost', () => {
         beforeEach(() => {
-            currentUser = 'username';
-    
-            posting = {
+            userName = 'username';
+
+            post = {
                 id: 2,
                 title: 'testTitle',
                 imageUrl: 'http://localhost:3000/test',
-                userName: currentUser,
+                userName: userName,
                 like: ['test'],
                 tag: ['test'],
             }
         })
 
-        it('returns false when posting is owned by currentUser', async () => {
-            currentUser = 'asdas'
-            const response = edit.checkOwnershipOfPost(posting, currentUser)
-            expect(response).toBe(true)
-        })
+        describe('with ownership', () => {
 
-        it('returns false when posting is owned by currentUser', async () => {
-            const response = edit.checkOwnershipOfPost(posting, currentUser)
-            expect(response).toBe(false)
-        })
-    })
-    
+            it('returns false', async () => {
+                const hasOwnership = edit.checkOwnershipOfPost(post, userName)
+                expect(hasOwnership).toBe(false)
+            });
+        });
+
+        describe('without ownership', () => {
+            beforeEach(() => {
+                userName = 'OTHER'
+            });
+
+            it('returns true', async () => {
+                const hasOwnership = edit.checkOwnershipOfPost(post, userName)
+                expect(hasOwnership).toBe(true)
+            })
+        });
+    });
+
     describe('editPost', () => {
-        let input;
-
+        let title;
+        //TODO: input 을 다 title 로 바꾸기
         beforeEach(() => {
-            input = 'newInput';
+            title = 'newInput';
             postingStore.editPostTitle = jest.fn().mockResolvedValue(
-                posting = 
+                post =
                 {
                     id: 2,
-                    title: input,
+                    title: title,
                     imageUrl: 'http://localhost:3000/test',
-                    userName: currentUser,
+                    userName: userName,
                     like: ['test'],
                     tag: ['test'],
                 }
             )
         })
-        
-        it('returns post with title modified to input', async() => {
-            const [post] = await edit.editPost(input, posting);
-            expect(post.title).toBe(input)
+        //question describe로 빼서 with title modified to input => it returns post 라고 하면 문맥상 이상함 그래도 바꿔도 되는지??
+        it('returns post with title modified to input', async () => {
+            const [posts] = await edit.editPost(title, post);
+            expect(posts.title).toBe(title)
         })
     })
 
     describe('editComment', () => {
-        let input;
+        let title;
         let commentId;
-        let indexOfCommentOnThisPosting; 
+        let indexOfComment;
         let comment;
         beforeEach(() => {
-            input = 'newInput';
+            title = 'newtitle';
             commentId = 2;
-            indexOfCommentOnThisPosting = 0;
-            posting = [ {
+            indexOfComment = 0;
+            post = [{
                 id: 2,
                 postLId: 1,
-                title: input,
-                userName: currentUser,
+                title: title,
+                userName: userName,
                 like: ['test'],
                 isUnder: 1
             },
             {
                 id: 1,
                 postLId: 1,
-                title: input,
-                userName: currentUser,
+                title: title,
+                userName: userName,
                 like: ['test'],
                 isUnder: 2
             }
-        ];
+            ];
             commentStore.editCommentTitle = jest.fn().mockResolvedValue(
-                comment = 
+                comment =
                 {
                     id: commentId,
                     postLId: 1,
-                    title: input,
-                    userName: currentUser,
+                    title: title,
+                    userName: userName,
                     like: ['test'],
                     isUnder: 1
                 }
             )
         })
-        
-        it('returns postings including the comment with title modified to input', async() => {
-            const post = await edit.editComment(input, posting, indexOfCommentOnThisPosting);
-            expect(posting[indexOfCommentOnThisPosting].title).toBe(input)
+
+        it('returns posts including the comment with title modified to title', async () => {
+            const posts = await edit.editComment(title, post, indexOfComment);
+            expect(posts[indexOfComment].title).toBe(title)
         })
     })
 
     describe('checkIfPostOrComment', () => {
-        let indexOfCommentOnThisPosting
+        let indexOfComment;
 
-        it('returns true which means it is not a comment when given input indexofCommentOnThisPosting is undefined', async () => {
-            const response = await edit.checkIfPostOrComment(indexOfCommentOnThisPosting)
-            expect(response).toBe(true)
+        describe('when it is post', () => {
+            it('returns true ', async () => {
+                const response = await edit.checkIfPostOrComment(indexOfComment)
+                expect(response).toBe(true)
+            })
         })
-
-        it('returns false which means it is a comment when given input indexofCommentOnThisPosting of anything defined', async () => {
-            indexOfCommentOnThisPosting = 1;
-            const response = await edit.checkIfPostOrComment(indexOfCommentOnThisPosting)
-            expect(response).toBe(false)
+        describe('when it is comment', () => {
+            it('returns false', async () => {
+                indexOfComment = 1;
+                const response = await edit.checkIfPostOrComment(indexOfComment)
+                expect(response).toBe(false)
+            })
         })
     })
 
     describe('editThis', () => {
-        let input;
-        let indexOfCommentOnThisPosting;
+        let title;
+        let indexOfComment;
         beforeEach(() => {
-            input = 'input of whatever';
+            title = 'title of whatever';
             edit.checkOwnershipOfPost = jest.fn().mockResolvedValue(true)
         })
 
-        it('returns message and status when checkOwnershipOfPost returns false ', async () => {
-            const response = await edit.editThis(input, posting, currentUser, indexOfCommentOnThisPosting)
-            expect(response).toEqual(expect.objectContaining({ Message: "you don't have permission", owned: false }))
-        })
-
-        describe('when it has ownership of that post or comment', () => {
+        describe('with ownership', () => {
 
             beforeEach(() => {
                 edit.checkOwnershipOfPost = jest.fn().mockResolvedValue(false)
             })
-            
-            it('returns post with edited title changed to input considering its a post', async() => {
-                edit.checkIfPostOrComment = jest.fn().mockResolvedValue(true)
-                edit.editPost = jest.fn().mockResolvedValue(
-                posting = {
-                    id: '2',
-                    title: input,
-                    imageUrl: 'http://localhost:3000/test',
-                    userName: currentUser,
-                    like: ['test'],
-                    tag: ['test'],
+            describe('when it is a post', () => {
+                it('returns post with edited title changed to given title', async () => {
+                    edit.checkIfPostOrComment = jest.fn().mockResolvedValue(true)
+                    edit.editPost = jest.fn().mockResolvedValue(
+                        post = {
+                            id: '2',
+                            title: title,
+                            imageUrl: 'http://localhost:3000/test',
+                            userName: userName,
+                            like: ['test'],
+                            tag: ['test'],
+                        })
+
+                    const response = await edit.editThis(title, post, userName, indexOfComment)
+                    expect(response.title).toBe(title)
                 })
-
-                const response = await edit.editThis(input, posting, currentUser, indexOfCommentOnThisPosting)
-                expect(response.title).toBe(input)
             })
-
-            it('returns posts with edited title changed to input considering its a comment', async() => {
-                indexOfCommentOnThisPosting = 1;
-                posting = [ {
-                    id: 2,
-                    postLId: 1,
-                    title: input,
-                    userName: currentUser,
-                    like: ['test'],
-                    isUnder: 1
-                },
-                {
-                    id: 1,
-                    postLId: 1,
-                    title: input,
-                    userName: currentUser,
-                    like: ['test'],
-                    isUnder: 2
-                }
-            ];
-                edit.checkIfPostOrComment = jest.fn().mockResolvedValue(false)
-                edit.editComment = jest.fn().mockResolvedValue(
-                    posting = [ {
+            describe('when it is a comment', () => {
+                it('returns posts with edited title changed to given title', async () => {
+                    indexOfComment = 1;
+                    post = [{
                         id: 2,
                         postLId: 1,
-                        title: input,
-                        userName: currentUser,
+                        title: title,
+                        userName: userName,
                         like: ['test'],
                         isUnder: 1
                     },
                     {
                         id: 1,
                         postLId: 1,
-                        title: input,
-                        userName: currentUser,
+                        title: title,
+                        userName: userName,
                         like: ['test'],
                         isUnder: 2
                     }
-                ]
-                )
+                    ];
+                    edit.checkIfPostOrComment = jest.fn().mockResolvedValue(false)
+                    edit.editComment = jest.fn().mockResolvedValue(
+                        post = [{
+                            id: 2,
+                            postLId: 1,
+                            title: title,
+                            userName: userName,
+                            like: ['test'],
+                            isUnder: 1
+                        },
+                        {
+                            id: 1,
+                            postLId: 1,
+                            title: title,
+                            userName: userName,
+                            like: ['test'],
+                            isUnder: 2
+                        }]
+                    )
 
-                const response = await edit.editThis(input, posting, currentUser, indexOfCommentOnThisPosting)
-                expect(response[indexOfCommentOnThisPosting].title).toBe(input)
+                    const response = await edit.editThis(title, post, userName, indexOfComment)
+                    expect(response[indexOfComment].title).toBe(title)
+                })
+            })
+        })
+        describe('without ownership', () => {
+            it('returns { Message: you dont have permission, owned: false }', async () => {
+                const response = await edit.editThis(title, post, userName, indexOfComment)
+                expect(response).toEqual(expect.objectContaining({ Message: "you don't have permission", owned: false }))
             })
         })
     })
