@@ -12,16 +12,16 @@ describe('remove service', () => {
 
         describe('when it is a post', () => {
             it('returns true', () => {
-                const post = remove.checkIsPost(indexOfComment)
-                expect(post).toBe(true)
+                const isPost = remove.checkIsPost(indexOfComment)
+                expect(isPost).toBe(true)
             })
         })
 
         describe('when it is a comment', () => {
             it('returns false', () => {
                 indexOfComment = 1;
-                const post = remove.checkIsPost(indexOfComment)
-                expect(post).toBe(false)
+                const isPost = remove.checkIsPost(indexOfComment)
+                expect(isPost).toBe(false)
             })
         })
 
@@ -43,16 +43,13 @@ describe('remove service', () => {
         })
 
         describe('when it is a post', () => {
-            // beforeEach(() => {
-            // remove.checkIsPost = jest.fn().mockResolvedValue(true);
-            // })
 
             describe('with ownership', () => {
                 it('returns true', async () => {
                     remove.checkIsPost = jest.fn().mockReturnValue(true);
 
-                    const ownership = await remove.checkOwnerShipOfPost(post, userName, indexOfComment);
-                    expect(ownership).toBe(true);
+                    const hasOwnership = await remove.checkOwnerShipOfPost(post, userName, indexOfComment);
+                    expect(hasOwnership).toBe(true);
                 });
             });
 
@@ -61,8 +58,8 @@ describe('remove service', () => {
                     remove.checkIsPost = jest.fn().mockReturnValue(true);
 
                     post.userName = 'name2@a.com'
-                    const ownership = await remove.checkOwnerShipOfPost(post, userName, indexOfComment);
-                    expect(ownership).toBe(false);
+                    const hasOwnership = await remove.checkOwnerShipOfPost(post, userName, indexOfComment);
+                    expect(hasOwnership).toBe(false);
                 });
             });
         })
@@ -94,8 +91,8 @@ describe('remove service', () => {
                     indexOfComment = 0;
                 })
                 it('returns true', async () => {
-                    const ownership = await remove.checkOwnerShipOfPost(posts, userName, indexOfComment);
-                    expect(ownership).toBe(true);
+                    const hasOwnership = await remove.checkOwnerShipOfPost(posts, userName, indexOfComment);
+                    expect(hasOwnership).toBe(true);
                 });
             });
 
@@ -124,8 +121,8 @@ describe('remove service', () => {
 
                 })
                 it('returns false', async () => {
-                    const ownership = await remove.checkOwnerShipOfPost(posts, userName, indexOfComment);
-                    expect(ownership).toBe(false);
+                    const hasOwnership = await remove.checkOwnerShipOfPost(posts, userName, indexOfComment);
+                    expect(hasOwnership).toBe(false);
                 });
             });
         });
@@ -151,8 +148,8 @@ describe('remove service', () => {
                 })
 
                 it('returns true and is removed', async () => {
-                    const response = await remove.removeThis(post, userName, indexOfComment)
-                    expect(response).toBe(true);
+                    const isRemoved = await remove.removeThis(post, userName, indexOfComment)
+                    expect(isRemoved).toBe(true);
                 })
             })
 
@@ -180,8 +177,8 @@ describe('remove service', () => {
                     commentStore.removeComment = jest.fn().mockResolvedValue();
                 })
                 it('return posts with removed post', async () => {
-                    const response = await remove.removeThis(posts, userName, indexOfComment)
-                    expect(response).toEqual(
+                    const posts = await remove.removeThis(posts, userName, indexOfComment)
+                    expect(posts).toEqual(
                         expect.not.objectContaining(posts[0]),
                     );
                 })
