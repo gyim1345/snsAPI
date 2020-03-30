@@ -18,16 +18,18 @@ const commentStore = {
     return await commentSchemaModel.findOne( {id: id})
   },
 
-  async removeComment(theComment) {
-    await commentSchemaModel.remove({ isUnder: theComment.id })
-    return await commentSchemaModel.remove( {id: theComment.id})
-    },
-  
   async editCommentTitle(commentId, input) {
     let comment = await commentSchemaModel.findOne({ id: commentId });
     comment.title = input;
     await comment.save();
+    return comment;
   },
+
+  async removeComment(theComment) {
+    await commentSchemaModel.deleteOne({ isUnder: theComment.id })
+    return await commentSchemaModel.deleteOne( {id: theComment.id})
+    },
+  
 
   async createComment(id, titlee, commentWrittenBy, commentId) {
    let commentModel = new commentSchemaModel(); 
@@ -37,7 +39,8 @@ const commentStore = {
    commentModel.userName = commentWrittenBy;
    commentModel.like = [];
    commentModel.isUnder = commentId;
-   commentModel.save();
+   await commentModel.save();
+   return commentModel
   }
 
 
