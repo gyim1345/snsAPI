@@ -23,7 +23,7 @@ const postStore = {
   },
   
   async getUserPostsLength(user) {
-    return (await postSchemaModel.findOne({ userName:user })).length;
+    return (await postSchemaModel.find({ userName:user })).length;
   },
   
   async getUserPosts(user) {
@@ -44,16 +44,15 @@ const postStore = {
   
   async changeLike({ id }, currentUser) {
     let tempPost = {};
-    const post = await postSchemaModel.findOne({ id: id }, (err, postModel) => { 
-      
-      if (!postModel.like.includes(currentUser)) {
-        postModel.like = [...postModel.like, currentUser];
+    const post = await postSchemaModel.findOne({ id: id })
+      if (!post.like.includes(currentUser)) {
+        post.like = [...post.like, currentUser];
       } else {
-        postModel.like = postModel.like.filter( user => user !== currentUser);
+        post.like = post.like.filter( user => user !== currentUser);
       }
-      tempPost = postModel;
-      postModel.save({});
-  })
+      tempPost = post;
+      await post.save({});
+ 
 
     return tempPost;
   },
@@ -61,19 +60,21 @@ const postStore = {
 
   async getuserTimeLinePosts(user) {
     const follower = await userStore.getFollowerFromUser(user);
+    const userPosts = await postStore.getuserPosts(user)
    let result = [];
+    console.log(follower)
    for( let i = 0; i< follower.length; i++ ) {
-     result = [...result , ...(await this.getuserPosts(follower[i]).then())];
+     result = [...userPosts , ...(await this.getuserPosts(follower[i]).then())];
    }
-
-    return result;
+   return result;
   },
 
   async editPostTitle(input, posting) {
-    return await postSchemaModel.findOne({ id: posting.id }, (err, postModel) => {
+      const postModel = await postSchemaModel.findOne({ id: posting.id })
       postModel.title = input;
-      postModel.save();
-    })
+      await postModel.save();
+      return postModel
+  
   },
 
   async createPost(recievedTitle, name, url, inputTag) {
@@ -85,12 +86,11 @@ const postStore = {
     postModel.like = [];
     postModel.tag = [inputTag];
     await postModel.save();
-    console.log(postModel);
     return postModel
    },
     
   async removePost(id) {
-    await postSchemaModel.remove({ id:Number(id) })
+    await postSchemaModel.deleteOne({ id:Number(id) })
   }
 };
 

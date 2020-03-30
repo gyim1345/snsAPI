@@ -177,8 +177,8 @@ describe('remove service', () => {
                     commentStore.removeComment = jest.fn().mockResolvedValue();
                 })
                 it('return posts with removed post', async () => {
-                    const posts = await remove.removeThis(posts, userName, indexOfComment)
-                    expect(posts).toEqual(
+                    const post = await remove.removeThis(posts, userName, indexOfComment)
+                    expect(post).toEqual(
                         expect.not.objectContaining(posts[0]),
                     );
                 })

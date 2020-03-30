@@ -42,7 +42,7 @@ describe('login', () => {
              password = 1;
         })
 
-        describe('when password validation succeds', () => {
+        describe('when password validation succeeds', () => {
             beforeEach(()=> {
                 login.checkPassword = jest.fn().mockResolvedValue(true)
             })

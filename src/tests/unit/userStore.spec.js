@@ -1,33 +1,12 @@
 import { db } from '../../index';
 import userStore from '../../repository/userStore';
-import postSchemaModel from '../../model/post';
 import userSchemaModel from '../../model/user';
 
 describe('userStore', () => {
-    let postModel;
     let userModel;
     let userInfo;
-    let posts;
     beforeEach(async () => {
-        db.dropDatabase();
-        postModel = new postSchemaModel();
-        postModel.id = 3;
-        postModel.title = 'eeeeeee';
-        postModel.imageUrl = 'htttp';
-        postModel.userName = 'naeeeeeeme';
-        postModel.like = ['eeeeeee'];
-        postModel.tag = ['gibong@gmail.com'];
-        await postModel.save();
-
-        posts = {
-            id: 3,
-            title: 'eeeeeee',
-            imageUrl: 'htttp',
-            userName: 'naeeeeeeme',
-            like: ['eeeeeee'],
-            tag: ['gibong@gmail.com']
-        }
-
+        await db.dropDatabase();
         userModel = new userSchemaModel();
         userModel.name = 'gibong@gmail.com';
         userModel.userId = 33;
@@ -52,6 +31,8 @@ describe('userStore', () => {
     })
 
     afterAll(async () => {
+        await db.dropDatabase();
+
         await db.close();
     });
 
@@ -97,7 +78,7 @@ describe('userStore', () => {
         it('returns users excluding self', async () => {
             userName = 'gibong@gmail.com';
             const users = await userStore.getRandomUser(userName);
-            expect(users).toEqual(expect.not.objectContaining(posts))
+            expect(users).toEqual(expect.not.objectContaining(userInfo))
         })
     })
 

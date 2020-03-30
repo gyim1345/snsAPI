@@ -6,9 +6,7 @@ const router = express.Router();
 
 router.post('/:user', async (req, res) => {
   const user = req.session.user.Id;
-  const userPosts = await postStore.getuserPosts(user);
-  const friendPosts = await postStore.getuserTimeLinePosts(user);
-  const posts = [...userPosts, ...friendPosts];
+  const posts = await postStore.getuserTimeLinePosts(user);
   res.send({ posts });
 }
 );
