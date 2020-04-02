@@ -25,7 +25,6 @@ const edit = {
   },
 
   async editThis(title, post, userName, indexOfComment) {
-    
     if (await this.checkOwnershipOfPost(post[indexOfComment] || post, userName)) {
       return { Message: "you don't have permission", owned: false };
     }

@@ -7,7 +7,7 @@ const commentStore = {
   },
 
   async commentsLength() {
-    return (await commentSchemaModel.find()).length;
+    return await commentSchemaModel.countDocuments();
   },
 
   async getCommentFromPostId(postId) {
@@ -41,8 +41,12 @@ const commentStore = {
    commentModel.isUnder = commentId;
    await commentModel.save();
    return commentModel
-  }
+  },
 
+  async createAndReturnCommentsOfTheSpecificId(id, titlee, commentWrittenBy, commentId) {
+    await this.createComment(id, titlee, commentWrittenBy, commentId)
+    return await this.getCommentFromPostId(id)
+  }
 
 };
 

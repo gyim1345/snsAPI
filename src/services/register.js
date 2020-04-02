@@ -12,7 +12,11 @@ const userStore = require('../repository/userStore')
   },
 //TODO: login처럼 route 가 아닌 서비스에서 하기.
   async registration(id, password) {
+    const validability = await this.userIdValidation(id)
+    const availability = await this.userIdAvailability(id)
+    if(validability && availability) {
     return await userStore.createUser(id, password)
+   }
   },
   
   // async Registration(id, password) {

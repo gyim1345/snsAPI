@@ -12,24 +12,24 @@ router.post('/:user', async (req, res) => {
 );
 
 router.post('/', (req, res) => {
-  if (req.session.user.Id === null) {
-    return res.status(500).json({ message: 'No session Id Found' })
+  try {
+    const response = req.session.user.Id
+    res.send({ response });
+  } catch (err) {
+    if (req.session.user === undefined) {
+      return res.status(401).json({ message: 'No session Id Found' })
+    }
+    return res.status(500).send(err);
   }
-  const response = req.session.user.Id
-  res.send({ response });
 });
 
 router.get('/randomUser', async (req, res) => {
   const response = await userStore.getRandomUser(req.session.user.Id)
-  res.send( response );
+  res.send(response);
 });
 
 router.patch('/AddFriend', async (req, res) => {
-  console.log(req);
-  console.log(req.body.name);
-  console.log(req.session.user.Id);
   const response = await userStore.addFollower(req.body.name, req.session.user.Id)
-  console.log(response)
   res.send({ response });
 });
 

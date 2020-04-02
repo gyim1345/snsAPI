@@ -5,55 +5,79 @@ import userStore from '../repository/userStore';
 const router = express.Router();
 
 
-router.post('/', async (req, res) => {
-  if (req.body === null) {
+router.get('/', async (req, res) => {
+  if (req.body.user === undefined) {
     return res.status(400).json({ message: 'No body found' });
   }
-  const { user } = req.body;
+
   try {
+    const { user } = req.body;
     const posts = await postStore.getuserPosts(user);
     res.send({ posts });
   } catch (err) {
-    return res.status(500).send(err);
+    return res.status(500).send({ message: 'Internal server error' });
   }
 });
 
 
+router.get('/Info', async (req, res) => {
+  if (req.query.user === undefined) {
+    return res.status(400).json({ message: 'No body found' });
+  }
 
-router.post('/Info', async (req, res) => {
-  // if (req.body === null) {
-  //   return res.status(400).json({ message: 'No body found' });
-  // }
-  const user = req.body.user;
-  // try {
+  try {
+    const user = req.query.user;
     let postNumber = await postStore.getUserPostsLength(user);
     postNumber = postNumber.length;
-    const { image, follower, followerNumber, userNickName, userIntroductory } = await userStore.getUserInfo(user);
-    const post = await { image, user, postNumber, followerNumber, userNickName, userIntroductory };
-   console.log('thispost', post);
-    res.send(post);
-  // } 
-  // catch (err) {
-  //   return res.status(500).send(err);
-  // }
+    const { userURL, followerNumber, nickName, introductory, name } = await userStore.getUserInfo(user);
+    const userInfo = await { userURL, name, postNumber, followerNumber, nickName, introductory };
+    res.send(userInfo);
+  }
+  catch (err) {
+    return res.status(500).send({ message: 'Internal server error' });
+  }
 });
 
-router.post('/image', async (req,res) => {
-  const { user } = req.body;
-  const image = await userStore.getUserImage(user);  
-  return res.send(image);
+router.get('/image', async (req, res) => {
+  if (req.query.user === undefined) {
+    return res.status(400).json({ message: 'No body found' });
+  }
+
+  try {
+    const { user } = req.query;
+    const imageURL = await userStore.getUserImage(user);
+    return res.send(imageURL);
+  } catch (err) {
+    return res.status(500).send({ message: 'Internal server error' });
+  }
 })
 
-router.patch('/Info/NickName', async (req,res) => {
-  const { input } = req.body;
-  const resinput = await userStore.editUserNickName(req.session.user.Id, input);  
-  return res.send(resinput);
+router.patch('/Info/NickName', async (req, res) => {
+  if (req.body.input === undefined) {
+    return res.status(400).json({ message: 'No input found' });
+  }
+
+  try {
+    const { input } = req.body;
+    const NickName = await userStore.editUserNickName(req.session.user.Id, input);
+    return res.json(NickName);
+  } catch (err) {
+    return res.status(500).send({ message: 'Internal server error' });
+  }
 })
 
-router.patch('/Info/Introductory', async (req,res) => {
-  const { input } = req.body;
-  const resinput = await userStore.editUserIntroductory(req.session.user.Id, input);  
-  return res.send(resinput);
+router.patch('/Info/Introductory', async (req, res) => {
+  if (req.body.input === undefined) {
+    return res.status(400).json({ message: 'No input found' });
+  }
+
+  try {
+    const { input } = req.body;
+    const Introductory = await userStore.editUserIntroductory(req.session.user.Id, input);
+    return res.json(Introductory);
+  } catch (err) {
+    return res.status(500).send({ message: 'Internal server error' });
+  }
 })
 
 export default router

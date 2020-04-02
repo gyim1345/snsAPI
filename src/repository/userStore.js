@@ -82,13 +82,14 @@ async getUserImage(userName) {
 
  
   async getUserInfo(userName) {
+
     const userInfo = await userSchemaModel.findOne({ name: userName });
-    const image = await userInfo.userURL;
-    const follower = await userInfo.userFollow;
-    const followerNumber = await follower.length;
-    const userNickName = await userInfo.nickName;
-    const userIntroductory = await userInfo.introductory;
-    return { image, follower, followerNumber, userNickName, userIntroductory }
+    const userURL = await userInfo.userURL;
+    const followerNumber = (await userInfo.userFollow).length;
+    const nickName = await userInfo.nickName;
+    const introductory = await userInfo.introductory;
+    const name = await userInfo.name
+    return { userURL, followerNumber, nickName, introductory, name }
   },
 
   async editUserNickName(userName, nickName) {
@@ -123,7 +124,7 @@ async getUserImage(userName) {
     userModel.nickName = '';
     userModel.introductory = '';
     await userModel.save();
-    return userModel;
+    return true;
   }
 
 };

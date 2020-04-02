@@ -5,19 +5,29 @@ import login from '../services/login';
 const router = express.Router();
 
 router.post('/', async (req, res) => {
-  try{
   const { Id, Password } = req.body;
-  const loginMessageAndStatus = await login.loginValidation(Id,Password);
-  const { loginStatus } = loginMessageAndStatus;
-  if (!loginStatus) {
-    res.status(401).send({statusMessage: 'Login Failed'});
+  try{
+  const loginMessageAndStatus = await login.loginValidation(Id, Password);
+  req.session.user = { Id };
+  // console.log(req.session)
+  // console.log(loginMessageAndStatus)
+  const { loginState } = loginMessageAndStatus;
+  // console.log(loginState)
+  // console.log(req.sessionID)
+  } catch (err) {
+    return res.status(401).send(err);
+  }
+
+  if (process.env.NODE_ENV === 'test') {
+    return res.send(req.sessionID)
+  }
+
+  if (!loginState) {
+    res.status(401).send({ statusMessage: 'Login Failed' });
     return;
   }
-} catch (err) {
-  return res.status(401).send(err);
-}
-  res.send(loginMessageAndStatus);
-  req.session.user = { Id };
+
+  return res.send(loginMessageAndStatus);
 })
 
 router.delete('/', async (req, res) => {

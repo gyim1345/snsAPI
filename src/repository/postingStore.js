@@ -23,7 +23,7 @@ const postStore = {
   },
   
   async getUserPostsLength(user) {
-    return (await postSchemaModel.find({ userName:user })).length;
+    return await postSchemaModel.countDocuments({ userName:user });
   },
   
   async getUserPosts(user) {
@@ -53,7 +53,6 @@ const postStore = {
       tempPost = post;
       await post.save({});
  
-
     return tempPost;
   },
 
@@ -62,7 +61,6 @@ const postStore = {
     const follower = await userStore.getFollowerFromUser(user);
     const userPosts = await postStore.getuserPosts(user)
    let result = [];
-    console.log(follower)
    for( let i = 0; i< follower.length; i++ ) {
      result = [...userPosts , ...(await this.getuserPosts(follower[i]).then())];
    }
