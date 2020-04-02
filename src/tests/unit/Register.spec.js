@@ -84,6 +84,8 @@ describe('Register', () => {
     describe('registration', () => {
         describe('when after creating user', () => {
             it('returns true', async () => {
+                register.userIdValidation = jest.fn().mockResolvedValue(true);
+                register.userIdAvailability = jest.fn().mockResolvedValue(true);
                 userStore.createUser = jest.fn().mockResolvedValue(true);
                 const registered = await register.registration(id, password);
                 expect(registered).toBe(true);
