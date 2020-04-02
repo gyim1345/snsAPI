@@ -1,0 +1,50 @@
+const request = require('supertest')
+import app, { db } from '../../index'
+import postSchemaModel from '../../model/post.js'
+
+describe('/tag', () => {
+  const post = {
+    id: 3,
+    title: 'eeeeeee',
+    imageUrl: 'htttpaaaaaaaaaa',
+    userName: 'gibong@gmail.com',
+    like: ['eeeeeee'],
+    tag: ['gibong@gmail.com']
+  }
+
+  beforeEach(async () => {
+    await db.dropDatabase();
+
+    await postSchemaModel.create(post);
+
+  })
+
+  afterAll(async () => {
+    await db.dropDatabase();
+
+    await db.close();
+  })
+
+  describe('tag service', () => {
+    describe('POST /posts/taggedPosts', () => {
+      it('responds with 200 with posts containing the input in tag of posts if available', async () => {
+        const res = await request(app)
+          .post('/posts/taggedPosts')
+          .send({ user: 'gibong@gmail.com' })
+        expect(res.body[0].tag).toContain('gibong@gmail.com');
+        expect(res.statusCode).toBe(200);
+      });
+
+      describe('if posts containing the input in tag of posts is unavailable', () => {
+        it('responds with 404', async () => {
+          const res = await request(app)
+            .post('/posts/taggedPosts')
+            .send({ user: 'UNMATCHED_USER' })
+          expect(res.body).toMatchObject({ "message": "no post found" });
+          expect(res.statusCode).toBe(404);
+        });
+      })
+    });
+  });
+
+})
