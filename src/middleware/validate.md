@@ -1,9 +1,9 @@
 
 module.exports = (validator) => {
+  console.log('asdasd1')
   return (req, res, next) => {
-    console.log(req.params.id)
-    const { error } = validator(req);
-    console.log('asd', error);
+    console.log('asdasd2')
+    const { error } = validator(req.body);
     if (error) return res.status(400).send(error.details[0].message);
     next();
   }

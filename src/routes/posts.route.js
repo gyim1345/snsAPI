@@ -19,14 +19,11 @@ router.get('/', async (req, res) => {
 });
 
 router.get('/:id', async (req, res) => {
-  // if (req.params === null) {
-  //   return res.status(400).json({ msg: 'No param found' });
-  // }question: params 로 받긴 하는데 params 에 해당 되는 게 없을때 유저가 잘못 입력한것도 여기서 처리해야함??
-  try {
+   try {
     const posts = await postStore.getPost(req.params.id)
     res.send({ posts });
   } catch (err) {
-    res.status(500).send(err);
+    res.status(500).send(err); //question: 서버가 터지면 반환할려는 500 에러인데 서버가 터지면 값을 돌려 줄수 있긴 하는지??
   }
 });
 
@@ -53,7 +50,7 @@ router.post('/register', async (req, res) => {
     }
     res.status(200).send(registration);
   } catch (err) {
-    res.status(500).send(err);//coverage
+    res.status(500).send(err);
   }
 });
 
@@ -64,7 +61,7 @@ router.patch('/edit', async (req, res) => {
     const posts = await edit.editThis(input, posting, req.session.user.Id, indexOfCommentOnThisPosting);
     res.send(posts);
   } catch (err) {
-    res.status(500).send(err);//coverage
+    res.status(500).send(err);
   }
 });
 
@@ -75,7 +72,7 @@ router.patch('/Remove', async (req, res) => {
     const posts = await remove.removeThis(posting, req.session.user.Id, indexOfCommentOnThisPosting);
     res.send(posts);
   } catch (err) {
-    res.status(500).send(err);//coverage
+    res.status(500).send(err);
   }
 });
 
@@ -87,7 +84,7 @@ router.patch('/Like', async (req, res) => {
     const post = await postStore.changeLike(posting, req.session.user.Id);
     res.send(post)
   } catch (err) {
-    res.status(500).send(err);//coverage
+    res.status(500).send(err);
   }
 });
 

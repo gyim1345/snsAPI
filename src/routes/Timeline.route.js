@@ -16,12 +16,10 @@ router.post('/', (req, res) => {
     const response = req.session.user.Id
     res.send({ response });
   } catch (err) {
-    if (req.session.user === undefined) {
-      return res.status(401).json({ message: 'No session Id Found' })
+     res.status(401).json({ message: 'No session Id Found' })
     }
-    return res.status(500).send(err);
   }
-});
+);
 
 router.get('/randomUser', async (req, res) => {
   const response = await userStore.getRandomUser(req.session.user.Id)

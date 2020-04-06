@@ -39,9 +39,6 @@ router.get('/Info', async (req, res) => {
 });
 
 router.get('/image', async (req, res) => {
-  if (req.query.user === undefined) {
-    return res.status(400).json({ message: 'No body found' });
-  }
 
   try {
     const { user } = req.query;

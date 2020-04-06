@@ -25,11 +25,11 @@ const remove = {
       return true;
     }
 
-    if (indexOfComment !== undefined) {
+    // if (indexOfComment !== undefined) {
       const theComment = post[indexOfComment];
       commentStore.removeComment(theComment);
       return post.filter(comment => comment.id !== theComment.id && comment.isUnder !== theComment.id);
-    }
+    // }
   }
 }
 

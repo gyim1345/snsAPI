@@ -1,10 +1,12 @@
 import express from 'express';
 import commentStore from '../repository/commentStore'
 
-const validate =require('../middleware/validate');
-const validateComment = require('../model/comment');
+// const validate =require('../middleware/validate.txt');
+// const validateComment = require('../model/comment');
 const validateNumber = require('../middleware/validateNumber');
 const router = express.Router();
+
+import commentSchema from '../model/comment';
 
 
 router.get('/:id', validateNumber,  async (req, res) => {
@@ -24,8 +26,16 @@ router.post('/:id', async (req, res) => {
   // if (req.body === null) {
   //   return res.status(400).json({ msg: 'Bad request' });
   // }
+  
+  const { postId, inputa, currentUser, isUnder, commentId } = req.body;
+  // let comment = commentSchema({
+  //   postILd: postId,
+  //   title: inputa,
+  //   userName: currentUser,
+  //   isUnder: isUnder || commentId
+  // })
+  
   try {
-    const { postId, inputa, currentUser, isUnder, commentId } = req.body;
     const comments = await commentStore.createAndReturnCommentsOfTheSpecificId(postId, inputa, currentUser, (isUnder !== undefined) ? isUnder.id : commentId)
     res.send(comments);
 

@@ -26,18 +26,19 @@ let commentSchema = new Schema(
   },
 );
 
-function validateComment(comment) {
-  const schema = {
-    id: Joi.number().required(),
-    postLId: Joi.number().required(),
-    title: Joi.string().required(),
-    userName: Joi.string().required(),
-    like: Joi.array().required(),
-    isUnder: Joi.number()
-  }
-  return Joi.validate(comment, schema);
-}
+// function validateComment(comment) {
+//   const schema = {
+//     id: Joi.number(),
+//     postLId: Joi.number(),
+//     title: Joi.string(),
+//     userName: Joi.string(),
+//     like: Joi.array(),
+//     isUnder: Joi.number()
+//   }
+//   console.log('asdasd')
+//   return Joi.validate(comment, schema);
+// }
 
-exports.validateComment =validateComment;
+// exports.validateComment = validateComment;
 
 module.exports = mongoose.model("comment", commentSchema);

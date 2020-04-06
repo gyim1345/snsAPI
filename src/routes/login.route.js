@@ -14,26 +14,29 @@ router.post('/', async (req, res) => {
   const { loginState } = loginMessageAndStatus;
   // console.log(loginState)
   // console.log(req.sessionID)
+  res.status(200).send(loginState);
   } catch (err) {
-    return res.status(401).send(err);
+    res.status(401).send(err);
+    return; 
   }
 
-  if (process.env.NODE_ENV === 'test') {
-    return res.send(req.sessionID)
-  }
+  // if (process.env.NODE_ENV === 'test') {
+  //   res.send(req.sessionID)
+  //   return;
+  // }
 
-  if (!loginState) {
-    res.status(401).send({ statusMessage: 'Login Failed' });
-    return;
-  }
+  // if (!loginState) {
+  //   res.status(402).send({ statusMessage: 'Login Failed' });
+  //   return;
+  // }
 
-  return res.send(loginMessageAndStatus);
+  // res.send(loginMessageAndStatus);
 })
 
 router.delete('/', async (req, res) => {
   req.session.destroy();
   res.clearCookie('connect.sid');
-  res.send('Session deleted');
+  res.status(200).json('Session deleted');
 })
 
 export default router;
