@@ -65,6 +65,7 @@ describe('/Timeline', () => {
                 .set('Cookie', cookie[0])
 
             const { posts } = body;
+            
             expect(posts[0]).toEqual(expect.objectContaining(posting[0]))
         })
     })
@@ -92,6 +93,7 @@ describe('/Timeline', () => {
             it('returns 401 status code and body message saying No session Id Found', async () => {
                 const { status, body } = await request(app)
                     .post('/Timeline')
+
                 expect(status).toBe(401);
                 expect(body.message).toBe("No session Id Found")
             })
@@ -103,6 +105,7 @@ describe('/Timeline', () => {
             const { body } = await request(app)
                 .get('/Timeline/randomUser')
                 .set('Cookie', cookie)
+
             expect(body[0].name).toEqual(expect.not.stringContaining('gibong@gmail.com'))
         })
     })
@@ -113,8 +116,8 @@ describe('/Timeline', () => {
                 .patch('/Timeline/AddFriend')
                 .set('Cookie', cookie)
                 .send({ name: 'Johnson' })
+
             expect(body.response.userFollow).toEqual(expect.arrayContaining(['Johnson']))
-            //TODO: body.response를 나중에 프론트랑 같이 바꿀것. (Timeline.route 쪽도.)
         })
     })
 })

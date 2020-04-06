@@ -3,31 +3,33 @@ import userStore from '../../repository/userStore';
 import userSchemaModel from '../../model/user';
 
 describe('userStore', () => {
-    let userModel;
-    let userInfo;
+
+    const userInfo = {
+        name: 'gibong@gmail.com',
+        userId: 33,
+        userFollow: ['eeee'],
+        userURL: 'http',
+        password: 'pwd',
+        scrap: [1, 3, 5],
+        nickName: 'nicknamee',
+        introductory: 'wtf'
+    }
+
+    let id;
+    let userName;
+    let pwd;
+    let password;
+
     beforeEach(async () => {
         await db.dropDatabase();
-        userModel = new userSchemaModel();
-        userModel.name = 'gibong@gmail.com';
-        userModel.userId = 33;
-        userModel.userFollow = ['eeee'];
-        userModel.userURL = 'http';
-        userModel.password = 'pwd';
-        userModel.scrap = [1, 3, 5];
-        userModel.nickName = 'nicknamee';
-        userModel.introductory = 'wtf';
-        await userModel.save();
 
-        userInfo = {
-            name: 'gibong@gmail.com',
-            userId: 33,
-            userFollow: ['eeee'],
-            userURL: 'http',
-            password: 'pwd',
-            scrap: [1, 3, 5],
-            nickName: 'nicknamee',
-            introductory: 'wtf'
-        }
+        await userSchemaModel.create(userInfo);
+
+        id = 'gibong@gmail.com';
+        userName = 'gibong@gmail.com';
+        pwd = 'pwd';
+        password = 'pwd'
+
     })
 
     afterAll(async () => {
@@ -39,17 +41,17 @@ describe('userStore', () => {
     describe('userList', () => {
         it('returns list of users', async () => {
             const userList = await userStore.userList();
+
             expect(userList).toBeDefined();
         })
 
     })
 
     describe('getUserImage', () => {
-        let userName;
 
         it('returns userImage url', async () => {
-            userName = 'gibong@gmail.com'
             const userImageURL = await userStore.getUserImage(userName);
+
             expect(userImageURL).toBe(userInfo.userURL);
         })
     })
@@ -58,8 +60,8 @@ describe('userStore', () => {
 
         describe('when user exists', () => {
             it('returns followers of user', async () => {
-                let userName = 'gibong@gmail.com'
                 const userFollow = await userStore.getFollowerFromUser(userName);
+
                 expect(userFollow[0]).toBe(userInfo.userFollow[0]);
             })
         })
@@ -67,6 +69,7 @@ describe('userStore', () => {
         describe('when user does not exist', () => {
             it('returns empty ', async () => {
                 const userFollower = await userStore.getFollowerFromUser();
+
                 expect(userFollower).toBe("empty")
             })
         })
@@ -74,169 +77,169 @@ describe('userStore', () => {
     })
 
     describe('getRandomUser', () => {
-        let userName;
         it('returns users excluding self', async () => {
-            userName = 'gibong@gmail.com';
             const users = await userStore.getRandomUser(userName);
+
             expect(users).toEqual(expect.not.objectContaining(userInfo))
         })
     })
 
     describe('checkIdIsRegistered', () => {
-        let id;
         describe('when the specific id is registered', () => {
             it('returns false', async () => {
-                id = 'gibong@gmail.com';
                 const registered = await userStore.checkIdIsRegistered(id);
+
                 expect(registered).toBe(false)
             })
         })
+
         describe('when the specific id is not registered', () => {
+            beforeEach(() => {
+                id = 'WRONG_ID';
+            })
+
             it('returns true if the specific id is not registered', async () => {
-                id = 'asdasd';
                 const registered = await userStore.checkIdIsRegistered(id);
+
                 expect(registered).toBe(true)
             })
         })
     })
+
     describe('checkPassword', () => {
-        let id;
-        let password;
         describe('input password matches database password of the id', () => {
-        it('returns true', async () => {
-            id = 'gibong@gmail.com'
-            password = 'pwd'
-            const validatePassword = await userStore.checkPassword(id, password)
-            expect(validatePassword).toBe(true);
+            it('returns true', async () => {
+                const validatePassword = await userStore.checkPassword(id, password)
+
+                expect(validatePassword).toBe(true);
+            })
+        })
+
+        describe('input password does not match the database password of the id', () => {
+            beforeEach(() => {
+                password = 'WRONG_PASSWORD'
+            })
+
+            it('returns false', async () => {
+                password = 'WRONG_PASSWORD'
+                const validatePassword = await userStore.checkPassword(id, password)
+
+                expect(validatePassword).toBe(false);
+            })
         })
     })
-    describe('input password does not match the database password of the id', () => {
-        it('returns false', async () => {
-            id = 'gibong@gmail.com'
-            password = 'pwd1'
-            const validatePassword = await userStore.checkPassword(id, password)
-            expect(validatePassword).toBe(false);
-        })
-    })
-    })
+
     describe('addFollower', () => {
         let follower;
-        let userName;
-        it('return userinfo with follower added to its userFollow property', async () => {
+
+        beforeEach(() => {
             follower = 'i am follower'
-            userName = 'gibong@gmail.com'
+        })
+
+        it('return userinfo with follower added to its userFollow property', async () => {
             const userInfoWithAddedFollower = await userStore.addFollower(follower, userName)
+
             expect(userInfoWithAddedFollower.userFollow).toEqual(expect.arrayContaining([follower]))
         })
     })
 
     describe('addPostIdToScrap', () => {
-        let Id;
-        let userName;
+        let IdOfPost;
+
         describe('when it is not scrapped', () => {
-        it('returns a message saying scrapped', async () => {// question addPostIdToScrap 가 하는 행동 "after adding scrap id of Id to user property of scrap"  이것도 넣어야하나??
-            Id = 10;
-            userName = 'gibong@gmail.com'
-            const { message } = await userStore.addPostIdToScrap(Id, userName);
-            expect(message).toBe("scrapped");
+            beforeEach(() => {
+                IdOfPost = 10;
+            })
+
+            it('returns a message saying scrapped', async () => {// question addPostIdToScrap 가 하는 행동 "after adding scrap id of Id to user property of scrap"  이것도 넣어야하나??
+                const { message } = await userStore.addPostIdToScrap(IdOfPost, userName);
+
+                expect(message).toBe("scrapped");
+            })
         })
-    })
-    describe('when it is already scrapped', () => {
-        it('returns a message saying already scrapped', async () => {
-            Id = 3;
-            userName = 'gibong@gmail.com'
-            const { message } = await userStore.addPostIdToScrap(Id, userName);
-            expect(message).toBe("already scrapped");
+        describe('when it is already scrapped', () => {
+            beforeEach(() => {
+                IdOfPost = 3;
+            })
+
+            it('returns a message saying already scrapped', async () => {
+                const { message } = await userStore.addPostIdToScrap(IdOfPost, userName);
+
+                expect(message).toBe("already scrapped");
+            })
         })
-    })
     })
 
     describe('getUserScrapIds', () => {
-        let user;
-
         it('returns scrapped ids for the given user', async () => {
-            user = 'gibong@gmail.com';
-            const scrapIds = await userStore.getUserScrapIds(user);
+            const scrapIds = await userStore.getUserScrapIds(userName);
+
             expect(scrapIds).toEqual(expect.arrayContaining(userInfo.scrap))
         })
     })
 
     describe('getUserInfo', () => {
-        let user;
-
         it('returns multiple infos of the user', async () => {
-            user = 'gibong@gmail.com';
-            const { image, follower, followerNumber, userNickName, userIntroductory } = await userStore.getUserInfo(user);
-            expect(image).toBe(userInfo.userURL);
-            expect(follower).toEqual(expect.arrayContaining(userInfo.userFollow));
-            expect(followerNumber).toBe(userInfo.userFollow.length);
-            expect(userNickName).toBe(userInfo.nickName);
-            expect(userIntroductory).toBe(userInfo.introductory);
+            const info = await userStore.getUserInfo(userName);
+
+            expect(info.followerNumber).toBe(userInfo.userFollow.length);
+            delete info.followerNumber
+            expect(userInfo).toEqual(expect.objectContaining(info))
         })
     })
 
     describe('editUserNickName', () => {
-        let user;
         let input;
-        it('returns modified nick name of the specific user', async () => {
-            user = 'gibong@gmail.com';
+
+        beforeEach(() => {
             input = 'bongbongg'
-            const userNickName = await userStore.editUserNickName(user, input);
+        })
+
+        it('returns modified nick name of the specific user', async () => {
+            const userNickName = await userStore.editUserNickName(userName, input);
+
             expect(userNickName).toBe(input);
         })
     })
 
     describe('editUserIntroductory', () => {
-        let user;
         let input;
-        it('returns modified introductory of the specific user', async () => {
-            user = 'gibong@gmail.com';
+
+        beforeEach(() => {
             input = 'introducing bongbong'
-            const userIntroductory = await userStore.editUserIntroductory(user, input);
+        })
+
+        it('returns modified introductory of the specific user', async () => {
+            const userIntroductory = await userStore.editUserIntroductory(userName, input);
+
             expect(userIntroductory).toBe(input);
         })
     })
 
     describe('editUserImage', () => {
-        let user;
+        let userInfo;
         let imageURL;
-        it('returns modified image of the specific user', async () => {
+
+        beforeEach(() => {
             imageURL = 'http2'
-            user = {
-                user: 'gibong@gmail.com',
+            userInfo = {
+                user: userName,
                 imageUrl: imageURL
             };
-            const userInfo = await userStore.editUserImage(user, imageURL);
-            expect(userInfo.userURL).toBe(imageURL);
+        })
+
+        it('returns modified image of the specific user', async () => {
+            const { userURL } = await userStore.editUserImage(userInfo, imageURL);
+
+            expect(userURL).toBe(imageURL);
         })
     })
 
     describe('createUser', () => {
-        let id;
-        let pwd;
-        let createdUser;
         it('returns created user using input id and pwd based on userSchemaModel', async () => {
-            id = 'gibong@gmail.com';
-            pwd = 'whatever';
-            createdUser = {
-                userFollow: ['Bongstagram'],
-                scrap: [],
-                name: 'gibong@gmail.com',
-                userURL: 'http://localhost:3000/static/images/profilepicture.png',
-                password: 'whatever',
-                nickName: '',
-                introductory: '',
-                __v: 0
-            }
-            const newUser = await userStore.createUser(id, pwd);
-            expect(newUser.userFollow).toEqual(expect.arrayContaining(createdUser.userFollow))
-            expect(newUser.scrap).toEqual(expect.arrayContaining(createdUser.scrap))
-            expect(newUser.name).toBe(createdUser.name)
-            expect(newUser.userURL).toBe(createdUser.userURL)
-            expect(newUser.password).toBe(createdUser.password)
-            expect(newUser.nickName).toBe(createdUser.nickName)
-            expect(newUser.introductory).toBe(createdUser.introductory)
+            const created = await userStore.createUser(id, pwd);
 
+            expect(created).toBe(true);
         })
     })
 

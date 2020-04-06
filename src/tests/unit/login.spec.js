@@ -15,6 +15,7 @@ describe('login', () => {
             })
             it('returns true', async() => {
                 const validation = await login.checkPassword(id, password)
+              
                 expect(validation).toBe(true)
             })
         })
@@ -27,6 +28,7 @@ describe('login', () => {
             })
             it('returns false', async() => {
                 const validation = await login.checkPassword(id, password)
+               
                 expect(validation).toBe(false)
             })
         })
@@ -48,6 +50,7 @@ describe('login', () => {
             })
             it('returns statusMessage: LoggedIn and loginStatus: true', async() =>{
                 const validation = await login.loginValidation(id, password);
+             
                 expect(validation.statusMessage).toBe('LoggedIn');
                 expect(validation.loginStatus).toBe(true);
             })
@@ -59,6 +62,7 @@ describe('login', () => {
             })
             it('returns statusMessage: LoggedIn and loginStatus: true', async() =>{
                 const validation = await login.loginValidation(id, password);
+              
                 expect(validation.statusMessage).toBe('Check Input');
                 expect(validation.loginStatus).toBe(false);
             })

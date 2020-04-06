@@ -21,6 +21,7 @@ describe('tag service', () => {
 
             it('returns posts with user tagged', async () => {
                 const taggedPosts = await getTaggedPosts(username);
+               
                 expect(taggedPosts[0].tag).toContain(username);
             });
         });
@@ -34,6 +35,7 @@ describe('tag service', () => {
             
             it('returns empty array', async () => {
                 const taggedPosts = await getTaggedPosts(username);
+                
                 expect(taggedPosts).toEqual([]);
             })
         });

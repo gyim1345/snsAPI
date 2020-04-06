@@ -95,6 +95,7 @@ describe('/user', () => {
                 const { body } = await request(app)
                     .get('/user/Info')
                     .query({ user: 'gibong@gmail.com' });
+             
                 expect(body.followerNumber).toBe(1);
                 delete body.followerNumber
                 expect(userInfo).toEqual(expect.objectContaining(body))
@@ -104,7 +105,8 @@ describe('/user', () => {
             it('responds with 400', async () => {
                 const userInfo = await request(app)
                     .get('/user/Info')
-                expect(userInfo.statusCode).toBe(400);
+             
+                    expect(userInfo.statusCode).toBe(400);
             })
         })
         describe('when internal error from server', () => {
@@ -130,7 +132,8 @@ describe('/user', () => {
             const imageURL = await request(app)
                 .get('/user/image')
                 .query({ user: 'gibong@gmail.com' })
-            expect(imageURL.text).toBe('htttpaaaaaaaaaa')
+          
+                expect(imageURL.text).toBe('htttpaaaaaaaaaa')
         })
 
         describe('when internal error from server', () => {
@@ -167,15 +170,14 @@ describe('/user', () => {
             it('responds with 400', async () => {
                 const { statusCode } = await request(app)
                     .patch('/user/Info/NickName')
-                console.log(statusCode)
-                expect(statusCode).toBe(400);
+
+                    expect(statusCode).toBe(400);
             })
         })
 
         describe('when internal error from server', () => {
             beforeEach(() => {
                 userStore.editUserNickName = jest.fn().mockRejectedValue(new Error('Somthing wrong'))
-
             });
 
             it('returns status code of 500', async () => {
@@ -196,7 +198,8 @@ describe('/user', () => {
                     .patch('/user/Info/Introductory')
                     .send({ input: username })
                     .set('Cookie', cookie[0])
-                expect(Introductory.body).toBe(username)
+             
+                    expect(Introductory.body).toBe(username)
                 expect(Introductory.status).toBe(200)
             })
         })
@@ -205,7 +208,7 @@ describe('/user', () => {
             it('responds with 400', async () => {
                 const { statusCode } = await request(app)
                     .patch('/user/Info/Introductory')
-                console.log(statusCode)
+               
                 expect(statusCode).toBe(400);
             })
         })

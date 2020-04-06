@@ -75,6 +75,7 @@ describe('/posts', () => {
         it('returns all posts', async () => {
             const { body } = await request(app)
                 .get('/posts')
+
             expect(body[0]).toEqual(expect.objectContaining(posts[0]))
         })
 
@@ -83,6 +84,7 @@ describe('/posts', () => {
                 postStore.postList = jest.fn().mockRejectedValue();
                 const { statusCode } = await request(app)
                 .get('/posts')
+
                 expect(statusCode).toBe(500);
             })
         })
@@ -93,6 +95,7 @@ describe('/posts', () => {
         it('returns post of the following id', async () => {
             const { body } = await request(app)
                 .get('/posts/3')
+
             expect(body.posts[0]).toEqual(expect.objectContaining(posts[0]))
         })
 
@@ -101,6 +104,7 @@ describe('/posts', () => {
                 postStore.getPost = jest.fn().mockRejectedValue();
                 const req = await request(app)
                 .get('/posts/3')
+
                 expect(req.statusCode).toBe(500);
             })
         })
@@ -111,6 +115,7 @@ describe('/posts', () => {
             const { body } = await request(app)
                 .post('/posts')
                 .send({ title: 'newTitle', user: 'newUserName' })
+
             expect(body.title).toBe('newTitle');
             expect(body.userName).toBe('newUserName');
         })
@@ -120,6 +125,7 @@ describe('/posts', () => {
                 postStore.createPost = jest.fn().mockRejectedValue();
                 const { statusCode } = await request(app)
                 .post('/posts')
+
                 expect(statusCode).toBe(500);
             })
         })
@@ -131,6 +137,7 @@ describe('/posts', () => {
                 const { body, statusCode } = await request(app)
                     .post('/posts/register')
                     .send({ id: 'newuser@gmail.com', password: 'myPassword' })
+               
                 expect(statusCode).toBe(200);
                 expect(body).toBe(true);
             })
@@ -150,6 +157,7 @@ describe('/posts', () => {
                 register.registration = jest.fn().mockRejectedValue();
                 const req = await request(app)
                 .post('/posts/register')
+
                 expect(req.statusCode).toBe(500);
             })
         })
@@ -167,6 +175,7 @@ describe('/posts', () => {
                     .patch('/posts/edit')
                     .send({ input: 'newTitle', posting: posts[0] })
                     .set('Cookie', cookie)
+
                 expect(body[0].title).toBe('newTitle')
             })
         })
@@ -194,6 +203,7 @@ describe('/posts', () => {
                 edit.editThis = jest.fn().mockRejectedValue();
                 const req = await request(app)
                 .patch('/posts/edit')
+
                 expect(req.statusCode).toBe(500);
             })
         })
@@ -227,6 +237,7 @@ describe('/posts', () => {
                 remove.removeThis = jest.fn().mockRejectedValue();
                 const req = await request(app)
                 .patch('/posts/Remove')
+
                 expect(req.statusCode).toBe(500);
             })
         })
@@ -238,6 +249,7 @@ describe('/posts', () => {
                 .patch('/posts/Like')
                 .set('Cookie', cookie)
                 .send({ posting: posts[0] })
+
             expect(body.like).toEqual(expect.arrayContaining([sessionUserName]))
         })
 
@@ -246,6 +258,7 @@ describe('/posts', () => {
                 postStore.changeLike = jest.fn().mockRejectedValue();
                 const req = await request(app)
                 .patch('/posts/Like')
+
                 expect(req.statusCode).toBe(500);
             })
         })
@@ -258,6 +271,7 @@ describe('/posts', () => {
                     .patch('/posts/scrap')
                     .set('Cookie', cookie)
                     .send({ postId: 2 })
+
                 expect(body.message).toBe('scrapped')
             })
         })
@@ -268,6 +282,7 @@ describe('/posts', () => {
                     .patch('/posts/scrap')
                     .set('Cookie', cookie)
                     .send({ postId: 3 })
+                    
                 expect(body.message).toBe('already scrapped')
             })
         })

@@ -12,6 +12,13 @@ describe('commentStore', () => {
         isUnder: undefined,
     }
 
+    let createdComment = {
+        id: 1414,
+        postLId: 3,
+        title: 'commentTitle',
+        userName: 'gibong@gmail.com',
+    }
+
     beforeEach(async () => {
         await db.dropDatabase();
 
@@ -27,6 +34,7 @@ describe('commentStore', () => {
     describe('commentList', () => {
         it('returns all comments', async () => {
             const comments = await commentStore.commentList();
+
             expect(comments).toBeDefined();
         })
     })
@@ -34,6 +42,7 @@ describe('commentStore', () => {
     describe('commentsLength', () => {
         it('returns length of all comments stored in db', async () => {
             const commentListLength = await commentStore.commentsLength();
+
             expect(commentListLength).toBe(1);
         })
     })
@@ -41,42 +50,23 @@ describe('commentStore', () => {
     describe('getCommentFromPostId', () => {
         it('returns comment of the specific post Id', async () => {
             const commentOfPost = await commentStore.getCommentFromPostId(comment.postLId);
-            expect(commentOfPost[0].id).toBe(1414);
-            expect(commentOfPost[0].postLId).toBe(3);
-            expect(commentOfPost[0].title).toBe('commentTitle');
-            expect(commentOfPost[0].userName).toBe('gibong@gmail.com');
-            expect(commentOfPost[0].like).toEqual(expect.arrayContaining([]));
-            expect(commentOfPost[0].isUnder).toBe(undefined);
-            // expect(commentOfPost[0]).toEqual(expect.objectContaining(comment))
-            // expect(commentOfPost[0]).toEqual(
-            //     expect.objectContaining({
-            //         id: 1414,
-            //         postLId: 3,
-            //         title: 'commentTitle',
-            //         userName: 'gibong@gmail.com',
-            //         like: expect.arrayContaining([]),
-            //         isUnder: undefined
-            //     })
-            // )
 
+            expect(commentOfPost[0]).toEqual(expect.objectContaining(createdComment))
         })
     })
 
     describe('getComment', () => {
         it('returns the comment corresponding to the id', async () => {
             let commentFoundById = await commentStore.getComment(comment.id);
-            expect(commentFoundById.id).toBe(1414);
-            expect(commentFoundById.postLId).toBe(3);
-            expect(commentFoundById.title).toBe('commentTitle');
-            expect(commentFoundById.userName).toBe('gibong@gmail.com');
-            expect(commentFoundById.like).toEqual(expect.arrayContaining([]));
-            expect(commentFoundById.isUnder).toBe(undefined);
+
+            expect(commentFoundById).toEqual(expect.objectContaining(createdComment))
         })
     })
 
     describe('editCommentTitle', () => {
         it('edits title of comment', async () => {
             const editedComment = await commentStore.editCommentTitle(comment.id, 'editedTitle');
+
             expect(editedComment.title).toBe('editedTitle')
         })
     })
@@ -88,21 +78,43 @@ describe('commentStore', () => {
             const title = 'newComment';
             const userName = 'gibong@gmail.com';
 
-            const newComment = await commentStore.createComment(postLId, title, userName, id);
-            expect(typeof newComment.id).toBe('number');
-            expect(newComment.postLId).toBe(5);
-            expect(newComment.title).toBe('newComment');
-            expect(newComment.userName).toBe('gibong@gmail.com');
-            expect(newComment.like).toEqual(expect.arrayContaining([]));
-            expect(newComment.isUnder).toBe(12414);
+            const createdComment = {
+                postLId: postLId,
+                title: title,
+                userName: userName,
+                isUnder: id
+            }
 
+            const newComment = await commentStore.createComment(postLId, title, userName, id);
+
+            expect(newComment).toEqual(expect.objectContaining(createdComment))
         })
     })
 
     describe('removeComment', () => {
         it('removes comment', async () => {
             const status = await commentStore.removeComment(comment)
+
             expect(status).toEqual(expect.objectContaining({ ok: 1 }))
+        })
+    })
+
+    describe('createAndReturnCommentsOfTheSpecificId', () => {
+        let newComment;
+
+        beforeEach(() => {
+            newComment = {
+                postLId: 10,
+                title: 'today i learned',
+                userName: 'gibong@gmail.com',
+                isUnder: 4
+            }
+        })
+
+        it('returns comment', async () => {
+            const comments = await commentStore.createAndReturnCommentsOfTheSpecificId(newComment.postLId, newComment.title, newComment.userName, newComment.isUnder)
+
+            expect(comments[0]).toEqual(expect.objectContaining(newComment))
         })
     })
 

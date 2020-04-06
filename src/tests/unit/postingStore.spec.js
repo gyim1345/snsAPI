@@ -5,14 +5,42 @@ import userStore from '../../repository/userStore'
 
 describe('postingStore', () => {
 
+    
+    let userName = 'gibong@gmail.com'
     let posting = [{
+        id: 3,
+        title: 'eeeeeee',
+        imageUrl: 'htttp',
+        userName: userName,
+        like: ['eeeeeee'],
+        tag: [userName]
+    }]
+    let posts = [{
         id: 3,
         title: 'eeeeeee',
         imageUrl: 'htttp',
         userName: 'gibong@gmail.com',
         like: ['eeeeeee'],
         tag: ['gibong@gmail.com']
+    },
+    {
+        id: 4,
+        title: 'eeeeeee',
+        imageUrl: 'htttp',
+        userName: 'eeee',
+        like: ['eeeeeee', 'gibong@gmail.com'],
+        tag: ['gibong@gmail.com']
     }]
+
+    let createdPost = [
+        {
+          id: 3,
+          title: 'eeeeeee',
+          imageUrl: 'htttp',
+          userName: 'gibong@gmail.com',
+        }
+      ]
+
 
     beforeEach(async () => {
         await db.dropDatabase();
@@ -29,6 +57,7 @@ describe('postingStore', () => {
     describe('postList', () => {
         it('returns list of users', async () => {
             const postList = await postingStore.postList();
+       
             expect(postList).toBeDefined();
         })
     });
@@ -36,48 +65,42 @@ describe('postingStore', () => {
     describe('postsLength', () => {
         it('return length of all posts in db', async () => {
             const postList = await postingStore.postsLength();
+      
             expect(postList).toBe(1);
         })
     });
 
     describe('postForTag', () => {
-        let tag;
         it('returns post including the given tag', async () => {
-            tag = 'gibong@gmail.com'
-            const [postList] = await postingStore.postForTag(tag);
-            expect(postList.tag).toEqual(expect.arrayContaining([tag]));
+            const [postList] = await postingStore.postForTag(userName);
+       
+            expect(postList.tag).toEqual(expect.arrayContaining([userName]));
         })
     });
 
     describe('getuserPosts', () => {
-        let name;
         it('returns posts of user', async () => {
-            name = 'gibong@gmail.com'
-            const [postList] = await postingStore.getuserPosts(name);
-            expect(postList.userName).toBe(name);
+            const [postList] = await postingStore.getuserPosts(userName);
+       
+            expect(postList.userName).toBe(userName);
         })
     });
 
     describe('getUserPostsLength', () => {
-        let name;
         it('returns length of user list', async () => {
-            name = 'gibong@gmail.com'
-            const postList = await postingStore.getUserPostsLength(name);
+            const postList = await postingStore.getUserPostsLength(userName);
+           
             expect(postList).toBe(1);
         })
     });
 
     describe('getUserPosts', () => {
-        let name;
+
+        
         it('returns posts of the user', async () => {
-            name = 'gibong@gmail.com'
-            const posts = await postingStore.getUserPosts(name);
-            expect(posts[0].userName).toBe(name);
-            expect(posts[0].title).toBe(posting[0].title)
-            expect(posts[0].imageUrl).toBe(posting[0].imageUrl)
-            expect(posts[0].id).toBe(posting[0].id)
-            expect(posts[0].like).toEqual(expect.arrayContaining(posting[0].like))
-            expect(posts[0].tag).toEqual(expect.arrayContaining(posting[0].tag))
+            const posts = await postingStore.getUserPosts(userName);
+
+            expect(posts[0]).toEqual(expect.objectContaining(createdPost[0]))
         })
     })
 
@@ -86,31 +109,27 @@ describe('postingStore', () => {
         it('returns post of the id', async () => {
             id = 3
             const posts = await postingStore.getPost(id);
+           
             expect(posts[0].id).toBe(posting[0].id);
         })
     })
 
     describe('getPostsFromArrayId', () => {
+
+        
         it('returns posts matching the array of ids', async () => {
             const posts = await postingStore.getPostsFromArrayId([3]);
-            expect(posts[0].userName).toBe(posting[0].userName);
-            expect(posts[0].title).toBe(posting[0].title)
-            expect(posts[0].imageUrl).toBe(posting[0].imageUrl)
-            expect(posts[0].id).toBe(posting[0].id)
-            expect(posts[0].like).toEqual(expect.arrayContaining(posting[0].like))
-            expect(posts[0].tag).toEqual(expect.arrayContaining(posting[0].tag))
+            
+            expect(posts[0]).toEqual(expect.objectContaining(createdPost[0]))
         })
     })
 
     describe('getUserTaggedPosts', () => {
+
         it('returns posts matching the array of ids', async () => {
             const posts = await postingStore.getUserTaggedPosts('gibong@gmail.com');
-            expect(posts[0].userName).toBe(posting[0].userName);
-            expect(posts[0].title).toBe(posting[0].title)
-            expect(posts[0].imageUrl).toBe(posting[0].imageUrl)
-            expect(posts[0].id).toBe(posting[0].id)
-            expect(posts[0].like).toEqual(expect.arrayContaining(posting[0].like))
-            expect(posts[0].tag).toEqual(expect.arrayContaining(posting[0].tag))
+
+            expect(posts[0]).toEqual(expect.objectContaining(createdPost[0]))
         })
     })
 
@@ -120,21 +139,27 @@ describe('postingStore', () => {
             let id = 3;
 
             it('returns post with userName added to like property', async () => {
-                const post = await postingStore.changeLike({ id }, 'gibong@gmail.com');
-                expect(post.like).toEqual(expect.arrayContaining([...posting[0].like, 'gibong@gmail.com']));
+                
+                const post = await postingStore.changeLike({ id }, userName);
+                
+                expect(post.like).toEqual(expect.arrayContaining([...posting[0].like, userName]));
             })
         })
 
         describe('when clicked even time', () => {
             let id = 3;
 
-            beforeEach(() => {
-                posting[0].like.push('gibong@gmail.com')
+            beforeEach(async() => {
+                posting[0].like.push(userName)
+
+                const post = await postSchemaModel.findOne({ id: id })
+                post.like =[...post.like, userName]
+                await post.save();
             })
 
             it('returns post with userName removed from like property', async () => {
-                const post = await postingStore.changeLike({ id }, 'gibong@gmail.com');
-                expect(post.like).toEqual(expect.arrayContaining(['eeeeeee']));
+                const post = await postingStore.changeLike({ id }, userName);
+                expect(post.like).toEqual(expect.not.arrayContaining([userName]));
             })
         })
     })
@@ -144,42 +169,20 @@ describe('postingStore', () => {
 
         beforeEach(() => {
             userStore.getFollowerFromUser = jest.fn().mockResolvedValue('eeee')
-            postingStore.getuserPosts = jest.fn().mockResolvedValue([{
-                id: 3,
-                title: 'eeeeeee',
-                imageUrl: 'htttp',
-                userName: 'gibong@gmail.com',
-                like: ['eeeeeee'],
-                tag: ['gibong@gmail.com']
-            },
-            {
-                id: 4,
-                title: 'eeeeeee',
-                imageUrl: 'htttp',
-                userName: 'eeee',
-                like: ['eeeeeee', 'gibong@gmail.com'],
-                tag: ['gibong@gmail.com']
-            }])
+            postingStore.getuserPosts = jest.fn().mockResolvedValue(posts)
         })
         it('returns posts with followers posts and users posts', async () => {
-            const posts = await postingStore.getuserTimeLinePosts('gibong@gmail.com');
+            const posts = await postingStore.getuserTimeLinePosts(userName);
             expect(posts[1].userName).toBe('eeee');
         })
     })
 
     describe('editPostTitle', () => {
         let title;
-        let post = {
-            id: 3,
-            title: 'eeeeeee',
-            imageUrl: 'htttp',
-            userName: 'gibong@gmail.com',
-            like: ['eeeeeee', 'gibong@gmail.com'],
-            tag: ['gibong@gmail.com']
-        }
+
         it('returns post with title edited', async () => {
             title = 'asd'
-            const editedPost = await postingStore.editPostTitle(title, post);
+            const editedPost = await postingStore.editPostTitle(title, posting[0]);
             expect(editedPost.title).toBe(title)
         })
     })
@@ -187,29 +190,23 @@ describe('postingStore', () => {
     describe('createPost', () => {
         let title;
         let url;
-        let name;
         let inputTag;
         describe('given title, url, name, inputTag by input', () => {
-            it('returns created post', async () => {
+            beforeEach(()=> {
                 title = 'title';
                 url = 'localwhatever/asd';
-                name = 'gibong@gmail.com';
                 inputTag = 'asd'
-                const createdPost = {
-                    id: 444,
+                createdPost = {
                     title: title,
                     imageUrl: url,
-                    userName: 'gibong@gmail.com',
-                    like: [],
-                    tag: [inputTag],
+                    userName: userName,
                 }
-                const newPost = await postingStore.createPost(title, name, url, inputTag);
-                expect(typeof newPost.id).toBe('number');
-                expect(newPost.title).toEqual(createdPost.title);
-                expect(newPost.imgaeUrl).toBe(createdPost.imgaeUrl);
-                expect(newPost.userNmae).toBe(createdPost.userNmae);
-                expect(newPost.like).toEqual(expect.arrayContaining(createdPost.like));
-                expect(newPost.tag).toEqual(expect.arrayContaining(createdPost.tag));
+            })
+
+            it('returns created post', async () => {
+                let newPost = await postingStore.createPost(title, userName, url, inputTag);
+               
+                expect(newPost).toEqual(expect.objectContaining(createdPost))
             })
         })
     })
