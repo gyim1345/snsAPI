@@ -1,7 +1,7 @@
-import { db } from '../../index';
-import postingStore from '../../repository/postingStore';
+import { db } from '../../app';
+import postingStore from '../../repository/postingStore.repository';
 import postSchemaModel from '../../model/post';
-import userStore from '../../repository/userStore'
+import userStore from '../../repository/userStore.repository'
 
 describe('postingStore', () => {
 
@@ -140,8 +140,7 @@ describe('postingStore', () => {
 
             it('returns post with userName added to like property', async () => {
                 
-                const post = await postingStore.changeLike({ id }, userName);
-                
+                const post = await postingStore.changeLike( id , userName);
                 expect(post.like).toEqual(expect.arrayContaining([...posting[0].like, userName]));
             })
         })
@@ -158,7 +157,7 @@ describe('postingStore', () => {
             })
 
             it('returns post with userName removed from like property', async () => {
-                const post = await postingStore.changeLike({ id }, userName);
+                const post = await postingStore.changeLike( id , userName);
                 expect(post.like).toEqual(expect.not.arrayContaining([userName]));
             })
         })

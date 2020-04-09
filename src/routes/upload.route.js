@@ -1,9 +1,11 @@
 import express from 'express';
 import { promisify } from 'util';
 
-import postStore from '../repository/postingStore';
-import userStore from '../repository/userStore';
+import postStore from '../repository/postingStore.repository';
+import userStore from '../repository/userStore.repository';
 import validateImageUpload from '../middleware/validateImageUpload';
+import postService from '../services/post.service';
+import userService from '../services/user.services';
 
 const router = express.Router();
 
@@ -14,7 +16,7 @@ router.post('/', validateImageUpload, async (req, res) => {
   const user = req.session.user.Id
   try {
     await promisify(file.mv)(`/workspace/Project/snsAPI/src/static/images/${file.name}`)
-    const posts = await postStore.createPost(
+    const posts = await postService.uploadPost(
       input,
       user, `http://localhost:3000/static/images/${file.name}`, inputTag);
     res.json({ fileName: file.name, filePath: `/static/images/${file.name}`, posts });
@@ -27,13 +29,11 @@ router.post('/', validateImageUpload, async (req, res) => {
 router.patch('/userImage', validateImageUpload, async (req, res) => {
 
   const file = req.files.files;
-  const user = req.session.user.Id;
+  const username = req.session.user.Id;
   const imageUrl = `http://localhost:3000/static/images/${file.name}`;
   try {
     await promisify(file.mv)(`/workspace/Project/snsAPI/src/static/images/${file.name}`)
-
-    await userStore.editUserImage({ user, imageUrl });
-
+    await userService.editUserProfileImage( username, imageUrl );
     res.status(200).json('done');
   } catch (err) {
     res.status(500).send({ message: 'Internal server error' });

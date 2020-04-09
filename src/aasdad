@@ -1,0 +1,6 @@
+postService - 읽기(전체, 특정)/ 생성 /수정(title, like ) /추가(스크랩) 삭제
+commentService - 읽기/ 생성(일반 댓글, 대댓글) /수정(title, like ) /삭제
+
+userService - 생성(회원가입), 로그인, 읽기, 수정(이미지, 별명, 소개)
+
+Timeline - 읽기 

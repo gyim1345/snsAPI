@@ -106,9 +106,9 @@ async getUserImage(userName) {
     return Introductory;
   },
 
-  async editUserImage(user,imageUrl) {
-    let userInfo = await userSchemaModel.findOne({ name: user.user });
-    userInfo.userURL = user.imageUrl;
+  async editUserImage(username,imageUrl) {
+    let userInfo = await userSchemaModel.findOne({ name: username });
+    userInfo.userURL = imageUrl;
     await userInfo.save();
     return userInfo;
   },

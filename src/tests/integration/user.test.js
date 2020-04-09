@@ -1,11 +1,11 @@
 const request = require('supertest')
 
-import app, { db } from '../../index'
+import app, { db } from '../../app'
 import postSchemaModel from '../../model/post';
 import userSchemaModel from '../../model/user';
-import login from '../../services/login';
-import postStore from '../../repository/postingStore';
-import userStore from '../../repository/userStore';
+import auth from '../../services/auth.service';
+import postStore from '../../repository/postingStore.repository';
+import userStore from '../../repository/userStore.repository';
 
 describe('/user', () => {
     let cookie;
@@ -37,10 +37,10 @@ describe('/user', () => {
 
         await userSchemaModel.create(userInfo);
 
-        login.loginValidation = jest.fn().mockResolvedValue({ loginStatea: true });
+        auth.loginValidation = jest.fn().mockResolvedValue({ loginStatea: true });
 
         const { header } = await request(app)
-            .post('/login')
+            .post('/auth/login')
             .send({ Id: username, Password: 'pwd' })
         cookie = await header['set-cookie']
     })
@@ -91,14 +91,21 @@ describe('/user', () => {
 
     describe('GET /Info', () => {
         describe('with valid input', () => {
+            let Info = {
+                userURL: 'htttpaaaaaaaaaa',
+      name: 'gibong@gmail.com',
+      postCount: 1,
+      followerNumber: 1,
+      nickName: 'nicknamee',
+      introductory: 'wtf'
+            }
             it('returns some user info and follower count', async () => {
                 const { body } = await request(app)
                     .get('/user/Info')
                     .query({ user: 'gibong@gmail.com' });
              
                 expect(body.followerNumber).toBe(1);
-                delete body.followerNumber
-                expect(userInfo).toEqual(expect.objectContaining(body))
+                expect(body).toEqual(Info)
             })
         })
         describe('with no input', () => {
@@ -156,18 +163,18 @@ describe('/user', () => {
     describe('PATCH /Info/NickName', () => {
 
         describe('with valid input', () => {
-            it('returns nickName', async () => {
-                const NickName = await request(app)
+            it('returns the modified nickName', async () => {
+                const {body, status} = await request(app)
                     .patch('/user/Info/NickName')
                     .set('Cookie', cookie[0])
                     .send({ input: username });
-
-                expect(NickName.body).toBe(username)
-                expect(NickName.status).toBe(200)
+            
+                expect(body).toBe(username)
+                expect(status).toBe(200)
             })
         })
         describe('with no input', () => {
-            it('responds with 400', async () => {
+            it('responds status code of 400', async () => {
                 const { statusCode } = await request(app)
                     .patch('/user/Info/NickName')
 
@@ -227,6 +234,8 @@ describe('/user', () => {
                 expect(body.message).toBe('Internal server error');
             })
         })
+
+        
     })
 
 })

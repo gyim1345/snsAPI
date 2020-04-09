@@ -1,9 +1,9 @@
 const request = require('supertest')
 
-import app, { db } from '../../index'
+import app, { db } from '../../app'
 import postSchemaModel from '../../model/post';
 import userSchemaModel from '../../model/user';
-import login from '../../services/login';
+import auth from '../../services/auth.service';
 
 describe('/Timeline', () => {
     let cookie;
@@ -44,8 +44,8 @@ describe('/Timeline', () => {
 
         await userSchemaModel.create(userInfo);
 
-        login.loginValidation = jest.fn().mockResolvedValue({ loginStatea: true });
-        const req = await request(app).post('/login').send({ Id: 'gibong@gmail.com', Password: 'pwd' })
+        auth.loginValidation = jest.fn().mockResolvedValue({ loginStatea: true });
+        const req = await request(app).post('/auth/login').send({ Id: 'gibong@gmail.com', Password: 'pwd' })
         cookie = await req.header['set-cookie']
     })
 
@@ -57,15 +57,14 @@ describe('/Timeline', () => {
     });
 
 
-    describe('POST /:user', () => {
+    describe('GET /:user', () => {
         it('returns posts of the user', async () => {
             const { body } = await request(app)
-                .post('/Timeline/:user')
+                .get('/Timeline/gibong@gmail.com')
                 .query('gibong@gmail.com')
                 .set('Cookie', cookie[0])
 
             const { posts } = body;
-            
             expect(posts[0]).toEqual(expect.objectContaining(posting[0]))
         })
     })
@@ -111,7 +110,7 @@ describe('/Timeline', () => {
     })
 
     describe('PATCH /AddFriend', () => {
-        it('returns haha', async () => {
+        it('returns userInfo with follower added', async () => {
             const { body } = await request(app)
                 .patch('/Timeline/AddFriend')
                 .set('Cookie', cookie)

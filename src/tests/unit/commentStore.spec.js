@@ -1,5 +1,5 @@
-import { db } from '../../index';
-import commentStore from '../../repository/commentStore';
+import { db } from '../../app';
+import commentStore from '../../repository/commentStore.repository';
 import commentSchemaModel from '../../model/comment';
 
 describe('commentStore', () => {
@@ -82,7 +82,7 @@ describe('commentStore', () => {
                 postLId: postLId,
                 title: title,
                 userName: userName,
-                isUnder: id
+                replyToCommentId: id
             }
 
             const newComment = await commentStore.createComment(postLId, title, userName, id);
@@ -93,8 +93,7 @@ describe('commentStore', () => {
 
     describe('removeComment', () => {
         it('removes comment', async () => {
-            const status = await commentStore.removeComment(comment)
-
+            const status = await commentStore.removeComment(comment.id)
             expect(status).toEqual(expect.objectContaining({ ok: 1 }))
         })
     })
@@ -107,13 +106,12 @@ describe('commentStore', () => {
                 postLId: 10,
                 title: 'today i learned',
                 userName: 'gibong@gmail.com',
-                isUnder: 4
+                replyToCommentId: 4
             }
         })
 
         it('returns comment', async () => {
-            const comments = await commentStore.createAndReturnCommentsOfTheSpecificId(newComment.postLId, newComment.title, newComment.userName, newComment.isUnder)
-
+            const comments = await commentStore.createAndReturnCommentsOfTheSpecificId(newComment.postLId, newComment.title, newComment.userName, newComment.replyToCommentId)
             expect(comments[0]).toEqual(expect.objectContaining(newComment))
         })
     })

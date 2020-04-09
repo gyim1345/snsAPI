@@ -1,5 +1,5 @@
-import { db } from '../../index';
-import userStore from '../../repository/userStore';
+import { db } from '../../app';
+import userStore from '../../repository/userStore.repository';
 import userSchemaModel from '../../model/user';
 
 describe('userStore', () => {
@@ -229,7 +229,7 @@ describe('userStore', () => {
         })
 
         it('returns modified image of the specific user', async () => {
-            const { userURL } = await userStore.editUserImage(userInfo, imageURL);
+            const { userURL } = await userStore.editUserImage(userName, imageURL);
 
             expect(userURL).toBe(imageURL);
         })

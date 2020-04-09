@@ -1,7 +1,7 @@
 const request = require('supertest')
-import app, { db } from '../../index'
+import app, { db } from '../../app'
 import postSchemaModel from '../../model/post';
-import postStore from '../../repository/postingStore'
+import postStore from '../../repository/postingStore.repository'
 
 describe('/SearchPage', () => {
 

@@ -1,15 +1,16 @@
 const request = require('supertest')
-import app, { db } from '../../index'
+import app, { db } from '../../app'
 
 import postSchemaModel from '../../model/post';
 import commentSchemaModel from '../../model/comment';
 import userSchemaModel from '../../model/user';
-import postStore from '../../repository/postingStore';
+import postStore from '../../repository/postingStore.repository';
 
-import register from '../../services/register';
-import login from '../../services/login';
-import edit from '../../services/edit';
-import remove from '../../services/remove';
+// import register from '../../services/register';
+import auth from '../../services/auth.service';
+// import edit from '../../services/edit';
+// import remove from '../../services/remove';
+import postService from '../../services/post.service'
 
 describe('/posts', () => {
     let cookie;
@@ -59,8 +60,8 @@ describe('/posts', () => {
 
         await userSchemaModel.create(userInfo);
 
-        login.loginValidation = jest.fn().mockResolvedValue({ loginStatea: true });
-        const req = await request(app).post('/login').send({ Id: 'gibong@gmail.com', Password: 'pwd' })
+        auth.loginValidation = jest.fn().mockResolvedValue({ loginStatea: true });
+        const req = await request(app).post('/auth/login').send({ Id: 'gibong@gmail.com', Password: 'pwd' })
         cookie = await req.header['set-cookie']
 
     })
@@ -83,7 +84,7 @@ describe('/posts', () => {
             it('returns 500 status code', async () => {
                 postStore.postList = jest.fn().mockRejectedValue();
                 const { statusCode } = await request(app)
-                .get('/posts')
+                    .get('/posts')
 
                 expect(statusCode).toBe(500);
             })
@@ -91,11 +92,64 @@ describe('/posts', () => {
 
     })
 
+    describe('GET /taggedPosts', () => {
+        it('returns tagged posts', async () => {
+
+            const { statusCode, body } = await request(app)
+                .get('/posts/taggedPosts')
+                .query({ user: 'gibong@gmail.com' })
+
+            expect(statusCode).toBe(200);
+            expect(body[0]).toEqual(expect.objectContaining(posts[0]));
+        })
+
+        describe('when internal error from server', () => {
+            beforeEach(() => {
+                postService.getTaggedPosts = jest.fn().mockRejectedValue(new Error('Somthing wrong'))
+
+            });
+
+            it('returns status code of 500 and message of Internal server error', async () => {
+                const { body, statusCode } = await request(app)
+                    .get('/posts/taggedPosts')
+
+                expect(statusCode).toBe(500);
+                expect(body.message).toBe('Internal server error');
+            })
+        })
+    })
+
+    describe('GET /scrappedposts', () => {
+        it('returns posts', async () => {
+            const { statusCode, body } = await request(app)
+                .get('/posts/scrappedPosts')
+                .query({ user: 'gibong@gmail.com' })
+
+            expect(statusCode).toBe(200);
+            expect(body[0]).toEqual(expect.objectContaining(posts[0]))
+        })
+
+        describe('when internal error from server', () => {
+            beforeEach(() => {
+                postService.getScrappedPostings = jest.fn().mockRejectedValue(new Error('Somthing wrong'))
+            });
+
+            it('returns status code of 500 and message of Internal server error', async () => {
+                const { body, statusCode } = await request(app)
+                    .get('/posts/scrappedPosts')
+                    .query({ input: 'gibong@gmail.com' })
+
+                expect(statusCode).toBe(500);
+                expect(body.message).toBe('Internal server error');
+            })
+        })
+    })
+
     describe('GET /:id', () => {
         it('returns post of the following id', async () => {
             const { body } = await request(app)
                 .get('/posts/3')
-
+            // console.log(body)
             expect(body.posts[0]).toEqual(expect.objectContaining(posts[0]))
         })
 
@@ -103,12 +157,13 @@ describe('/posts', () => {
             it('returns 500 status code', async () => {
                 postStore.getPost = jest.fn().mockRejectedValue();
                 const req = await request(app)
-                .get('/posts/3')
+                    .get('/posts/3')
 
                 expect(req.statusCode).toBe(500);
             })
         })
     })
+
 
     describe('POST /', () => {
         it('returns edited post', async () => {
@@ -124,52 +179,48 @@ describe('/posts', () => {
             it('returns 500 status code', async () => {
                 postStore.createPost = jest.fn().mockRejectedValue();
                 const { statusCode } = await request(app)
-                .post('/posts')
+                    .post('/posts')
 
                 expect(statusCode).toBe(500);
             })
         })
     })
 
-    describe('POST /register', () => {
-        describe('with valid inputs', () => {
-            it('creates user and returns true with status code 200', async () => {
-                const { body, statusCode } = await request(app)
-                    .post('/posts/register')
-                    .send({ id: 'newuser@gmail.com', password: 'myPassword' })
-               
-                expect(statusCode).toBe(200);
-                expect(body).toBe(true);
-            })
-        })
+    // describe('POST /register', () => {
+    //     describe('with valid inputs', () => {
+    //         it('creates user and returns true with status code 200', async () => {
+    //             const { body, statusCode } = await request(app)
+    //                 .post('/posts/register')
+    //                 .send({ id: 'newuser@gmail.com', password: 'myPassword' })
 
-        describe('with invalid inputs', () => {
-            it('returns 400 status code', async () => {
-                const { statusCode } = await request(app)
-                    .post('/posts/register')
-                    .send({ id: 'WRONG_INPUT', password: 'password' });
-                expect(statusCode).toBe(400);
-            })
-        })
+    //             expect(statusCode).toBe(200);
+    //             expect(body).toBe(true);
+    //         })
+    //     })
 
-        describe('with internal server error', () => {
-            it('returns 500 status code', async () => {
-                register.registration = jest.fn().mockRejectedValue();
-                const req = await request(app)
-                .post('/posts/register')
+    //     describe('with invalid inputs', () => {
+    //         it('returns 400 status code', async () => {
+    //             const { statusCode } = await request(app)
+    //                 .post('/posts/register')
+    //                 .send({ id: 'WRONG_INPUT', password: 'password' });
+    //             expect(statusCode).toBe(400);
+    //         })
+    //     })
 
-                expect(req.statusCode).toBe(500);
-            })
-        })
-    })
+    //     describe('with internal server error', () => {
+    //         it('returns 500 status code', async () => {
+    //             register.registration = jest.fn().mockRejectedValue();
+    //             const req = await request(app)
+    //             .post('/posts/register')
+
+    //             expect(req.statusCode).toBe(500);
+    //         })
+    //     })
+    // })
 
     describe('PATCH /edit', () => {
 
-        describe('when it is a post', () => {
-            beforeEach(async () => {
-                edit.checkOwnershipOfPost = jest.fn().mockResolvedValue(false)
-                edit.checkIfPostOrComment = jest.fn().mockResolvedValue(true)
-            })
+        describe('with ownership', () => {
             it('returns post with edited title', async () => {
                 const { body } = await request(app)
                     .patch('/posts/edit')
@@ -179,66 +230,73 @@ describe('/posts', () => {
                 expect(body[0].title).toBe('newTitle')
             })
         })
-    })
-
-    describe('PATCH /edit', () => {
-        describe('when it is a comment', () => {
-            beforeEach(async () => {
-                edit.checkOwnershipOfPost = jest.fn().mockResolvedValue(false)
-                edit.checkIfPostOrComment = jest.fn().mockResolvedValue(false)
+        describe('without ownership', () => {
+            beforeEach(() => {
+                postService.checkOwnershipOfPost = jest.fn().mockResolvedValue(true)
             })
-
-            it('returns comments with specific comment title edited', async () => {
-                const { body } = await request(app)
+            it('returns post with edited title', async () => {
+                const { body, statusCode } = await request(app)
                     .patch('/posts/edit')
-                    .send({ input: 'newTitle', posting: comments, indexOfCommentOnThisPosting: 0 })
+                    .send({ input: 'newTitle', posting: posts[0] })
                     .set('Cookie', cookie)
 
-                expect(body[0].title).toBe('newTitle')
+                expect(body).toBe('You dont have permission')
+                expect(statusCode).toBe(401)
             })
+
         })
 
-        describe('with internal server error', () => {
-            it('returns 500 status code', async () => {
-                edit.editThis = jest.fn().mockRejectedValue();
-                const req = await request(app)
+    })
+
+    describe('with internal server error', () => {
+        it('returns 500 status code', async () => {
+            postService.editPost = jest.fn().mockRejectedValue();
+            const req = await request(app)
                 .patch('/posts/edit')
 
-                expect(req.statusCode).toBe(500);
-            })
+            expect(req.statusCode).toBe(500);
         })
     })
 
     describe('PATCH /Remove', () => {
-        describe('when it is a post', () => {
+        describe('with ownership', () => {
             beforeEach(async () => {
-                edit.checkOwnershipOfPost = jest.fn().mockResolvedValue(true)
-                // edit.checkIfPostOrComment = jest.fn().mockResolvedValue(false)
+                postService.checkOwnershipOfPost = jest.fn().mockResolvedValue(false)
             })
             it('returns something after removing the post', async () => {
-                const res = await request(app)
+                const { body } = await request(app)
                     .patch('/posts/Remove')
                     .send({ posting: posts[0] })
                     .set('Cookie', cookie)
+
+                expect(body).toBe(true)
             })
         })
 
-        describe('when it is a comment', () => {
+        describe('without ownership', () => {
+            beforeEach(async () => {
+                postService.checkOwnershipOfPost = jest.fn().mockResolvedValue(true)
+            })
             it('returns something after removing the post', async () => {
-                const res = await request(app)
+                const { body, statusCode } = await request(app)
                     .patch('/posts/Remove')
-                    .send({ posting: comments, indexOfCommentOnThisPosting: 0 })
+                    .send({ posting: posts[0] })
                     .set('Cookie', cookie)
+
+                expect(body).toBe('You dont have permission')
+                expect(statusCode).toBe(401)
             })
         })
 
         describe('with internal server error', () => {
             it('returns 500 status code', async () => {
-                remove.removeThis = jest.fn().mockRejectedValue();
-                const req = await request(app)
-                .patch('/posts/Remove')
+                postService.removePost = jest.fn().mockRejectedValue();
+                const { statusCode } = await request(app)
+                    .patch('/posts/Remove')
+                    .send({ posting: posts[0] })
+                    .set('Cookie', cookie)
 
-                expect(req.statusCode).toBe(500);
+                expect(statusCode).toBe(500);
             })
         })
     })
@@ -257,7 +315,7 @@ describe('/posts', () => {
             it('returns 500 status code', async () => {
                 postStore.changeLike = jest.fn().mockRejectedValue();
                 const req = await request(app)
-                .patch('/posts/Like')
+                    .patch('/posts/Like')
 
                 expect(req.statusCode).toBe(500);
             })
@@ -282,10 +340,9 @@ describe('/posts', () => {
                     .patch('/posts/scrap')
                     .set('Cookie', cookie)
                     .send({ postId: 3 })
-                    
+
                 expect(body.message).toBe('already scrapped')
             })
         })
     })
-
 })

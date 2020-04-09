@@ -25,28 +25,29 @@ const commentStore = {
     return comment;
   },
 
-  async removeComment(theComment) {
-    await commentSchemaModel.deleteOne({ isUnder: theComment.id })
-    return await commentSchemaModel.deleteOne( {id: theComment.id})
+  async removeComment(id) {
+    await commentSchemaModel.deleteMany({ replyToCommentId: id })
+    return await commentSchemaModel.deleteOne( {id: id})
     },
   
 
-  async createComment(id, titlee, commentWrittenBy, commentId) {
+  async createComment(id, titlee, commentWrittenBy, index) {
    let commentModel = new commentSchemaModel(); 
    commentModel.id = Date.now();
    commentModel.postLId = id;
    commentModel.title = titlee;
    commentModel.userName = commentWrittenBy;
    commentModel.like = [];
-   commentModel.isUnder = commentId;
+   commentModel.replyToCommentId = index;
    await commentModel.save();
    return commentModel
   },
 
-  async createAndReturnCommentsOfTheSpecificId(id, titlee, commentWrittenBy, commentId) {
-    await this.createComment(id, titlee, commentWrittenBy, commentId)
+  async createAndReturnCommentsOfTheSpecificId(id, titlee, commentWrittenBy, index) {
+    await this.createComment(id, titlee, commentWrittenBy, index)
     return await this.getCommentFromPostId(id)
   }
+  
 
 };
 

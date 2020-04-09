@@ -20,7 +20,7 @@ let commentSchema = new Schema(
     like: {
       type: Array
     },
-    isUnder: {
+    replyToCommentId: {
       type: Number,
     }
   },

@@ -1,6 +1,6 @@
 import express from 'express';
-import commentStore from '../repository/commentStore'
-
+import commentStore from '../repository/commentStore.repository'
+import commentService from '../services/comment.service';
 // const validate =require('../middleware/validate.txt');
 // const validateComment = require('../model/comment');
 const validateNumber = require('../middleware/validateNumber');
@@ -15,7 +15,7 @@ router.get('/:id', validateNumber,  async (req, res) => {
   //부정을 강조하기 위해서 위에 그리고 원래 실행을 밑에
   try {
     const { id } = req.params;
-    const comments = await commentStore.getCommentFromPostId(id)
+    const comments = await commentService.getCommentForPost(id)
     res.send(comments);
   } catch (err) {
     res.status(500).send({ message: 'Internal server error' });
@@ -23,25 +23,36 @@ router.get('/:id', validateNumber,  async (req, res) => {
 });
 
 router.post('/:id', async (req, res) => {
-  // if (req.body === null) {
-  //   return res.status(400).json({ msg: 'Bad request' });
-  // }
-  
-  const { postId, inputa, currentUser, isUnder, commentId } = req.body;
-  // let comment = commentSchema({
-  //   postILd: postId,
-  //   title: inputa,
-  //   userName: currentUser,
-  //   isUnder: isUnder || commentId
-  // })
-  
+ 
   try {
-    const comments = await commentStore.createAndReturnCommentsOfTheSpecificId(postId, inputa, currentUser, (isUnder !== undefined) ? isUnder.id : commentId)
+    const comments = await commentService.createComment(req.body)
     res.send(comments);
 
   } catch (err) {
     res.status(500).send({ message: 'Internal server error' });
   }
 });
+
+router.patch('/:id', async (req, res) => {
+ 
+  try {
+    const comments = await commentService.removeComment(req.body)
+    res.send(comments);
+
+  } catch (err) {
+    res.status(500).send({ message: 'Internal server error' });//missing
+  }
+});
+
+// router.patch('/:id/like', async (req, res) => {
+ 
+//   try { //missing
+//     const comments = await commentService.removeComment(req.body)
+//     res.send(comments);
+
+//   } catch (err) {
+//     res.status(500).send({ message: 'Internal server error' });//missing
+//   }
+// });
 
 export default router

@@ -1,12 +1,12 @@
 const request = require('supertest')
 
-import app, { db } from '../../index';
+import app, { db } from '../../app';
 import userSchemaModel from '../../model/user';
-import login from '../../services/login';
-import userStore from '../../repository/userStore';
-import postStore from '../../repository/postingStore';
+import auth from '../../services/auth.service';
+import userStore from '../../repository/userStore.repository';
+import postStore from '../../repository/postingStore.repository';
 
-describe('/login', () => {
+describe('/upload', () => {
     let cookie;
 
     let userInfo = {
@@ -25,10 +25,10 @@ describe('/login', () => {
 
         await userSchemaModel.create(userInfo);
 
-        login.loginValidation = jest.fn().mockResolvedValue({ loginStatea: true });
+        auth.loginValidation = jest.fn().mockResolvedValue({ loginStatea: true });
 
         const { header } = await request(app)
-            .post('/login')
+            .post('/auth/login')
             .send({ Id: 'gibong@gmail.com', Password: 'pwd' })
         cookie = await header['set-cookie']
 
@@ -122,6 +122,6 @@ describe('/login', () => {
 
             expect(statusCode).toBe(401);
             expect(body).toBe('No file uploaded');
-        })
+    })
     })
 })
