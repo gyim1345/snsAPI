@@ -23,7 +23,6 @@ router.get('/:id', validateNumber, async (req, res) => {
 });
 
 router.post('/:id', async (req, res) => {
-  console.log('aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa',req.body)
   try {
     const comments = await commentService.createComment(req.body)
     res.send(comments);

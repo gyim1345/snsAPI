@@ -37,6 +37,22 @@ router.get('/taggedPosts', async (req, res) => {
       return res.status(500).send({ message: 'Internal server error' });
     }
     })
+
+    router.get('/scrapped', async (req, res) => {
+      console.log('aaaaaaaaaaaaaaaa')
+      // console.log(req.body)
+      // console.log(req.query)
+      // console.log(req.params)
+      const { id } = req.query
+      // console.log(id)
+      // console.log(req.session)
+      try{
+        const scrapped = await postService.getPostIsScrapped(id,req.session.user.Id);
+        res.send(scrapped);
+      } catch(err) {
+        return res.status(500).send({ message: 'Internal server error' });
+      }
+      })
   
 router.get('/:id', async (req, res) => {
    try {
