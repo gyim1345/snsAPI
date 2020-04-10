@@ -9,7 +9,7 @@ const router = express.Router();
 import commentSchema from '../model/comment';
 
 
-router.get('/:id', validateNumber,  async (req, res) => {
+router.get('/:id', validateNumber, async (req, res) => {
   //인풋 아웃풋으로 생각하고
   //return 을 안쓰는걸로
   //부정을 강조하기 위해서 위에 그리고 원래 실행을 밑에
@@ -23,7 +23,7 @@ router.get('/:id', validateNumber,  async (req, res) => {
 });
 
 router.post('/:id', async (req, res) => {
- 
+  console.log('aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa',req.body)
   try {
     const comments = await commentService.createComment(req.body)
     res.send(comments);
@@ -33,10 +33,26 @@ router.post('/:id', async (req, res) => {
   }
 });
 
-router.patch('/:id', async (req, res) => {
- 
+router.patch('/edit', async (req, res) => {
+  const { input, posting, username, index } = req.body;
   try {
-    const comments = await commentService.removeComment(req.body)
+    const post = await commentService.editTitleOfComment(input, posting, req.session.user.Id, index);
+    res.send(post);
+  } catch (err) {
+    if (err === false) {
+      return res.status(401).json('You dont have permission')
+    }
+    res.status(500).send(err);
+  }
+});
+
+router.patch('/:id', async (req, res) => {
+
+  const { posting, index } = req.body
+  // const { id } = req.params
+  // console.log('pasdasdasd', posting, index, id);
+  try {
+    const comments = await commentService.removeComment(posting, index)
     res.send(comments);
 
   } catch (err) {
@@ -45,7 +61,7 @@ router.patch('/:id', async (req, res) => {
 });
 
 // router.patch('/:id/like', async (req, res) => {
- 
+
 //   try { //missing
 //     const comments = await commentService.removeComment(req.body)
 //     res.send(comments);

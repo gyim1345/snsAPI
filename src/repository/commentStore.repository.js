@@ -18,11 +18,11 @@ const commentStore = {
     return await commentSchemaModel.findOne( {id: id})
   },
 
-  async editCommentTitle(commentId, input) {
+  async editCommentTitle(title, commentId) {
     let comment = await commentSchemaModel.findOne({ id: commentId });
-    comment.title = input;
+    comment.title = title;
     await comment.save();
-    return comment;
+    return;
   },
 
   async removeComment(id) {

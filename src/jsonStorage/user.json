@@ -1,0 +1,46 @@
+[{
+  "name": "gibong@gmail.com",
+  "userId": 1,
+  "userFollow": ["", "guy@gmail.com","Bongstagram"],
+  "userURL": "http://localhost:3000/static/images/user1.png",
+  "password": "gb123",
+  "nickName": "gibongggg",
+  "introductory": "hello tis a good day"
+},
+{
+  "name": "guy@gmail.com",
+  "userId": 2,
+  "userFollow": ["", "gibong@gmail.com","Bongstagram"],
+  "userURL": "http://localhost:3000/static/images/user2.png",
+  "password": "guy123",
+  "nickName": "gyyyyyyyyy",
+  "introductory": "hello im guy"
+},
+{
+  "name": "noone@gmail.com",
+  "userId": 3,
+  "userFollow": ["","Bongstagram"],
+  "userURL": "http://localhost:3000/static/images/user3.png",
+  "password": "noonepwd",
+  "nickName": "nononoononoonoono",
+  "introductory": "nooooooooooooooooooo"
+},
+{
+  "name": "",
+"userId": 0,
+  "userFollow": [""],
+  "userURL": "",
+  "password": "a213tewr",
+  "nickName": "",
+  "introductory": ""
+},
+{
+  "name": "Bongstagram",
+  "userId": 4,
+    "userFollow": [""],
+    "userURL": "http://localhost:3000/static/images/B.png",
+    "password": "Bongstagram",
+    "nickName": "Bongstagram",
+    "introductory": "Welcome To Bongstagram"
+}
+]

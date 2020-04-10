@@ -8,12 +8,12 @@ const router = express.Router();
 
 
 router.get('/', async (req, res) => {
-  if (req.body.user === undefined) {
+  if (req.query.user === undefined) {
     return res.status(400).json({ message: 'No body found' });
   }
-
+  console.log('aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa', req.session)
   try {
-    const { user } = req.body;
+    const { user } = req.query;
     const posts = await postStore.getuserPosts(user);
     res.send({ posts });
   } catch (err) {

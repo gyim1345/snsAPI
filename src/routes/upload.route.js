@@ -10,7 +10,6 @@ import userService from '../services/user.services';
 const router = express.Router();
 
 router.post('/', validateImageUpload, async (req, res) => {
-
   const file = req.files.files;//.files.files 로 바꿈 files.file 에서
   const { input, inputTag } = req.body;
   const user = req.session.user.Id

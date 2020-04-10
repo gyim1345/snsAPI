@@ -9,7 +9,8 @@ const auth = {
     },
 
     async loginValidation(id, password) {
-        if(await this.checkPassword(id, password)) {
+      if(await this.checkPassword(id, password)) {
+        console.log(id,password)
         return { loginStatus: true }
         }
         throw false
