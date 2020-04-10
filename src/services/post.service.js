@@ -52,6 +52,11 @@ const postService = {
     async getTaggedPosts(username) {
         return await postStore.getUserTaggedPosts(username);
     },
+    
+    async getPostIsScrapped(id, username) {
+        const scrapIds = await userStore.getUserScrappedPostIds(username);
+        return scrapIds.includes(id)
+    },
 
     async getScrappedPosts(user) {
         const scrapArray = await userStore.getUserScrapIds(user);

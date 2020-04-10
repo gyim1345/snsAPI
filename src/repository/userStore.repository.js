@@ -28,6 +28,10 @@ async getUserImage(userName) {
   return userInfo.userURL;
 },
 
+async getUserScrappedPostIds(username) {
+  return (await userSchemaModel.findOne({ name: username})).scrap
+},
+
   // async getFollowerNumberOfUser(userName) {
   //   const [ userInfo ]  = await userSchemaModel.find({ name: userName })
   //   return userInfo.userFollow.length -1;
