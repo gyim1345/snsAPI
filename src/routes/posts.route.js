@@ -21,41 +21,35 @@ router.get('/', async (req, res) => {
 });
 
 router.get('/taggedPosts', async (req, res) => {
-  try{
+  try {
     const posts = await postService.getTaggedPosts(req.query.user);
     res.send(posts);
-  } catch(err) {
+  } catch (err) {
     return res.status(500).send({ message: 'Internal server error' });
   }
-  })
+})
 
-  router.get('/scrappedPosts', async (req, res) => {
-    try{
-      const posts = await postService.getScrappedPosts(req.query.user);
-      res.send(posts);
-    } catch(err) {
-      return res.status(500).send({ message: 'Internal server error' });
-    }
-    })
+router.get('/scrappedPosts', async (req, res) => {
+  try {
+    const posts = await postService.getScrappedPosts(req.query.user);
+    res.send(posts);
+  } catch (err) {
+    return res.status(500).send({ message: 'Internal server error' });
+  }
+})
 
-    router.get('/scrapped', async (req, res) => {
-      console.log('aaaaaaaaaaaaaaaa')
-      // console.log(req.body)
-      // console.log(req.query)
-      // console.log(req.params)
-      const { id } = req.query
-      // console.log(id)
-      // console.log(req.session)
-      try{
-        const scrapped = await postService.getPostIsScrapped(id,req.session.user.Id);
-        res.send(scrapped);
-      } catch(err) {
-        return res.status(500).send({ message: 'Internal server error' });
-      }
-      })
-  
+router.get('/scrapped', async (req, res) => {
+  const { id } = req.query
+  try {
+    const scrapped = await postService.getPostIsScrapped(id, req.session.user.Id);
+    res.send(scrapped);
+  } catch (err) {
+    return res.status(500).send({ message: 'Internal server error' });
+  }
+})
+
 router.get('/:id', async (req, res) => {
-   try {
+  try {
     const posts = await postService.getPostById(req.params.id)
     res.send({ posts });
   } catch (err) {
@@ -76,7 +70,7 @@ router.post('/', async (req, res) => {
 });
 
 // router.post('/register', async (req, res) => {
- 
+
 //   const { id, password } = req.body;
 //   try {
 //     // const validability = await register.userIdValidation(id)
@@ -99,7 +93,7 @@ router.patch('/edit', async (req, res) => {
     const post = await postService.editTitleOfPost(input, posting, req.session.user.Id);
     res.send(post);
   } catch (err) {
-    if(err === false) {
+    if (err === false) {
       return res.status(401).json('You dont have permission')
     }
     res.status(500).send(err);
@@ -111,10 +105,10 @@ router.patch('/Remove', async (req, res) => {
   const { posting } = req.body;
 
   try {
-    const posts = await postService.removePost(posting.userName, posting.id,  req.session.user.Id);
+    const posts = await postService.removePost(posting.userName, posting.id, req.session.user.Id);
     res.send(posts);
   } catch (err) {
-    if(err === false) {
+    if (err === false) {
       return res.status(401).json('You dont have permission')
     }
     res.status(500).send(err);

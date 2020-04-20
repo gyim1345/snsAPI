@@ -1,6 +1,7 @@
 import v1Route from './routes'
 import express from 'express';
 import cors from 'cors';
+import compression from 'compression';
 
 const session = require('express-session');
 const fileUpload = require('express-fileupload');
@@ -15,6 +16,7 @@ export const db = mongoose.connection;
 
 app.use(express.json());
 app.use(fileUpload());
+app.use(compression());
 app.use(cors({
   origin: 'http://localhost:8080',
   credentials: true, 
