@@ -21,8 +21,8 @@ router.get('/randomUser', async (req, res) => {
 });
 
 router.get('/:user', async (req, res) => {
-  console.log('asd', req.session)
-  console.log('bbb', req.sessions)
+  // console.log('asd', req.session)
+  // console.log('bbb', req.sessions)
   const user = req.session.user.Id;
   const posts = await timelineService.getPostsForTimeline(user);
   res.send({ posts });

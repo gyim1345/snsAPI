@@ -44,14 +44,14 @@ describe('/upload', () => {
     describe('POST /', () => {
         const uploadedFile = {
             fileName: '1.jpg',
-            filePath: '/static/images/1.jpg',
+            filePath: 'https://snsimagefiles.s3.ap-northeast-2.amazonaws.com/1.jpg',
 
         }
         const posts = {
             like: [],
             tag: ['newInputTag'],
             title: 'newInput',
-            imageUrl: 'http://localhost:3000/static/images/1.jpg',
+            imageUrl: 'https://snsimagefiles.s3.ap-northeast-2.amazonaws.com/1.jpg',
             userName: 'gibong@gmail.com',
         }
 
@@ -61,9 +61,9 @@ describe('/upload', () => {
                 .attach('files', '/workspace/Project/snsAPI/src/static/images/1.jpg')
                 .field({ input: 'newInput', inputTag: 'newInputTag' })
                 .set('Cookie', cookie)
-
             expect(body).toEqual(expect.objectContaining(uploadedFile))
             expect(body.posts).toEqual(expect.objectContaining(posts))
+            expect()
         })
 
         describe('when internal error from server', () => {

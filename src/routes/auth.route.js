@@ -7,11 +7,11 @@ const router = express.Router();
 
 router.post('/login', async (req, res) => {
   const { Id, Password } = req.body;
-  console.log(Id,Password)
+  // console.log(Id,Password)
   try{
   const {loginStatus} = await auth.loginValidation(Id, Password);
   req.session.user = { Id };
-  console.log('qqqq', req.session.user)
+  // console.log('qqqq', req.session.user)
   // console.log(loginStatus)
   res.status(200).json(loginStatus);
   } catch (err) {

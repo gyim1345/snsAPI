@@ -1,7 +1,7 @@
      [{
       "id": 0,
       "title": "Welcome To BongStagram",
-      "imageUrl": "http://localhost:3000/static/images/Welcome.png",
+      "imageUrl": "https://snsimagefiles.s3.ap-northeast-2.amazonaws.com/Welcome.png",
       "userName": "Bongstagram",
       "like": ["gibong@gmail.com", "guy@gmail.com", "noone@gmail.com"],
       "tag": ["boat", "sky", "landscape"]
@@ -9,7 +9,7 @@
     {
       "id": 1,
       "title": "posting with id 1",
-      "imageUrl": "http://localhost:3000/static/images/1.jpg",
+      "imageUrl": "https://snsimagefiles.s3.ap-northeast-2.amazonaws.com/1.jpg",
       "userName": "gibong@gmail.com",
       "like": ["gibong@gmail.com", "guy@gmail.com", "noone@gmail.com"],
       "tag": ["boat", "sky", "landscape"]
@@ -17,7 +17,7 @@
     {
       "id": 2,
       "title": "posting with id 2",
-      "imageUrl": "http://localhost:3000/static/images/2.jpg",
+      "imageUrl": "https://snsimagefiles.s3.ap-northeast-2.amazonaws.com/2.jpg",
       "userName": "gibong@gmail.com",
       "like": ["gibong@gmail.com", "guy@gmail.com", "noone@gmail.com"],
       "tag": ["tree", "sky", "river", "landscape"]
@@ -25,7 +25,7 @@
     {
       "id": 3,
       "title": "posting with id 3",
-      "imageUrl": "http://localhost:3000/static/images/3.jpeg",
+      "imageUrl": "https://snsimagefiles.s3.ap-northeast-2.amazonaws.com/3.jpeg",
       "userName": "gibong@gmail.com",
       "like": ["gibong@gmail.com", "noone@gmail.com"],
       "tag": ["tree", "sky", "crop", "landscape"]
@@ -33,7 +33,7 @@
     {
       "id": 4,
       "title": "posting with id 4",
-      "imageUrl": "http://localhost:3000/static/images/4.png",
+      "imageUrl": "https://snsimagefiles.s3.ap-northeast-2.amazonaws.com/4.png",
       "userName": "gibong@gmail.com",
       "like": ["guy@gmail.com", "noone@gmail.com"],
       "tag": ["tree", "sky", "mountain", "landscape"]
@@ -41,7 +41,7 @@
     {
       "id": 5,
       "title": "posting with id 5",
-      "imageUrl": "http://localhost:3000/static/images/ubuntu.jpg",
+      "imageUrl": "https://snsimagefiles.s3.ap-northeast-2.amazonaws.com/ubuntu.jpg",
       "userName": "guy@gmail.com",
       "like": ["noone@gmail.com"],
       "tag": []
@@ -49,7 +49,7 @@
     {
       "id": 6,
       "title": "posting with id 6",
-      "imageUrl": "http://localhost:3000/static/images/ubuntu2.jpg",
+      "imageUrl": "https://snsimagefiles.s3.ap-northeast-2.amazonaws.com/ubuntu2.jpg",
       "userName": "guy@gmail.com",
       "like": [],
       "tag": []
@@ -57,7 +57,7 @@
     {
       "id": 7,
       "title": "posting with id 7",
-      "imageUrl": "http://localhost:3000/static/images/wallpaperflare.jpg",
+      "imageUrl": "https://snsimagefiles.s3.ap-northeast-2.amazonaws.com/wallpaperflare.jpg",
       "userName": "guy@gmail.com",
       "like": ["guy@gmail.com", "noone@gmail.com"],
       "tag": []
@@ -65,7 +65,7 @@
     {
       "id": 8,
       "title": "posting with id 8",
-      "imageUrl": "http://localhost:3000/static/images/defaultnumber.png",
+      "imageUrl": "https://snsimagefiles.s3.ap-northeast-2.amazonaws.com/defaultnumber.png",
       "userName": "noone@gmail.com",
       "like": ["gibong@gmail.com", "guy@gmail.com"],
       "tag": []
@@ -73,7 +73,7 @@
     {
       "id": 9,
       "title": "posting with id 9",
-      "imageUrl": "http://localhost:3000/static/images/defaultnumber.png",
+      "imageUrl": "https://snsimagefiles.s3.ap-northeast-2.amazonaws.com/defaultnumber.png",
       "userName": "noone@gmail.com",
       "like": ["noone@gmail.com"],
       "tag": []
@@ -81,7 +81,7 @@
     {
       "id": 10,
       "title": "Amazing night sky with stars",
-      "imageUrl": "http://localhost:3000/static/images/5.jpg",
+      "imageUrl": "https://snsimagefiles.s3.ap-northeast-2.amazonaws.com/5.jpg",
       "userName": "gibong@gmail.com",
       "like": ["gibong@gmail.com", "guy@gmail.com", "noone@gmail.com"],
       "tag": ["star", "sky", "landscape"]
@@ -89,7 +89,7 @@
     {
       "id": 11,
       "title": "Beautiful sky at dawn",
-      "imageUrl": "http://localhost:3000/static/images/6.jpg",
+      "imageUrl": "https://snsimagefiles.s3.ap-northeast-2.amazonaws.com/6.jpg",
       "userName": "gibong@gmail.com",
       "like": ["gibong@gmail.com", "guy@gmail.com", "noone@gmail.com"],
       "tag": ["sky", "landscape"]
@@ -97,7 +97,7 @@
     {
       "id": 12,
       "title": "Picture of campus",
-      "imageUrl": "http://localhost:3000/static/images/7.jpg",
+      "imageUrl": "https://snsimagefiles.s3.ap-northeast-2.amazonaws.com/7.jpg",
       "userName": "gibong@gmail.com",
       "like": ["gibong@gmail.com", "guy@gmail.com", "noone@gmail.com"],
       "tag": ["campus", "sky"]
@@ -105,7 +105,7 @@
     {
       "id": 13,
       "title": "Offroad biking",
-      "imageUrl": "http://localhost:3000/static/images/8.jpg",
+      "imageUrl": "https://snsimagefiles.s3.ap-northeast-2.amazonaws.com/8.jpg",
       "userName": "gibong@gmail.com",
       "like": ["gibong@gmail.com", "guy@gmail.com", "noone@gmail.com"],
       "tag": ["offroad", "sky", "mountain", "landscape"]
@@ -113,7 +113,7 @@
     {
       "id": 14,
       "title": "Building on top of a cliff at dawn",
-      "imageUrl": "http://localhost:3000/static/images/9.jpg",
+      "imageUrl": "https://snsimagefiles.s3.ap-northeast-2.amazonaws.com/9.jpg",
       "userName": "gibong@gmail.com",
       "like": ["gibong@gmail.com", "guy@gmail.com", "noone@gmail.com"],
       "tag": ["cliff", "sky", "mountain", "landscape", "dawn"]
@@ -121,7 +121,7 @@
     {
       "id": 15,
       "title": "Tornado",
-      "imageUrl": "http://localhost:3000/static/images/10.jpg",
+      "imageUrl": "https://snsimagefiles.s3.ap-northeast-2.amazonaws.com/10.jpg",
       "userName": "gibong@gmail.com",
       "like": ["gibong@gmail.com", "guy@gmail.com", "noone@gmail.com"],
       "tag": ["tornado", "sky", "landscape"]
@@ -129,7 +129,7 @@
     {
       "id": 16,
       "title": "Desert",
-      "imageUrl": "http://localhost:3000/static/images/11.jpg",
+      "imageUrl": "https://snsimagefiles.s3.ap-northeast-2.amazonaws.com/11.jpg",
       "userName": "gibong@gmail.com",
       "like": ["gibong@gmail.com", "guy@gmail.com", "noone@gmail.com"],
       "tag": ["desert", "landscape"]
@@ -137,7 +137,7 @@
     {
       "id": 17,
       "title": "Shining Tree",
-      "imageUrl": "http://localhost:3000/static/images/12.jpg",
+      "imageUrl": "https://snsimagefiles.s3.ap-northeast-2.amazonaws.com/12.jpg",
       "userName": "gibong@gmail.com",
       "like": ["gibong@gmail.com", "guy@gmail.com", "noone@gmail.com"],
       "tag": ["tree", "landscape"]
@@ -145,7 +145,7 @@
     {
       "id": 18,
       "title": "Ruin",
-      "imageUrl": "http://localhost:3000/static/images/13.jpg",
+      "imageUrl": "https://snsimagefiles.s3.ap-northeast-2.amazonaws.com/13.jpg",
       "userName": "gibong@gmail.com",
       "like": ["gibong@gmail.com", "guy@gmail.com", "noone@gmail.com"],
       "tag": ["ruin"]
@@ -153,7 +153,7 @@
     {
       "id": 19,
       "title": "Nice picture",
-      "imageUrl": "http://localhost:3000/static/images/14.jpg",
+      "imageUrl": "https://snsimagefiles.s3.ap-northeast-2.amazonaws.com/14.jpg",
       "userName": "gibong@gmail.com",
       "like": ["gibong@gmail.com", "guy@gmail.com", "noone@gmail.com"],
       "tag": ["river", "sky", "mountain", "landscape"]
@@ -161,7 +161,7 @@
     {
       "id": 20,
       "title": "Mountain",
-      "imageUrl": "http://localhost:3000/static/images/15.jpg",
+      "imageUrl": "https://snsimagefiles.s3.ap-northeast-2.amazonaws.com/15.jpg",
       "userName": "gibong@gmail.com",
       "like": ["gibong@gmail.com", "guy@gmail.com", "noone@gmail.com"],
       "tag": ["sky", "mountain", "landscape"]
@@ -169,7 +169,7 @@
     {
       "id": 21,
       "title": "Red sky on the beach",
-      "imageUrl": "http://localhost:3000/static/images/16.jpg",
+      "imageUrl": "https://snsimagefiles.s3.ap-northeast-2.amazonaws.com/16.jpg",
       "userName": "gibong@gmail.com",
       "like": ["gibong@gmail.com", "guy@gmail.com", "noone@gmail.com"],
       "tag": ["red", "sky", "landscape"]

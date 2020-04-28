@@ -46,8 +46,8 @@ async getUserScrappedPostIds(username) {
 
   async checkPassword(Id, Password) {
     // console.log((await userSchemaModel.findOne({ name: Id})).password, Password)
-    console.log('asdasd', Id, Password);
-    console.log( await userSchemaModel.findOne({ name: Id}));
+    // console.log('asdasd', Id, Password);
+    // console.log( await userSchemaModel.findOne({ name: Id}));
     return  (await userSchemaModel.findOne({ name: Id})).password === Password;
   },
 

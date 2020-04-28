@@ -18,7 +18,7 @@ const commentService = {
     async editComment(title, comments, index, commentId) {
         await commentStore.editCommentTitle(title, commentId)
         comments[index].title = title;
-        console.log(comments)
+        // console.log(comments)
         return comments;
     },
 

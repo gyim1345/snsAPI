@@ -4,21 +4,20 @@ import cors from 'cors';
 import compression from 'compression';
 
 const session = require('express-session');
-const fileUpload = require('express-fileupload');
 const bodyParser = require('body-parser');
 const app = express();
 const mongoose = require('mongoose');
 
-require('dotenv').config({ path: `/workspace/Project/snsAPI/src/.env.${process.env.NODE_ENV}` })
+
+require('dotenv').config({ path: `.env.${process.env.NODE_ENV}` })
 require('./startup/db')();
 
 export const db = mongoose.connection;
 
 app.use(express.json());
-app.use(fileUpload());
 app.use(compression());
 app.use(cors({
-  origin: 'http://localhost:8080',
+  origin: process.env.ORIGIN,
   credentials: true, 
 }));
 app.use(bodyParser.urlencoded({extended: false}));
