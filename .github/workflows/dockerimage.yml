@@ -23,10 +23,10 @@ jobs:
 
       - name: Build image
         if: success()
-        run: docker build -t ${GITHUB_REPOSITORY.toLowerCase()}:${IMAGE_TAG} .
+        run: docker build -t ${DOCKER_IMAGE_NAME}:${IMAGE_TAG} .
 
       - name: Push to docker registry
         if: success()
         uses: actions-hub/docker@master
         with:
-          args: push ${GITHUB_REPOSITORY.toLowerCase()}:${IMAGE_TAG}
+          args: push ${DOCKER_IMAGE_NAME}:${IMAGE_TAG}
