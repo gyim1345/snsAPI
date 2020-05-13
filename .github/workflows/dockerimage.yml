@@ -23,10 +23,10 @@ jobs:
 
       - name: Build image
         if: success()
-        run: docker build -t ${DOCKER_IMAGE_NAME}:${IMAGE_TAG} .
+        run: docker build -t ${DOCKER_IMAGE_NAME}:${Date.now()} .
 
       - name: Push to docker registry
         if: success()
         uses: actions-hub/docker@master
         with:
-          args: push ${DOCKER_IMAGE_NAME}:${IMAGE_TAG}
+          args: push ${DOCKER_IMAGE_NAME}:${Date.now()}
