@@ -5,3 +5,5 @@ production.env
 /routes/config
 .env*
 aasdad
+.env
+Dockerfile

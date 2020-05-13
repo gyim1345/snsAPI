@@ -1,4 +1,4 @@
-const baseurl = "http://localhost:3000";
+const baseurl = "https://snsimagefiles.s3.ap-northeast-2.amazonaws.com";
 import userSchemaModel from '../model/user';
 
 const userStore = {
@@ -124,7 +124,7 @@ async getUserScrappedPostIds(username) {
     userModel.name = id;
     userModel.userId = `user${Date.now()}`;
     userModel.userFollow = ["Bongstagram"];
-    userModel.userURL = `${baseurl}/static/images/profilepicture.png`;
+    userModel.userURL = `${baseurl}/profilepicture.png`;
     userModel.password = pwd;
     userModel.scrap = [];
     userModel.nickName = '';

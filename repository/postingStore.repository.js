@@ -2,8 +2,8 @@ const userStore = require('./userStore.repository');
 import postSchemaModel from '../model/post';
 
 
-const baseurl = "http://localhost:3000";
-const DEFAULT_IMAGE = `${baseurl}/static/images/defaultnumber.png`;
+// const baseurl = "http://localhost:3000";
+// const DEFAULT_IMAGE = `${baseurl}/static/images/defaultnumber.png`;
 const postStore = {
 
   async postList() {
@@ -62,9 +62,9 @@ const postStore = {
     const userPosts = await postStore.getuserPosts(user)
    let result = [];
    for( let i = 0; i< follower.length; i++ ) {
-     result = [...userPosts , ...(await this.getuserPosts(follower[i]).then())];
+     result = [...result, ...(await this.getuserPosts(follower[i]).then())];
    }
-   return result;
+   return [...result, ...userPosts];
   },
 
   async editPostTitle(input, posting) {
@@ -75,14 +75,14 @@ const postStore = {
   
   },
 
-  async createPost(recievedTitle, name, url, inputTag) {
+  async createPost(recievedTitle, name, url, tags) {
     const postModel = new postSchemaModel();
     postModel.id = Date.now();
     postModel.title = recievedTitle;
     postModel.imageUrl = url;
     postModel.userName = name;
     postModel.like = [];
-    postModel.tag = [inputTag];
+    postModel.tag = [...tags];
     await postModel.save();
     return postModel
    },

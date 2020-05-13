@@ -65,7 +65,7 @@ const postService = {
     },
 
     async uploadPost(input, user, url, inputTag) {
-        return await postStore.createPost(input, user, url, inputTag)
+        return await postStore.createPost(input, user, url, inputTag.split(','))
     },
 
     async scrapPost(id, username) {

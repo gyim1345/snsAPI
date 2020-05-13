@@ -7,11 +7,9 @@ const session = require('express-session');
 const bodyParser = require('body-parser');
 const app = express();
 const mongoose = require('mongoose');
-
-
+console.log(process.env.NODE_ENV)
 require('dotenv').config({ path: `.env.${process.env.NODE_ENV}` })
 require('./startup/db')();
-
 export const db = mongoose.connection;
 
 app.use(express.json());

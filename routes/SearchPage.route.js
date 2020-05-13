@@ -1,5 +1,4 @@
 import express from 'express';
-import postStore from '../repository/postingStore.repository';
 import searchPageService from '../services/searchPage.service';
 const router = express.Router();
 
