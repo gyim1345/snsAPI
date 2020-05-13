@@ -23,7 +23,7 @@ jobs:
 
       - name: Build image
         if: success()
-        run: docker build -t snsapi:1.0 .
+        run: docker build --t snsapi:1.0 .
 
       - name: Push to docker registry
         if: success()
