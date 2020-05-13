@@ -23,10 +23,10 @@ jobs:
 
       - name: Build image
         if: success()
-        run: docker build -t ${DOCKER_IMAGE_NAME}:${Date.now()} .
+        run: docker build -t snsapi:1.0 .
 
       - name: Push to docker registry
         if: success()
         uses: actions-hub/docker@master
         with:
-          args: push ${DOCKER_IMAGE_NAME}:${Date.now()}
+          args: push snsapi:1.0
