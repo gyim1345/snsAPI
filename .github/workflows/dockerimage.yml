@@ -23,10 +23,10 @@ jobs:
 
       - name: Build image
         if: success()
-        run: docker build --t snsapi:1.0 .
+        run: docker build --tag snsapi:3.0 .
 
       - name: Push to docker registry
         if: success()
         uses: actions-hub/docker@master
         with:
-          args: push snsapi:1.0
+          args: push snsapi:3.0
