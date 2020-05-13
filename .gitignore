@@ -6,4 +6,3 @@ production.env
 .env*
 aasdad
 .env
-Dockerfile
