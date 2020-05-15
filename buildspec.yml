@@ -5,7 +5,7 @@ phases:
     commands:
         - npm ci
 
-        post_build:
+  post_build:
     commands:
       - echo $(basename ./build/libs/*.jar)
       - pwd
