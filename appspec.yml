@@ -7,8 +7,7 @@ files:
     destination: /webapps/myApp
 hooks:
   BeforeInstall:
-    - location: Scripts/UnzipResourceBundle.sh
-    - location: Scripts/UnzipDataBundle.sh
+    - location: scripts/cleanup_application
   AfterInstall:
     - location: Scripts/RunResourceTests.sh
       timeout: 180
