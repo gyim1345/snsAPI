@@ -4,6 +4,9 @@ files:
   - source: /
     destination: /home/ubuntu/build
 hooks:
+  BeforeInstall:
+    - location: scripts/beforeInstall.bash
+      runas: root
   AfterInstall:
-    - location: /start.sh
+    - location: scripts/afterInstall.bash
       runas: root
