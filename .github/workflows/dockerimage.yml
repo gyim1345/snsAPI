@@ -30,8 +30,7 @@ jobs:
           args: push ${{ secrets.hubName }}:3.1
       
       - name: run codeDeploy
-        run: aws deploy create-deployment \
-        --application-name codedeploy \
-        --deployment-config-name CodeDeployDefault.OneAtATime \
- 
+        run: aws deploy create-deployment --application-name codedeploy --deployment-config-name CodeDeployDefault.OneAtATime --deployment-group-name gropu --github-location repository=gyim1345/snsAPI,commitId=e41f4c157561129b9fa3cab43fd9a99bc73d7883
+   
+
           
