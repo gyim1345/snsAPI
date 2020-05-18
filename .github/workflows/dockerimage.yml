@@ -22,18 +22,18 @@ jobs:
           AWS_SECRET_ACCESS_KEY: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
           Default_region_name: ap-northeast-2
 
-      - name: Build image
-        if: success()
-        run: docker build --tag ${{ secrets.hubName }}:3.1 .
+    #   - name: Build image
+    #     if: success()
+    #     run: docker build --tag ${{ secrets.hubName }}:3.1 .
 
-      - name: Push to docker registry
-        if: success()
-        uses: actions-hub/docker@master
-        with:
-          args: push ${{ secrets.hubName }}:3.1
+    #   - name: Push to docker registry
+    #     if: success()
+    #     uses: actions-hub/docker@master
+    #     with:
+    #       args: push ${{ secrets.hubName }}:3.1
       
       - name: run codeDeploy
-        run: aws deploy create-deployment --application-name codedeploy --deployment-config-name CodeDeployDefault.OneAtATime --deployment-group-name gropu --github-location repository=gyim1345/snsAPI,commitId=e41f4c157561129b9fa3cab43fd9a99bc73d7883
+        run: aws deploy --region ap-northeast-2 create-deployment --application-name codedeploy --deployment-config-name CodeDeployDefault.OneAtATime --deployment-group-name gropu --github-location repository=gyim1345/snsAPI,commitId=e41f4c157561129b9fa3cab43fd9a99bc73d7883
    
 
           
