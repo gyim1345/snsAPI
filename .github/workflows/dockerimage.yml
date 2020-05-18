@@ -32,3 +32,6 @@ jobs:
       - name: run codeDeploy
         run: aws deploy create-deployment \
         --application-name codedeploy \
+        --deployment-config-name CodeDeployDefault.OneAtATime \
+ 
+          
