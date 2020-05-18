@@ -30,7 +30,7 @@ jobs:
           args: push ${{ secrets.hubName }}:3.1
 
       - name: run codeDeploy
-        run: aws deploy --region ap-northeast-2 create-deployment --application-name codedeploy --deployment-config-name CodeDeployDefault.OneAtATime --deployment-group-name gropu --github-location repository=gyim1345/snsAPI,commitId=git rev-parse HEAD
+        run: aws deploy --region ap-northeast-2 create-deployment --application-name codedeploy --deployment-config-name CodeDeployDefault.OneAtATime --deployment-group-name gropu --github-location repository=gyim1345/snsAPI,commitId=GITHUB_SHA
         env:
             AWS_ACCESS_KEY_ID: ${{ secrets.AWS_ACCESS_KEY_ID }}
             AWS_SECRET_ACCESS_KEY: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
