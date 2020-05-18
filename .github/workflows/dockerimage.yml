@@ -32,12 +32,3 @@ jobs:
       - name: run codeDeploy
         run: aws deploy create-deployment \
         --application-name codedeploy \
-        # --deployment-config-name CodeDeployDefault.OneAtATime \
-        # --deployment-group-name gropu \
-        # --description "test" \
-        # --github-location repository=gyim1345/snsAPI,commitId=e41f4c157561129b9fa3cab43fd9a99bc73d7883
-      
-      # run: aws deploy create-deployment --application-name codedeploy --deployment-config-name CodeDeployDefault.OneAtATime --deployment-group-name gropu --s3-location bucket=isntyet-deploy,bundleType=zip,key=$PROJECT_NAME/$GITHUB_SHA.zip
-
-
-          
