@@ -28,6 +28,7 @@ jobs:
         uses: actions-hub/docker@master
         with:
           args: push ${{ secrets.hubName }}:3.1
+          
       - name: run codeDeploy
         run: aws deploy --region ap-northeast-2 create-deployment --application-name codedeploy --deployment-config-name CodeDeployDefault.OneAtATime --deployment-group-name gropu --github-location repository=gyim1345/snsAPI,commitId=74d76c11558adf4ba74083dd3a48fd8a05e4060a
         env:
