@@ -19,15 +19,15 @@ jobs:
           DOCKER_USERNAME: ${{ secrets.DOCKER_USERNAME }}
           DOCKER_PASSWORD: ${{ secrets.DOCKER_PASSWORD }}
 
-    #   - name: Build image
-    #     if: success()
-    #     run: docker build --tag ${{ secrets.hubName }}:3.1 .
+      - name: Build image
+        if: success()
+        run: docker build --tag ${{ secrets.hubName }}:3.1 .
 
-    #   - name: Push to docker registry
-    #     if: success()
-    #     uses: actions-hub/docker@master
-    #     with:
-    #       args: push ${{ secrets.hubName }}:3.1
+      - name: Push to docker registry
+        if: success()
+        uses: actions-hub/docker@master
+        with:
+          args: push ${{ secrets.hubName }}:3.1
       - name: run codeDeploy
         run: aws deploy --region ap-northeast-2 create-deployment --application-name codedeploy --deployment-config-name CodeDeployDefault.OneAtATime --deployment-group-name gropu --github-location repository=gyim1345/snsAPI,commitId=e41f4c157561129b9fa3cab43fd9a99bc73d7883
         env:
