@@ -19,9 +19,6 @@ jobs:
         run: npm test
         env:
           dbUrl: ${{ secrets.dbUrl }}
-          process.env.accessKeyId: ${{ secrets.AWS_ACCESS_KEY_ID }}
-          process.env.secretAccessKey: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
-          process.env.region: ap-northeast-2
           accessKeyId: ${{ secrets.AWS_ACCESS_KEY_ID }}
           secretAccessKey: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
           region: ap-northeast-2
