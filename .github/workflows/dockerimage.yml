@@ -1,4 +1,4 @@
-name: Deploy to docker hub
+name: Deploy to EC2 using dockerHub and CodeDeploy
 
 on:
    push:
@@ -12,13 +12,18 @@ jobs:
     steps:
       - uses: actions/checkout@master
 
+      - name: Test project
+        run: npm test
+        env:
+          dbUrl: ${{ secrets.dbUrl }}
+          
       - name: Login to docker hub
         if: success()
         uses: actions-hub/docker/login@master
         env:
           DOCKER_USERNAME: ${{ secrets.DOCKER_USERNAME }}
           DOCKER_PASSWORD: ${{ secrets.DOCKER_PASSWORD }}
-
+        
       - name: Build image
         if: success()
         run: docker build --tag ${{ secrets.hubName }}:latest .
