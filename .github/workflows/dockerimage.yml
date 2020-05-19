@@ -12,8 +12,11 @@ jobs:
     steps:
       - uses: actions/checkout@master
 
+      - name: npm install
+        run: npm ci
+        
       - name: Unit test start
-        run: npm run unit
+        run: npm test
         env:
           dbUrl: ${{ secrets.dbUrl }}
 
