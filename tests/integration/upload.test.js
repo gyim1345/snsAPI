@@ -59,6 +59,7 @@ describe('/upload', () => {
                 .attach('files', 'static/images/1.jpg')
                 .field({ input: 'newInput', inputTag: 'newInputTag' })
                 .set('Cookie', cookie)
+            console.log(body)
             expect(body).toEqual(expect.objectContaining(uploadedFile))
             expect(body.posts).toEqual(expect.objectContaining(posts))
         })

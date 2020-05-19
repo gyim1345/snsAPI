@@ -35,6 +35,7 @@ var upload = multer({
 router.post('/', upload.single('files'), validateImageUpload, async (req, res) => {
     const { originalname, location } = req.file;
     const { input, inputTag } = req.body;
+    console.log('input')
     const user = req.session.user.Id
     try {
         const posts = await postService.uploadPost(
