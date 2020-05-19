@@ -2,6 +2,7 @@ const userStore = require('./userStore.repository');
 import postSchemaModel from '../model/post';
 
 
+
 // const baseurl = "http://localhost:3000";
 // const DEFAULT_IMAGE = `${baseurl}/static/images/defaultnumber.png`;
 const postStore = {
@@ -74,6 +75,10 @@ const postStore = {
       return postModel
   
   },
+  
+  async editUserImageUrl(username, imageUrl) {
+    return await postSchemaModel.updateMany({ userName: username }, { $set: {userImageUrl: imageUrl}})
+  },
 
   async createPost(recievedTitle, name, url, tags) {
     const postModel = await new postSchemaModel();
@@ -83,6 +88,7 @@ const postStore = {
     postModel.userName = name;
     postModel.like = [];
     postModel.tag = tags ? [...tags] : [];
+    postModel.userImageUrl = (await userStore.getUserImage(name)) || 'static/images/profilepicture.png';
     await postModel.save();
     return postModel
    },

@@ -8,7 +8,8 @@ let postSchema = new Schema(
     imageUrl: String,
     userName: String,
     like: [String], 
-    tag: [String]
+    tag: [String],
+    userImageUrl: String
   },
 );
 

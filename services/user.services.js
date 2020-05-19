@@ -23,6 +23,7 @@ const userService = {
     },
 
     async editUserProfileImage(username, imageUrl) {
+        await postStore.editUserImageUrl( username, imageUrl );
         return await userStore.editUserImage( username, imageUrl );
     },
 
