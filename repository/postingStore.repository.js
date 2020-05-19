@@ -76,13 +76,13 @@ const postStore = {
   },
 
   async createPost(recievedTitle, name, url, tags) {
-    const postModel = new postSchemaModel();
+    const postModel = await new postSchemaModel();
     postModel.id = Date.now();
     postModel.title = recievedTitle;
     postModel.imageUrl = url;
     postModel.userName = name;
     postModel.like = [];
-    postModel.tag = [...tags];
+    postModel.tag = tags ? [...tags] : [];
     await postModel.save();
     return postModel
    },

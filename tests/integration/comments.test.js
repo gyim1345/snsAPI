@@ -159,12 +159,11 @@ describe('/comments', () => {
         })
         
         it('removes the specific comment matching the id and its reply', async() => {
-            const input = {comments , id: 1414}
-            const { body } = await request(app)
+            const input = { posting: comments, index: 1414}
+            const req = await request(app)
                 .patch('/comments/3')
                 .send(input)
-
-                expect(body.length).toBe(0)
+                expect(req.body.length).toBe(0)
         })
 
         describe('when internal error from server', () => {

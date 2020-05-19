@@ -44,26 +44,23 @@ describe('/upload', () => {
     describe('POST /', () => {
         const uploadedFile = {
             fileName: '1.jpg',
-            filePath: 'https://snsimagefiles.s3.ap-northeast-2.amazonaws.com/1.jpg',
 
         }
         const posts = {
             like: [],
             tag: ['newInputTag'],
             title: 'newInput',
-            imageUrl: 'https://snsimagefiles.s3.ap-northeast-2.amazonaws.com/1.jpg',
             userName: 'gibong@gmail.com',
         }
 
         it('creates posts and returns fileName, filePath, and the created post', async () => {
             const { body } = await request(app)
                 .post('/upload')
-                .attach('files', '/workspace/Project/snsAPI/src/static/images/1.jpg')
+                .attach('files', 'static/images/1.jpg')
                 .field({ input: 'newInput', inputTag: 'newInputTag' })
                 .set('Cookie', cookie)
             expect(body).toEqual(expect.objectContaining(uploadedFile))
             expect(body.posts).toEqual(expect.objectContaining(posts))
-            expect()
         })
 
         describe('when internal error from server', () => {
@@ -74,7 +71,7 @@ describe('/upload', () => {
             it('returns status code of 500 and message of Internal server error', async () => {
                 const { body, statusCode } = await request(app)
                     .post('/upload')
-                    .attach('files', '/workspace/Project/snsAPI/src/static/images/1.jpg')
+                    .attach('files', 'static/images/1.jpg')
                     .field({ input: 'newInput', inputTag: 'newInputTag' })
                     .set('Cookie', cookie)
                     
@@ -89,7 +86,7 @@ describe('/upload', () => {
         it('edits Image and returns status code of 200 and a message of done', async () => {
             const { body, statusCode } = await request(app)
                 .patch('/upload/userImage')
-                .attach('files', '/workspace/Project/snsAPI/src/static/images/1.jpg')
+                .attach('files', 'static/images/1.jpg')
                 .set('Cookie', cookie)
 
             expect(statusCode).toBe(200);
@@ -106,7 +103,7 @@ describe('/upload', () => {
             it('returns status code of 500 and message of Internal server error', async () => {
                 const { body, statusCode } = await request(app)
                     .patch('/upload/userImage')
-                    .attach('files', '/workspace/Project/snsAPI/src/static/images/1.jpg')
+                    .attach('files', 'static/images/1.jpg')
                     .set('Cookie', cookie)
 
                 expect(statusCode).toBe(500);

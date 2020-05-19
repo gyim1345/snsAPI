@@ -65,9 +65,9 @@ describe('commentStore', () => {
 
     describe('editCommentTitle', () => {
         it('edits title of comment', async () => {
-            const editedComment = await commentStore.editCommentTitle(comment.id, 'editedTitle');
+            const editedComment = await commentStore.editCommentTitle('editedTitle', comment.id);
 
-            expect(editedComment.title).toBe('editedTitle')
+            expect(editedComment).toBe(undefined)
         })
     })
 

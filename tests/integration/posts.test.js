@@ -170,7 +170,6 @@ describe('/posts', () => {
             const { body } = await request(app)
                 .post('/posts')
                 .send({ title: 'newTitle', user: 'newUserName' })
-
             expect(body.title).toBe('newTitle');
             expect(body.userName).toBe('newUserName');
         })

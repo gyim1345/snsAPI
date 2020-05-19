@@ -46,10 +46,10 @@ router.patch('/edit', async (req, res) => {
 });
 
 router.patch('/:id', async (req, res) => {
-
+  // console.log(req.body)
   const { posting, index } = req.body
   // const { id } = req.params
-  // console.log('pasdasdasd', posting, index, id);
+  // console.log('pasdasdasd', posting, index);
   try {
     const comments = await commentService.removeComment(posting, index)
     res.send(comments);
