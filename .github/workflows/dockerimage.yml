@@ -21,13 +21,13 @@ jobs:
 
       - name: Build image
         if: success()
-        run: docker build --tag ${{ secrets.hubName }}:3.1 .
+        run: docker build --tag ${{ secrets.hubName }}:latest .
 
       - name: Push to docker registry
         if: success()
         uses: actions-hub/docker@master
         with:
-          args: push ${{ secrets.hubName }}:3.1
+          args: push ${{ secrets.hubName }}:latest
 
       - name: run codeDeploy
         run: aws deploy --region ap-northeast-2 create-deployment --application-name codedeploy --deployment-config-name CodeDeployDefault.OneAtATime --deployment-group-name gropu --github-location repository=gyim1345/snsAPI,commitId=${GITHUB_SHA}
