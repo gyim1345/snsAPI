@@ -6,3 +6,4 @@ production.env
 .env*
 aasdad
 .env
+tests/integration/upload.test.js
