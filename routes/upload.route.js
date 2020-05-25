@@ -10,12 +10,12 @@ import userService from '../services/user.services';
 const router = express.Router();
 const AWS = require("aws-sdk");
 
-// AWS.config.loadFromPath("config/awsconfig.json");
-AWS.config.update({
-    accessKeyId: process.env.accessKeyId,
-    secretAccessKey: process.env.secretAccessKey,
-    region : process.env.region
-  });
+AWS.config.loadFromPath("config/awsconfig.json");
+// AWS.config.update({
+//     accessKeyId: process.env.accessKeyId,
+//     secretAccessKey: process.env.secretAccessKey,
+//     region : process.env.region
+//   });
   
 let s3 = new AWS.S3();
 
@@ -28,7 +28,8 @@ var upload = multer({
             cb(null, Date.now().toString() + extension)
         },
         acl: 'public-read-write'
-    })
+    }),
+    limits: { fileSize: 10 * 1024 * 1024 },
 })
 
 
