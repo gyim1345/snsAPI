@@ -10,7 +10,7 @@ import userService from '../services/user.services';
 const router = express.Router();
 const AWS = require("aws-sdk");
 
-AWS.config.loadFromPath("config/awsconfig.json");
+// AWS.config.loadFromPath("config/awsconfig.json");
 // AWS.config.update({
 //     accessKeyId: process.env.accessKeyId,
 //     secretAccessKey: process.env.secretAccessKey,
