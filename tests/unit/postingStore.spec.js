@@ -1,6 +1,7 @@
 import { db } from '../../app';
 import postingStore from '../../repository/postingStore.repository';
 import postSchemaModel from '../../model/post';
+import userSchemaModel from '../../model/user';
 import userStore from '../../repository/userStore.repository'
 
 describe('postingStore', () => {
@@ -41,10 +42,21 @@ describe('postingStore', () => {
         }
       ]
 
+      const userInfo = {
+        name: 'gibong@gmail.com',
+        userId: 33,
+        userFollow: ['eeee'],
+        userURL: 'http',
+        password: 'pwd',
+        scrap: [1, 3, 5],
+        nickName: 'nicknamee',
+        introductory: 'wtf'
+    }
 
     beforeEach(async () => {
         await db.dropDatabase();
 
+        await userSchemaModel.create(userInfo);
         await postSchemaModel.create(posting);
     })
 
@@ -192,6 +204,7 @@ describe('postingStore', () => {
         let inputTag;
         describe('given title, url, name, inputTag by input', () => {
             beforeEach(()=> {
+
                 title = 'title';
                 url = 'localwhatever/asd';
                 inputTag = 'asd'
@@ -204,7 +217,7 @@ describe('postingStore', () => {
 
             it('returns created post', async () => {
                 let newPost = await postingStore.createPost(title, userName, url, inputTag);
-               
+                console.log(newPost)
                 expect(newPost).toEqual(expect.objectContaining(createdPost))
             })
         })

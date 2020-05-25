@@ -169,9 +169,9 @@ describe('/posts', () => {
         it('returns edited post', async () => {
             const { body } = await request(app)
                 .post('/posts')
-                .send({ title: 'newTitle', user: 'newUserName' })
+                .send({ title: 'newTitle', user: 'gibong@gmail.com' })
             expect(body.title).toBe('newTitle');
-            expect(body.userName).toBe('newUserName');
+            expect(body.userName).toBe('gibong@gmail.com');
         })
 
         describe('with internal server error', () => {
