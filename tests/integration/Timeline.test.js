@@ -79,7 +79,6 @@ describe('/Timeline', () => {
 
                 expect(status).toBe(200);
                 expect(body.response).toBe('gibong@gmail.com')
-                //TODO: body.response를 나중에 프론트랑 같이 바꿀것. (Timeline.route 쪽도.)
             })
         })
 

@@ -10,6 +10,7 @@ router.post('/', (req, res) => {
     const response = req.session.user.Id
     res.send({ response });
   } catch (err) {
+    console.log("aaa")
     res.status(401).json({ message: 'No session Id Found' })
   }
 }
@@ -21,6 +22,7 @@ router.get('/randomUser', async (req, res) => {
 });
 
 router.get('/:user', async (req, res) => {
+  console.log(req.query)
   // console.log('asd', req.session)
   // console.log('bbb', req.sessions)
   const user = req.session.user.Id;

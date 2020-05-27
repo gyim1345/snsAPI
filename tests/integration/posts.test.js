@@ -344,4 +344,28 @@ describe('/posts', () => {
             })
         })
     })
+
+
+    describe('GET /scrapped', () => {
+        describe('check if the post is scrapped for the current user', () => {
+            it('returns true or false depending if it is included', async () => {
+                const { body } = await request(app)
+                    .get('/posts/scrapped')
+                    .set('Cookie', cookie)
+                    .query({ id: 1})
+
+                expect(body).toBe(true)
+            })
+        })
+
+        describe('with internal server error', () => {
+            it('returns 500 status code', async () => {
+                const { body, status } = await request(app)
+                    .get('/posts/scrapped')
+
+                expect(status).toBe(500)
+                expect(body.message).toBe('Internal server error')
+            })
+        })
+    })
 })

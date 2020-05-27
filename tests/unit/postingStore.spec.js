@@ -217,8 +217,18 @@ describe('postingStore', () => {
 
             it('returns created post', async () => {
                 let newPost = await postingStore.createPost(title, userName, url, inputTag);
-                console.log(newPost)
                 expect(newPost).toEqual(expect.objectContaining(createdPost))
+            })
+        })
+
+        describe('given title, url, name, inputTag by input and unexisting profile picture', () => {
+            beforeEach(()=> {
+                userStore.getUserImage = jest.fn(false);
+            })
+
+            it('returns created post with default profile picture', async () => {
+                let newPost = await postingStore.createPost(title, userName, url, inputTag);
+                expect(newPost.userImageUrl).toBe('static/images/profilepicture.png')
             })
         })
     })

@@ -25,7 +25,7 @@ const commentService = {
         const { userName, id } = comments[index]
         const ownership = await this.checkOwnership(userName, username)
         if (ownership) {
-            throw false;//incomplete //question throw new error 하면 error: 뭐시기 하던데 이건 어떻게 처리??
+            throw new Error('unauthorized');
         }
         return await this.editComment(title, comments, index, id);
     },

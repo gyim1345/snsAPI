@@ -4,8 +4,10 @@ import postSchemaModel from '../../model/post';
 import userSchemaModel from '../../model/user'
 import commentSchemaModel from '../../model/comment';
 import commentService from '../../services/comment.service'
+import auth from '../../services/auth.service';
 
 describe('/comments', () => {
+    let cookie;
     let posting = [{
         id: 3,
         title: 'eeeeeee',
@@ -38,6 +40,7 @@ describe('/comments', () => {
     beforeAll(async ()=> {
         // app.close()
 
+
     })
     beforeEach(async () => {
         // await server.close();
@@ -49,11 +52,18 @@ describe('/comments', () => {
         await userSchemaModel.create(userInfo);
 
         await commentSchemaModel.create(comments);
+
+        auth.loginValidation = jest.fn().mockResolvedValue({ loginStatea: true });
+        const req = await request(app).post('/auth/login').send({ Id: 'gibong@gmail.com', Password: 'pwd' })
+        cookie = await req.header['set-cookie']
+
+        jest.clearAllMocks();
     })
 
     afterEach(async ()=> {
         // await server.close();
         // app.close()
+        jest.clearAllMocks();
 
     })
 
@@ -174,6 +184,69 @@ describe('/comments', () => {
             it('returns status code of 500 and message of Internal server error', async () => {
                 const { body, statusCode } = await request(app)
                     .patch('/comments/3')
+
+                expect(statusCode).toBe(500);
+                expect(body.message).toBe('Internal server error');
+            })
+        })
+    })
+
+
+    describe('PATCH /edit', () => {
+        beforeEach(async()=> {
+
+            let comments1 = {
+                id: 2,
+                postLId: 3,
+                title: 'commentTitle',
+                userName: 'gibong@gmail.com',
+                like: [],
+                replyToCommentId: 1414, //TIP: test에서만?? 값을 undefined를 넣으면 그 property 또한 안들어감 => 아예 없다고 취급함.
+            }
+            comments.push(comments1)
+            await commentSchemaModel.create(comments1);
+            // req.session.user.Id = jest.fn().mockResolvedValue('gibong@gmail.com');
+            // commentService.checkOwnership = jest.fn().mockResolvedValue(true)
+        })
+        
+        it('edits the title of comment', async() => {
+            const inputTitle = "new title";
+            const inputIndex = 0;
+            const input = { input: inputTitle, posting: comments, index: inputIndex}
+            const req = await request(app)
+                .patch('/comments/edit')
+                .send(input)
+                .set('Cookie', cookie)
+                expect(req.body[inputIndex].title).toBe(inputTitle)
+        })
+
+        describe('when internal error from server', () => {
+            beforeEach(() => {
+                commentService.checkOwnership = jest.fn().mockResolvedValue(true)
+            });
+
+            it('returns status code of 401 and message of Internal server error', async () => {
+                const inputTitle = "new title";
+                const inputIndex = 0;
+                const input = { input: inputTitle, posting: comments, index: inputIndex}
+                const { body, statusCode } = await request(app)
+                    .patch('/comments/edit')
+                    .send(input)
+                    .set('Cookie', cookie)
+
+                expect(statusCode).toBe(401);
+                expect(body.message).toBe('You dont have permission');
+            })
+        })
+
+        describe('when internal error from server', () => {
+            beforeEach(() => {
+                commentService.editTitleOfComment = jest.fn().mockRejectedValue()
+            });
+
+            it('returns status code of 500 and message of Internal server error', async () => {
+                const { body, statusCode } = await request(app)
+                    .patch('/comments/edit')
 
                 expect(statusCode).toBe(500);
                 expect(body.message).toBe('Internal server error');

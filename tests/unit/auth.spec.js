@@ -161,22 +161,20 @@ describe('auth', () => {
                 })
                 it('returns statusMessage: LoggedIn and loginStatus: true', async () => {
                     const validation = await auth.loginValidation(id, password);
-
                     expect(validation.loginStatus).toBe(true);
                 })
             })
 
-            // describe('when password validation fails', () => {
-            //     beforeEach(() => {
-            //         auth.checkPassword = jest.fn().mockResolvedValue(false)
-            //     })
+            describe('when password validation fails', () => {
+                beforeEach(() => {
+                    auth.checkPassword = jest.fn().mockResolvedValue(false)
+                })
 
-            //     it('returns statusMessage: LoggedIn and loginStatus: true', async () => {
-            //         const res = await auth.loginValidation(id, password);
-            //         console.log(res)
-            //         expect(res).toThrow(false)
-            //     })// throw false test 짤 수 있는지.?
-            // })
+                it('returns statusMessage: LoggedIn and loginStatus: false', () => {
+                    expect(auth.loginValidation(id, password)
+                    ).rejects.toBeTruthy();
+                })
+            })
         })
     })
 })

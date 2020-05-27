@@ -38,10 +38,10 @@ router.patch('/edit', async (req, res) => {
     const post = await commentService.editTitleOfComment(input, posting, req.session.user.Id, index);
     res.send(post);
   } catch (err) {
-    if (err === false) {
-      return res.status(401).json('You dont have permission')
+    if (err.message === 'unauthorized') {
+      return res.status(401).send({ message: 'You dont have permission'})
     }
-    res.status(500).send(err);
+    res.status(500).send({ message: 'Internal server error' });
   }
 });
 

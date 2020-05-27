@@ -88,7 +88,9 @@ const postStore = {
     postModel.userName = name;
     postModel.like = [];
     postModel.tag = tags ? [...tags] : [];
-    postModel.userImageUrl = (await userStore.getUserImage(name)) || 'static/images/profilepicture.png';
+    postModel.userImageUrl = 
+      (await userStore.getUserImage(name)) 
+      || 'static/images/profilepicture.png';
     await postModel.save();
     return postModel
    },

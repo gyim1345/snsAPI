@@ -173,7 +173,13 @@ describe('userStore', () => {
     describe('getUserScrapIds', () => {
         it('returns scrapped ids for the given user', async () => {
             const scrapIds = await userStore.getUserScrapIds(userName);
+            expect(scrapIds).toEqual(expect.arrayContaining(userInfo.scrap))
+        })
+    })
 
+    describe('getUserScrappedPostIds', () => {
+        it('returns scrapped ids for the given user', async () => {
+            const scrapIds = await userStore.getUserScrappedPostIds(userName);
             expect(scrapIds).toEqual(expect.arrayContaining(userInfo.scrap))
         })
     })

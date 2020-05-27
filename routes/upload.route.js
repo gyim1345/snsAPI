@@ -9,34 +9,33 @@ import userService from '../services/user.services';
 
 const router = express.Router();
 const AWS = require("aws-sdk");
-
 // AWS.config.loadFromPath("config/awsconfig.json");
-AWS.config.update({
-    accessKeyId: process.env.accessKeyId,
-    secretAccessKey: process.env.secretAccessKey,
-    region : process.env.region
-  });
+// AWS.config.update({
+//     accessKeyId: process.env.accessKeyId,
+//     secretAccessKey: process.env.secretAccessKey,
+//     region : process.env.region
+//   });
   
 let s3 = new AWS.S3();
 
-var upload = multer({
-    storage: multerS3({
-        s3: s3,
-        bucket: 'snsimagefiles', 
-        key: function (req, file, cb) {
-            let extension = path.basename(file.originalname);
-            cb(null, Date.now().toString() + extension)
-        },
-        acl: 'public-read-write'
-    }),
-    limits: { fileSize: 10 * 1024 * 1024 },
-})
-
+// AWS 사용시
+// const upload = multer({
+//     storage: multerS3({
+//         s3: s3,
+//         bucket: 'snsimagefiles', 
+//         key: function (req, file, cb) {
+//             let extension = path.basename(file.originalname);
+//             cb(null, Date.now().toString() + extension)
+//         },
+//         acl: 'public-read-write'
+//     }),
+//     limits: { fileSize: 10 * 1024 * 1024 },
+// })
+const upload = multer({ dest: 'uploads/' });
 
 router.post('/', upload.single('files'), validateImageUpload, async (req, res) => {
     const { originalname, location } = req.file;
     const { input, inputTag } = req.body;
-    console.log('input')
     const user = req.session.user.Id
     try {
         const posts = await postService.uploadPost(

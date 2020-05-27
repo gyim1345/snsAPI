@@ -1,5 +1,7 @@
 const request = require('supertest')
+const path = require("path");
 
+import express from 'express';
 import app, { db } from '../../app';
 import userSchemaModel from '../../model/user';
 import auth from '../../services/auth.service';
@@ -53,12 +55,16 @@ describe('/upload', () => {
             userName: 'gibong@gmail.com',
         }
 
+
         it('creates posts and returns fileName, filePath, and the created post', async () => {
+            const picture = path.resolve( './static/images/1.jpg' )
+            console.log(picture)
             const { body } = await request(app)
                 .post('/upload')
-                .attach('files', 'static/images/1.jpg')
                 .field({ input: 'newInput', inputTag: 'newInputTag' })
                 .set('Cookie', cookie)
+                .attach('files', picture)
+                console.log(body, "test")
             expect(body).toEqual(expect.objectContaining(uploadedFile))
             expect(body.posts).toEqual(expect.objectContaining(posts))
         })
