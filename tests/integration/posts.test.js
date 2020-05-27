@@ -6,10 +6,7 @@ import commentSchemaModel from '../../model/comment';
 import userSchemaModel from '../../model/user';
 import postStore from '../../repository/postingStore.repository';
 
-// import register from '../../services/register';
 import auth from '../../services/auth.service';
-// import edit from '../../services/edit';
-// import remove from '../../services/remove';
 import postService from '../../services/post.service'
 
 describe('/posts', () => {
@@ -67,8 +64,6 @@ describe('/posts', () => {
     })
 
     afterAll(async () => {
-        // await db.dropDatabase();
-
         await db.close();
     });
 
@@ -149,7 +144,6 @@ describe('/posts', () => {
         it('returns post of the following id', async () => {
             const { body } = await request(app)
                 .get('/posts/3')
-            // console.log(body)
             expect(body.posts[0]).toEqual(expect.objectContaining(posts[0]))
         })
 
@@ -184,38 +178,6 @@ describe('/posts', () => {
             })
         })
     })
-
-    // describe('POST /register', () => {
-    //     describe('with valid inputs', () => {
-    //         it('creates user and returns true with status code 200', async () => {
-    //             const { body, statusCode } = await request(app)
-    //                 .post('/posts/register')
-    //                 .send({ id: 'newuser@gmail.com', password: 'myPassword' })
-
-    //             expect(statusCode).toBe(200);
-    //             expect(body).toBe(true);
-    //         })
-    //     })
-
-    //     describe('with invalid inputs', () => {
-    //         it('returns 400 status code', async () => {
-    //             const { statusCode } = await request(app)
-    //                 .post('/posts/register')
-    //                 .send({ id: 'WRONG_INPUT', password: 'password' });
-    //             expect(statusCode).toBe(400);
-    //         })
-    //     })
-
-    //     describe('with internal server error', () => {
-    //         it('returns 500 status code', async () => {
-    //             register.registration = jest.fn().mockRejectedValue();
-    //             const req = await request(app)
-    //             .post('/posts/register')
-
-    //             expect(req.statusCode).toBe(500);
-    //         })
-    //     })
-    // })
 
     describe('PATCH /edit', () => {
 

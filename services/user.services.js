@@ -27,20 +27,6 @@ const userService = {
         return await userStore.editUserImage( username, imageUrl );
     },
 
-
-    // async checkPassword(id, password) {
-    //     return await userStore.checkPassword(id, password)
-    // },
-
-    // async loginValidation(id, password) {
-    //     console.log(id,password)
-    //     if(await this.checkPassword(id, password)) {
-    //     return { statusMessage: 'LoggedIn', loginStatus: true }
-    //     }
-    //     return { statusMessage: 'Check Input', loginStatus: false }
-    // },
-
-
 }
 
 module.exports = userService;

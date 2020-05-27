@@ -10,7 +10,6 @@ const auth = {
 
     async loginValidation(id, password) {
       if(await this.checkPassword(id, password)) {
-        // console.log(id,password)
         return { loginStatus: true }
         }
         throw false
@@ -27,7 +26,6 @@ const auth = {
     async userIdAvailability(id) {
       return await userStore.checkIdIsRegistered(id)
     },
-  //TODO: login처럼 route 가 아닌 서비스에서 하기.
     async registration(id, password) {
       const validability = await this.userIdValidation(id)
       const availability = await this.userIdAvailability(id)

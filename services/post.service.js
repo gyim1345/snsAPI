@@ -17,7 +17,7 @@ const postService = {
 
     async checkOwnershipOfPost(postAuthor, username) {
         return postAuthor !== username;
-    },//incomplete
+    },
 
     async editPost(title, post) {
         let editedPost = await postStore.editPostTitle(title, post)
@@ -29,17 +29,17 @@ const postService = {
         const { userName } = post
         const ownership = await this.checkOwnershipOfPost(userName, username)
         if (ownership) {
-            throw false;//incomplete //question throw new error 하면 error: 뭐시기 하던데 이건 어떻게 처리??
+            throw false;
         }
         post = await this.editPost(title, post);
         return post;
     },
-    //   return  await edit.editThis(input, posting, req.session.user.Id, indexOfCommentOnThisPosting);
+
 
     async removePost(username, id, sessionUserName) {
         const ownership = await this.checkOwnershipOfPost(username, sessionUserName)
         if (ownership) {
-            throw false;//incomplete //question throw new error 하면 error: 뭐시기 하던데 이건 어떻게 처리??
+            throw false;
         }
         await postStore.removePost(id);
         return true;

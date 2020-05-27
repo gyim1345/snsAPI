@@ -10,7 +10,6 @@ const userStore = {
   async getFollowerFromUser(userName) {
     if (userName !== undefined) {
       const [ userInfo ]  = await userSchemaModel.find({ name: userName })
-      // console.log(userInfo.userFollow)
       return userInfo.userFollow;
     }
     return "empty";
@@ -32,22 +31,11 @@ async getUserScrappedPostIds(username) {
   return (await userSchemaModel.findOne({ name: username})).scrap
 },
 
-  // async getFollowerNumberOfUser(userName) {
-  //   const [ userInfo ]  = await userSchemaModel.find({ name: userName })
-  //   return userInfo.userFollow.length -1;
-  // },
-
-  // async getUserPassword(userName) {
-  //   return await userSchemaModel.find({ name: userName }).password;
-  // },
   async checkIdIsRegistered(userName) {
     return (await userSchemaModel.findOne({ name: userName })) === null
   },
 
   async checkPassword(Id, Password) {
-    // console.log((await userSchemaModel.findOne({ name: Id})).password, Password)
-    // console.log('asdasd', Id, Password);
-    // console.log( await userSchemaModel.findOne({ name: Id}));
     return  (await userSchemaModel.findOne({ name: Id})).password === Password;
   },
 
@@ -56,15 +44,6 @@ async getUserScrappedPostIds(username) {
     userInfo.userFollow.push(follower);
     await userInfo.save();
     return userInfo;
-
-    // return await userSchemaModel.findOne({ name: currentUser }, (err, userModel) => {
-    //   console.log(follower);
-    //   userModel.userFollow.push(follower);
-    //   console.log(userModel);
-    //   userModel.save();
-
-    //   return userModel;
-    // })
   },
 
 

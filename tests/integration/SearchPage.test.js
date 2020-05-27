@@ -65,7 +65,7 @@ describe('/SearchPage', () => {
             })
         })
 
-        describe('with no query', () => { //question query 가 없을때 에러 input 이 공백일때는 되긴함. 이거 있어야함???
+        describe('with no query', () => { 
             it('returns posts of tagged', async () => {
                 const { statusCode, body } = await request(app)
                     .get('/SearchPage/tag')
@@ -74,7 +74,7 @@ describe('/SearchPage', () => {
                 expect(body.message).toBe('No query found');
             })
         })
-//question: internal server 500 처리하는거 중복 너무 많긴한데 중간에 조금씩 다른게 너무 많아서 어떻게 하지?? 
+
         describe('when internal error from server', () => {
             beforeEach(() => {
                 postStore.postForTag = jest.fn().mockRejectedValue(new Error('Somthing wrong'))

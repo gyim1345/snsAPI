@@ -51,7 +51,7 @@ describe('/user', () => {
     });
 
     describe('GET /', () => {
-        describe('with valid request from client', () => { // with body 라는 말이 조금 모호한듯
+        describe('with valid request from client', () => { 
             it('responds with 200 status code and posts', async () => {
                 const { body, statusCode } = await request(app)
                     .get('/user')

@@ -151,7 +151,7 @@ describe('userStore', () => {
                 IdOfPost = 10;
             })
 
-            it('returns a message saying scrapped', async () => {// question addPostIdToScrap 가 하는 행동 "after adding scrap id of Id to user property of scrap"  이것도 넣어야하나??
+            it('returns a message saying scrapped', async () => {
                 const { message } = await userStore.addPostIdToScrap(IdOfPost, userName);
 
                 expect(message).toBe("scrapped");

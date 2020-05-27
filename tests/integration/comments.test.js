@@ -34,16 +34,11 @@ describe('/comments', () => {
         title: 'commentTitle',
         userName: 'gibong@gmail.com',
         like: [],
-        replyToCommentId: 1, //TIP: test에서만?? 값을 undefined를 넣으면 그 property 또한 안들어감 => 아예 없다고 취급함.
+        replyToCommentId: 1, 
     }]
 
-    beforeAll(async ()=> {
-        // app.close()
 
-
-    })
     beforeEach(async () => {
-        // await server.close();
 
         await db.dropDatabase();
 
@@ -61,15 +56,11 @@ describe('/comments', () => {
     })
 
     afterEach(async ()=> {
-        // await server.close();
-        // app.close()
         jest.clearAllMocks();
 
     })
 
     afterAll(async () => {
-        // await db.dropDatabase();
-
         await db.close();
 
     });
@@ -122,7 +113,7 @@ describe('/comments', () => {
         describe('with valid id', () => {
             it('returns comments', async () => {
                 const { body } = await request(app)
-                    .get('/comments/3')//TIP: params 를 쓰면 그냥 숫자를 직접 넣자.
+                    .get('/comments/3')
                 expect(body[0]).toEqual(expect.objectContaining(comments[0]))
             })
         })
@@ -161,7 +152,7 @@ describe('/comments', () => {
                 title: 'commentTitle',
                 userName: 'gibong@gmail.com',
                 like: [],
-                replyToCommentId: 1414, //TIP: test에서만?? 값을 undefined를 넣으면 그 property 또한 안들어감 => 아예 없다고 취급함.
+                replyToCommentId: 1414,
             }
             comments.push(comments1)
             await commentSchemaModel.create(comments1);
@@ -201,12 +192,11 @@ describe('/comments', () => {
                 title: 'commentTitle',
                 userName: 'gibong@gmail.com',
                 like: [],
-                replyToCommentId: 1414, //TIP: test에서만?? 값을 undefined를 넣으면 그 property 또한 안들어감 => 아예 없다고 취급함.
+                replyToCommentId: 1414, 
             }
             comments.push(comments1)
             await commentSchemaModel.create(comments1);
-            // req.session.user.Id = jest.fn().mockResolvedValue('gibong@gmail.com');
-            // commentService.checkOwnership = jest.fn().mockResolvedValue(true)
+
         })
         
         it('edits the title of comment', async() => {

@@ -1,10 +1,6 @@
 const userStore = require('./userStore.repository');
 import postSchemaModel from '../model/post';
 
-
-
-// const baseurl = "http://localhost:3000";
-// const DEFAULT_IMAGE = `${baseurl}/static/images/defaultnumber.png`;
 const postStore = {
 
   async postList() {
@@ -21,8 +17,7 @@ const postStore = {
   
   async getuserPosts(name) {
     return await postSchemaModel.find({ userName:name });
-  },// 유저가 적은 포스트를 다 가져옴. 이건 post에 대한 서비스? 유저에 대한 서비스?
-  
+  },
   async getUserPostsLength(user) {
     return await postSchemaModel.countDocuments({ userName:user });
   },
