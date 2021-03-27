@@ -1,4 +1,7 @@
+소개: 인스타그램 클론 한 프로젝트의 서버 부분
+
 서버 깃허브 주소: https://github.com/gyim1345/snsAPI
+
 클라이언트 깃허브 주소: https://github.com/gyim1345/sns
 
 
